@@ -43,14 +43,16 @@ public class Actor : MonoBehaviour
     {
       Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-      _info.WorldToArrayCoords(worldPos);
-      //_info.WorldToArrayCoords(new Vector3(0.0f, 0.0f, 0.0f));
+      Int2 arrayCoords = _info.WorldToArrayCoords(worldPos);
+      _info.Init(arrayCoords.X, arrayCoords.Y);
+
+      Debug.Log (worldPos + " -> " + arrayCoords + " " + _info.SortingOrder);
     }
       
-    //_mapPosition = _info.WorldToArrayCoords(_worldPosition);
-    //_info.Init(_mapPosition.X, _mapPosition.Y);
+    _mapPosition = _info.WorldToArrayCoords(_worldPosition);
+    _info.Init(_mapPosition.X, _mapPosition.Y);
 
-    //SpriteRendererComponent.sortingOrder = _info.SortingOrder;
+    SpriteRendererComponent.sortingOrder = _info.SortingOrder;
 
     transform.localPosition = _worldPosition;
 

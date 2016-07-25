@@ -85,21 +85,23 @@ public class IsoObjectMapInfo
     WorldPosition.x = tileX;
     WorldPosition.y = tileY;
 
-    SortingOrder = (arrayMapX * 10 + arrayMapY + 1);
+    SortingOrder = (arrayMapX * 10 + arrayMapY);
   }
 
   Int2 _res = new Int2();
   public Int2 WorldToArrayCoords(Vector3 worldPos)
   {   
-    float doubledY = worldPos.y * 2.0f;
+    float x = worldPos.x - 0.5f;
+    float y = worldPos.y * 2.0f;
 
-    float nx = worldPos.x * Mathf.Cos(45.0f * Mathf.Deg2Rad);
-    float ny = doubledY * Mathf.Sin(45.0f * Mathf.Deg2Rad);
+    float nx = x * Mathf.Cos(45.0f * Mathf.Deg2Rad) - y * Mathf.Sin(45.0f * Mathf.Deg2Rad);
+    float ny = x * Mathf.Sin(45.0f * Mathf.Deg2Rad) + y * Mathf.Cos(45.0f * Mathf.Deg2Rad);
 
-    int arrayX = (int)(nx);
-    int arrayY = (int)(ny);
+    int arrayX = (int)(ny / GlobalConstants.ProjectedSquareSideLength);
+    int arrayY = (int)(nx / GlobalConstants.ProjectedSquareSideLength);
 
-    Debug.Log(string.Format("{0} -> ({1} ; {2}) = [{3} ; {4}]", worldPos, nx, ny, arrayX, arrayY));
+    _res.X = Mathf.Abs(arrayX);
+    _res.Y = Mathf.Abs(arrayY);
 
     return _res;
   }

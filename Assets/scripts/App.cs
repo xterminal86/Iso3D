@@ -19,7 +19,7 @@ public class App : MonoBehaviour
     _map = new int[GlobalConstants.MapWidth, GlobalConstants.MapHeight];
 
     CreateGrid();
-    //PlaceObjects();
+    PlaceObjects();
     PlaceActor();
   }
 
@@ -36,6 +36,7 @@ public class App : MonoBehaviour
         GameObject go = (GameObject)Instantiate(Tile, info.WorldPosition, Quaternion.identity);
         go.transform.localPosition = info.WorldPosition;
         go.transform.SetParent(ObjectsHolder);
+        go.GetComponent<SpriteRenderer>().sortingOrder = -1;
       }
     }
   }
@@ -58,18 +59,21 @@ public class App : MonoBehaviour
         info.Init(x, y);
 
         GameObject go = (GameObject)Instantiate(ObjectColumn, info.WorldPosition, Quaternion.identity);
+        SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
         go.transform.localPosition = info.WorldPosition;
         go.transform.SetParent(ObjectsHolder);
         go.GetComponent<SpriteRenderer>().sortingOrder = info.SortingOrder;
+
+        //Debug.Log(string.Format ("{0} ; {1} -> {2} {3}", x, y, info.SortingOrder, go.GetComponent<SpriteRenderer>().sortingOrder));
       }
     }
   }
 
   void PlaceActor()
   {    
-    IsoObjectMapInfo info = new IsoObjectMapInfo(0, 0);
+    IsoObjectMapInfo info = new IsoObjectMapInfo(2, 1);
     Actor actor = (Actor)Instantiate(ActorObject, info.WorldPosition, Quaternion.identity);
+    actor.transform.localPosition = info.WorldPosition;
     actor.transform.SetParent(ObjectsHolder);
-    actor.SpriteRendererComponent.sortingOrder = info.SortingOrder;
   }
 }
