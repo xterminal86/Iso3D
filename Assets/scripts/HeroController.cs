@@ -22,10 +22,9 @@ public class HeroController : MonoBehaviour
     _walkStatus[WALK_DIR.NE] = Input.GetKey(KeyCode.E);
     _walkStatus[WALK_DIR.SE] = Input.GetKey(KeyCode.D);
 
-    bool frontAnimStatus = _walkStatus[WALK_DIR.SW] || _walkStatus[WALK_DIR.SE];
-    bool backAnimStatus = _walkStatus[WALK_DIR.NW] || _walkStatus[WALK_DIR.NE];
-
-    AnimatorController.SetBool("front-walk", frontAnimStatus);
-    AnimatorController.SetBool("back-walk", backAnimStatus);
+    AnimatorController.SetBool("walk-ne", _walkStatus[WALK_DIR.NE]);
+    AnimatorController.SetBool("walk-nw", _walkStatus[WALK_DIR.NW]);
+    AnimatorController.SetBool("walk-se", _walkStatus[WALK_DIR.SE]);
+    AnimatorController.SetBool("walk-sw", _walkStatus[WALK_DIR.SW]);
   }
 }
