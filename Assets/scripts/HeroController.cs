@@ -17,7 +17,6 @@ public class HeroController : MonoBehaviour
   Dictionary<WALK_DIR, bool> _walkStatus = new Dictionary<WALK_DIR, bool>();
   void Update()
   {
-    /*
     _walkStatus[WALK_DIR.NW] = Input.GetKey(KeyCode.Q);
     _walkStatus[WALK_DIR.SW] = Input.GetKey(KeyCode.A);
     _walkStatus[WALK_DIR.NE] = Input.GetKey(KeyCode.E);
@@ -26,22 +25,7 @@ public class HeroController : MonoBehaviour
     bool frontAnimStatus = _walkStatus[WALK_DIR.SW] || _walkStatus[WALK_DIR.SE];
     bool backAnimStatus = _walkStatus[WALK_DIR.NW] || _walkStatus[WALK_DIR.NE];
 
-    if (frontAnimStatus)
-    {
-      AnimatorController.SetBool("front-walk", true);
-    }
-    else if (!frontAnimStatus)
-    {
-      AnimatorController.SetBool("front-walk", false);
-    }
-    else if (backAnimStatus)
-    {
-      AnimatorController.SetBool("back-walk", true);
-    }
-    else if (!backAnimStatus)
-    {
-      AnimatorController.SetBool("back-walk", false);
-    }
-    */
+    AnimatorController.SetBool("front-walk", frontAnimStatus);
+    AnimatorController.SetBool("back-walk", backAnimStatus);
   }
 }
