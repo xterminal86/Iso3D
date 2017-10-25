@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HeroController : MonoBehaviour 
 {
+  public Rigidbody RigidbodyComponent;
+
   public Transform Model;
 
   public Animator AnimatorController;
@@ -24,9 +26,11 @@ public class HeroController : MonoBehaviour
   bool _isWalking = false;
  
   void Awake()
-  {
+  {    
     _originalScale = Model.localScale;
     _scale = _originalScale;
+
+    CameraController.Instance.LockOnHero(this);
   }
 
   Dictionary<WALK_DIR, bool> _walkStatus = new Dictionary<WALK_DIR, bool>();
@@ -46,8 +50,10 @@ public class HeroController : MonoBehaviour
 
     if (!_isWalking)
     {
+      _direction = Vector3.zero;
+
       switch (_currentDir)
-      {
+      {        
         case WALK_DIR.NE:
           AnimatorController.SetBool("stand-ne", true);
           break;
@@ -84,17 +90,31 @@ public class HeroController : MonoBehaviour
       switch (_currentDir)
       {
         case WALK_DIR.NE:
+          _direction.Set(1.0f, 0.0f, 0.0f);
+          _scale.x = -_originalScale.x;
+          break;
         case WALK_DIR.SE:          
+          _direction.Set(0.0f, 0.0f, -1.0f);
           _scale.x = -_originalScale.x;
           break;
 
         case WALK_DIR.NW:          
+          _direction.Set(0.0f, 0.0f, 1.0f);
+          _scale.x = _originalScale.x;
+          break;
         case WALK_DIR.SW:
           _scale.x = _originalScale.x;
+          _direction.Set(-1.0f, 0.0f, 0.0f);
           break;
       }
     }
-
+  
     Model.localScale = _scale;
+  }
+
+  Vector3 _direction = Vector3.zero;
+  void FixedUpdate()
+  {
+    RigidbodyComponent.MovePosition(RigidbodyComponent.position + _direction * (GlobalConstants.HeroMoveSpeed * Time.fixedDeltaTime));
   }
 }

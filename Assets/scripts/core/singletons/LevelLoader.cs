@@ -17,18 +17,20 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     get { return _levelSize; }
   }
 
-  public void LoadLevel(ScenesList scene)
+  public void LoadLevel(LevelsList scene)
   {
     switch (scene)
     {      
-      case ScenesList.TEST:
+      case LevelsList.TEST:
         _levelMap = new TestLevel(_levelSize.X, _levelSize.Y, _levelSize.Z);
         break;
     }
+  }
 
+  public void InstantiateLevel()
+  {
     _levelMap.Generate();
-
-    InputController.Instance.SetupCamera(_levelMap.PlayerPos);
+    CameraController.Instance.SetupCamera(_levelMap.PlayerPos);
   }
 
   /// <summary>

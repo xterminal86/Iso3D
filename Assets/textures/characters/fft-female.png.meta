@@ -1,65 +1,65 @@
 fileFormatVersion: 2
-guid: dc552441f29764449a72bb465e6df48f
-timeCreated: 1503584603
+guid: fdc882229fb39884788c42edd1ade6dd
+timeCreated: 1508927736
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: fft-male_0
-    21300002: fft-male_1
-    21300004: fft-male_2
-    21300006: fft-male_3
-    21300008: fft-male_4
-    21300010: fft-male_5
-    21300012: fft-male_6
-    21300014: fft-male_7
-    21300016: fft-male_8
-    21300018: fft-male_9
-    21300020: fft-male_10
-    21300022: fft-male_11
-    21300024: fft-male_12
-    21300026: fft-male_13
-    21300028: fft-male_14
-    21300030: fft-male_15
-    21300032: fft-male_16
-    21300034: fft-male_17
-    21300036: fft-male_18
-    21300038: fft-male_19
-    21300040: fft-male_20
-    21300042: fft-male_21
-    21300044: fft-male_22
-    21300046: fft-male_23
-    21300048: fft-male_24
-    21300050: fft-male_25
-    21300052: fft-male_26
-    21300054: fft-male_27
-    21300056: fft-male_28
-    21300058: fft-male_29
-    21300060: fft-male_30
-    21300062: fft-male_31
-    21300064: fft-male_32
-    21300066: fft-male_33
-    21300068: fft-male_34
-    21300070: fft-male_35
-    21300072: fft-male_36
-    21300074: fft-male_37
-    21300076: fft-male_38
-    21300078: fft-male_39
-    21300080: fft-male_40
-    21300082: fft-male_41
-    21300084: fft-male_42
-    21300086: fft-male_43
-    21300088: fft-male_44
-    21300090: fft-male_45
-    21300092: fft-male_46
-    21300094: fft-male_47
-    21300096: fft-male_48
-    21300098: fft-male_49
-    21300100: fft-male_50
-    21300102: fft-male_51
-    21300104: fft-male_52
-    21300106: fft-male_53
-    21300108: fft-male_54
-    21300110: fft-male_55
+    21300000: fft-female_0
+    21300002: fft-female_1
+    21300004: fft-female_2
+    21300006: fft-female_3
+    21300008: fft-female_4
+    21300010: fft-female_5
+    21300012: fft-female_6
+    21300014: fft-female_7
+    21300016: fft-female_8
+    21300018: fft-female_9
+    21300020: fft-female_10
+    21300022: fft-female_11
+    21300024: fft-female_12
+    21300026: fft-female_13
+    21300028: fft-female_14
+    21300030: fft-female_15
+    21300032: fft-female_16
+    21300034: fft-female_17
+    21300036: fft-female_18
+    21300038: fft-female_19
+    21300040: fft-female_20
+    21300042: fft-female_21
+    21300044: fft-female_22
+    21300046: fft-female_23
+    21300048: fft-female_24
+    21300050: fft-female_25
+    21300052: fft-female_26
+    21300054: fft-female_27
+    21300056: fft-female_28
+    21300058: fft-female_29
+    21300060: fft-female_30
+    21300062: fft-female_31
+    21300064: fft-female_32
+    21300066: fft-female_33
+    21300068: fft-female_34
+    21300070: fft-female_35
+    21300072: fft-female_36
+    21300074: fft-female_37
+    21300076: fft-female_38
+    21300078: fft-female_39
+    21300080: fft-female_40
+    21300082: fft-female_41
+    21300084: fft-female_42
+    21300086: fft-female_43
+    21300088: fft-female_44
+    21300090: fft-female_45
+    21300092: fft-female_46
+    21300094: fft-female_47
+    21300096: fft-female_48
+    21300098: fft-female_49
+    21300100: fft-female_50
+    21300102: fft-female_51
+    21300104: fft-female_52
+    21300106: fft-female_53
+    21300108: fft-female_54
+    21300110: fft-female_55
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -83,7 +83,7 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: 1
+    filterMode: 0
     aniso: -1
     mipBias: -1
     wrapMode: 1
@@ -134,7 +134,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fft-male_0
+      name: fft-female_0
       rect:
         serializedVersion: 2
         x: 0
@@ -147,7 +147,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_1
+      name: fft-female_1
       rect:
         serializedVersion: 2
         x: 96
@@ -160,7 +160,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_2
+      name: fft-female_2
       rect:
         serializedVersion: 2
         x: 192
@@ -173,7 +173,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_3
+      name: fft-female_3
       rect:
         serializedVersion: 2
         x: 288
@@ -186,7 +186,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_4
+      name: fft-female_4
       rect:
         serializedVersion: 2
         x: 384
@@ -199,7 +199,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_5
+      name: fft-female_5
       rect:
         serializedVersion: 2
         x: 480
@@ -212,7 +212,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_6
+      name: fft-female_6
       rect:
         serializedVersion: 2
         x: 576
@@ -225,7 +225,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_7
+      name: fft-female_7
       rect:
         serializedVersion: 2
         x: 672
@@ -238,7 +238,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_8
+      name: fft-female_8
       rect:
         serializedVersion: 2
         x: 768
@@ -251,7 +251,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_9
+      name: fft-female_9
       rect:
         serializedVersion: 2
         x: 864
@@ -264,7 +264,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_10
+      name: fft-female_10
       rect:
         serializedVersion: 2
         x: 960
@@ -277,7 +277,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_11
+      name: fft-female_11
       rect:
         serializedVersion: 2
         x: 1056
@@ -290,7 +290,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_12
+      name: fft-female_12
       rect:
         serializedVersion: 2
         x: 1152
@@ -303,7 +303,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_13
+      name: fft-female_13
       rect:
         serializedVersion: 2
         x: 1248
@@ -316,7 +316,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_14
+      name: fft-female_14
       rect:
         serializedVersion: 2
         x: 0
@@ -329,7 +329,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_15
+      name: fft-female_15
       rect:
         serializedVersion: 2
         x: 96
@@ -342,7 +342,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_16
+      name: fft-female_16
       rect:
         serializedVersion: 2
         x: 192
@@ -355,7 +355,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_17
+      name: fft-female_17
       rect:
         serializedVersion: 2
         x: 288
@@ -368,7 +368,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_18
+      name: fft-female_18
       rect:
         serializedVersion: 2
         x: 384
@@ -381,7 +381,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_19
+      name: fft-female_19
       rect:
         serializedVersion: 2
         x: 480
@@ -394,7 +394,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_20
+      name: fft-female_20
       rect:
         serializedVersion: 2
         x: 576
@@ -407,7 +407,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_21
+      name: fft-female_21
       rect:
         serializedVersion: 2
         x: 672
@@ -420,7 +420,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_22
+      name: fft-female_22
       rect:
         serializedVersion: 2
         x: 768
@@ -433,7 +433,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_23
+      name: fft-female_23
       rect:
         serializedVersion: 2
         x: 864
@@ -446,7 +446,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_24
+      name: fft-female_24
       rect:
         serializedVersion: 2
         x: 960
@@ -459,7 +459,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_25
+      name: fft-female_25
       rect:
         serializedVersion: 2
         x: 1056
@@ -472,7 +472,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_26
+      name: fft-female_26
       rect:
         serializedVersion: 2
         x: 1152
@@ -485,7 +485,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_27
+      name: fft-female_27
       rect:
         serializedVersion: 2
         x: 1248
@@ -498,7 +498,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_28
+      name: fft-female_28
       rect:
         serializedVersion: 2
         x: 0
@@ -511,7 +511,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_29
+      name: fft-female_29
       rect:
         serializedVersion: 2
         x: 96
@@ -524,7 +524,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_30
+      name: fft-female_30
       rect:
         serializedVersion: 2
         x: 192
@@ -537,7 +537,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_31
+      name: fft-female_31
       rect:
         serializedVersion: 2
         x: 288
@@ -550,7 +550,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_32
+      name: fft-female_32
       rect:
         serializedVersion: 2
         x: 384
@@ -563,7 +563,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_33
+      name: fft-female_33
       rect:
         serializedVersion: 2
         x: 480
@@ -576,7 +576,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_34
+      name: fft-female_34
       rect:
         serializedVersion: 2
         x: 576
@@ -589,7 +589,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_35
+      name: fft-female_35
       rect:
         serializedVersion: 2
         x: 672
@@ -602,7 +602,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_36
+      name: fft-female_36
       rect:
         serializedVersion: 2
         x: 768
@@ -615,7 +615,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_37
+      name: fft-female_37
       rect:
         serializedVersion: 2
         x: 864
@@ -628,7 +628,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_38
+      name: fft-female_38
       rect:
         serializedVersion: 2
         x: 960
@@ -641,7 +641,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_39
+      name: fft-female_39
       rect:
         serializedVersion: 2
         x: 1056
@@ -654,7 +654,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_40
+      name: fft-female_40
       rect:
         serializedVersion: 2
         x: 1152
@@ -667,7 +667,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_41
+      name: fft-female_41
       rect:
         serializedVersion: 2
         x: 1248
@@ -680,7 +680,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_42
+      name: fft-female_42
       rect:
         serializedVersion: 2
         x: 0
@@ -693,7 +693,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_43
+      name: fft-female_43
       rect:
         serializedVersion: 2
         x: 96
@@ -706,7 +706,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_44
+      name: fft-female_44
       rect:
         serializedVersion: 2
         x: 192
@@ -719,7 +719,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_45
+      name: fft-female_45
       rect:
         serializedVersion: 2
         x: 288
@@ -732,7 +732,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_46
+      name: fft-female_46
       rect:
         serializedVersion: 2
         x: 384
@@ -745,7 +745,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_47
+      name: fft-female_47
       rect:
         serializedVersion: 2
         x: 480
@@ -758,7 +758,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_48
+      name: fft-female_48
       rect:
         serializedVersion: 2
         x: 576
@@ -771,7 +771,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_49
+      name: fft-female_49
       rect:
         serializedVersion: 2
         x: 672
@@ -784,7 +784,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_50
+      name: fft-female_50
       rect:
         serializedVersion: 2
         x: 768
@@ -797,7 +797,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_51
+      name: fft-female_51
       rect:
         serializedVersion: 2
         x: 864
@@ -810,7 +810,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_52
+      name: fft-female_52
       rect:
         serializedVersion: 2
         x: 960
@@ -823,7 +823,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_53
+      name: fft-female_53
       rect:
         serializedVersion: 2
         x: 1056
@@ -836,7 +836,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_54
+      name: fft-female_54
       rect:
         serializedVersion: 2
         x: 1152
@@ -849,7 +849,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: fft-male_55
+      name: fft-female_55
       rect:
         serializedVersion: 2
         x: 1248

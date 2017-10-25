@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 public class SceneLoader : MonoBehaviour 
 { 
-  public ScenesList SceneToLoad;
+  public LevelsList LevelToLoad;
 
   public bool SkipTitleScreen = false;
 
   void Start() 
 	{ 
     PrefabsManager.Instance.Initialize();
-    InputController.Instance.Initialize();
+    CameraController.Instance.Initialize();
 
-    LevelLoader.Instance.LoadLevel(SceneToLoad);
+    LevelLoader.Instance.LoadLevel(LevelsList.TEST);
 
     if (SkipTitleScreen)
     {      
@@ -27,7 +27,7 @@ public class SceneLoader : MonoBehaviour
 	}
 }
 
-public enum ScenesList
+public enum LevelsList
 {
   TEST = 0
 }

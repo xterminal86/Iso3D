@@ -28,4 +28,29 @@ public class PrefabsManager : MonoSingleton<PrefabsManager>
 
     return null;
   }
+
+  public GameObject InstantiatePrefab(string prefabName, Vector3 pos, Quaternion q)
+  {
+    GameObject prefab = PrefabsManager.Instance.FindPrefabByName(prefabName);
+    if (prefab != null)
+    {
+      return InstantiatePrefab(prefab, pos, q);
+    }
+    else
+    {
+      Debug.LogWarning("Could not find prefab " + prefabName);
+      return null;
+    }
+  }
+
+  public GameObject InstantiatePrefab(GameObject prefab, Vector3 pos, Quaternion q)
+  {
+    if (prefab == null)
+    {
+      Debug.LogWarning("Trying to instantiate null");
+      return null;
+    }
+
+    return Instantiate(prefab, pos, q);
+  }
 }
