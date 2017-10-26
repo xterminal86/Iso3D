@@ -11,6 +11,7 @@ public class SceneLoader : MonoBehaviour
 
   void Start() 
 	{ 
+    DebugForm.Instance.Initialize();
     PrefabsManager.Instance.Initialize();
     CameraController.Instance.Initialize();
 
