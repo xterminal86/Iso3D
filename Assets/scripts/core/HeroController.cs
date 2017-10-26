@@ -48,28 +48,41 @@ public class HeroController : MonoBehaviour
 
   void Update()
   { 
+    DebugForm.Instance.DebugText.text = "";
+
     if (Input.GetMouseButton(0))
     {
       Ray r = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
       int mask = LayerMask.GetMask("MouseMap");
       if (Physics.Raycast(r.origin, r.direction, out _hitInfo, Mathf.Infinity, mask))
       {
-        Vector3 s = new Vector3(_hitInfo.collider.transform.position.x, 0.0f, _hitInfo.collider.transform.position.z);
-        Vector3 e = new Vector3(RigidbodyComponent.position.x, 0.0f, RigidbodyComponent.position.z);
-        Vector3 dir = s - e;
+        Plane hPlane = new Plane(Vector3.up, transform.position);
+        float distance = 0; 
+        Vector3 point = Vector3.zero;
+        if (hPlane.Raycast(r, out distance))
+        {
+          point = r.GetPoint(distance);
+        }
+
+        Vector3 hero = new Vector3(RigidbodyComponent.position.x, 0.0f, RigidbodyComponent.position.z);
+
+        Vector3 dir = point - hero;
         dir.Normalize();
+
         Vector3 v1 = new Vector3(1.0f, 0.0f, -1.0f);
         float angle = Vector3.Angle(v1, dir);
         float angle360 = Mathf.Sign(Vector3.Cross(v1, dir).y) < 0 ? (360 - angle) % 360 : angle;
         string debugText = string.Format("{0} {1} {2}\n", dir, angle, angle360);
-        DebugForm.Instance.DebugText.text = debugText;
+
         _direction = dir;
 
         SetSpriteDirection(angle360);
+
+        DebugForm.Instance.DebugText.text += debugText;
       }
     }
     else
-    {      
+    {
       SetStopDirection();
       _direction = Vector3.zero;
     }
@@ -143,6 +156,8 @@ public class HeroController : MonoBehaviour
       DebugForm.Instance.DebugText.text += "NorthEast";
     }
 
+    DebugForm.Instance.DebugText.text += "\n";
+      
     AnimatorController.Play(_animatorWalkStatesByDir[_currentWalkDir]);        
 
     if (_currentWalkDir != _oldWalkDir)
