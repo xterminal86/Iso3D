@@ -3,6 +3,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+public static class Util
+{
+  public static Vector3 MapToWorldCoordinates(Vector3 mapCoords)
+  {
+    return new Vector3(mapCoords.x * GlobalConstants.ScaleFactor, 
+                       mapCoords.y * GlobalConstants.ScaleFactor, 
+                       mapCoords.z * GlobalConstants.ScaleFactor);
+  }
+}
+
 public class Int2
 {
   int _x = 0;

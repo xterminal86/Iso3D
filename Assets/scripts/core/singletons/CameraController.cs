@@ -10,33 +10,17 @@ public class CameraController : MonoSingleton<CameraController>
 
   Vector3 _mouseMapPosition = Vector3.zero;
   GameObject _mouseMap;
-  public void SetupCamera(Int3 playerPos)
+  public void SetupCamera(Vector3 playerPos)
   {
     _mouseMap = Instantiate(MouseMap);
-    _mouseMapPosition.Set(playerPos.X, playerPos.Y, playerPos.Z);
-    _mouseMap.transform.position = _mouseMapPosition;
 
-    _heroRef = GameObject.Find("hero").GetComponent<HeroController>();
-
-    _heroRef.RigidbodyComponent.position = new Vector3(playerPos.X, playerPos.Y, playerPos.Z);
-
-    _heroRef.gameObject.SetActive(true);
+    UpdateCameraPosition(playerPos);
   }
 
-  HeroController _heroRef;
-  public void LockOnHero(HeroController hero)
+  public void UpdateCameraPosition(Vector3 newPosition)
   {
-    _heroRef = hero;
-  }
-
-  RaycastHit _hitInfo;
-  void Update()
-  {    
-    if (_heroRef != null)
-    {      
-      transform.position = _heroRef.transform.position;
-      _mouseMapPosition.Set(_heroRef.transform.position.x, _heroRef.transform.position.y, _heroRef.transform.position.z);
-      _mouseMap.transform.position = _mouseMapPosition;
-    }
+    _mouseMapPosition = newPosition;
+    _mouseMap.transform.position = _mouseMapPosition;
+    transform.position = newPosition;
   }
 }

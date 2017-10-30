@@ -25,13 +25,6 @@ public class HeroController : MonoBehaviour
   WALK_DIR _oldWalkDir = WALK_DIR.DOWN;
   WALK_DIR _currentWalkDir = WALK_DIR.DOWN;
 
-  bool _isWalking = false;
- 
-  void Awake()
-  {    
-    CameraController.Instance.LockOnHero(this);
-  }
-
   RaycastHit _hitInfo;
   Dictionary<WALK_DIR, bool> _walkStatus = new Dictionary<WALK_DIR, bool>();
   Dictionary<WALK_DIR, string> _animatorWalkStatesByDir = new Dictionary<WALK_DIR, string>() 
