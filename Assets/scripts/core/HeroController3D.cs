@@ -121,7 +121,7 @@ public class HeroController3D : MonoBehaviour
         Vector3 v1 = new Vector3(0.0f, 0.0f, 1.0f);
         float angle = Vector3.Angle(v1, dir);
         float angle360 = Mathf.Sign(Vector3.Cross(v1, dir).y) < 0 ? (360 - angle) % 360 : angle;
-        _debugText += string.Format("{0} {1:N1} {2:N1}\n", dir, angle, angle360);
+        _debugText += string.Format("[{0}] {1} {2:N1} {3:N1}\n", RigidbodyComponent.position, dir, angle, angle360);
 
         _direction = dir;
 
