@@ -67,7 +67,7 @@ public class HeroController3D : MonoBehaviour
     {
       _heroMoveSpeed *= 0.5f;
       RigidbodyComponent.useGravity = false;
-      Vector3 v = new Vector3(RigidbodyComponent.position.x, res.point.y + 0.1f, RigidbodyComponent.position.z);
+      Vector3 v = new Vector3(RigidbodyComponent.position.x, res.point.y, RigidbodyComponent.position.z);
       RigidbodyComponent.position = v;
     }
     else
@@ -153,13 +153,15 @@ public class HeroController3D : MonoBehaviour
     "Idle2",
     "Idle3",
     "Idle4",
-    "Idle5"
+    "Idle5",
+    "Idle6"
   };
 
   bool _initializeIdleAnimationsOnce = true;
   float _waitingTime = 0.0f;
   float _alarm = 0.0f;
-  Vector2 _pauseRange = new Vector2(10.0f, 15.0f);
+  Vector2 _pauseRange = new Vector2(8.0f, 10.0f);
+  int _lastPlayedIdleAnimationIndex = -1;
   void PlayIdleAnimation()
   {
     if (_initializeIdleAnimationsOnce)
@@ -176,6 +178,16 @@ public class HeroController3D : MonoBehaviour
       _waitingTime = 0.0f;
       _alarm = Random.Range(_pauseRange.x, _pauseRange.y);
       int index = Random.Range(0, _idleAnimations.Count);
+      if (index == _lastPlayedIdleAnimationIndex)
+      {
+        index++;
+
+        if (index > _idleAnimations.Count - 1)
+        {
+          index = 1;
+        }
+      }
+      _lastPlayedIdleAnimationIndex = index;
       AnimationComponent.CrossFade(_idleAnimations[index], 0.1f);
       if (_idleAnimations[index] != "Idle")
       {
