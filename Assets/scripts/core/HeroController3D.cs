@@ -5,21 +5,35 @@ using UnityEngine;
 public class HeroController3D : MonoBehaviour 
 {
   public Transform RaycastPoint;
+  public Transform SwordHand;
+  public Transform BackTransform;
+
+  public GameObject Weapon;
 
   public Rigidbody RigidbodyComponent;
   public Animation AnimationComponent;
 
   Vector3 _direction = Vector3.zero;
 
+  public Vector3 SwordHandPosition = new Vector3(-0.4f, 0.0f, -1.0f);
+  public Vector3 SwordHandAngles = new Vector3(90.0f, 0.0f, 0.0f);
+  public Vector3 SwordBackPosition = new Vector3(0.0f, 1.75f, -1.1f);
+  public Vector3 SwordBackAngles = new Vector3(0.0f, 0.0f, -40.0f);
+
   void Start()
   {
     AnimationComponent["running"].speed = 1.5f;
+    AnimationComponent["HeroStanceRun"].speed = 1.5f;
     AnimationComponent["walking"].speed = 1.0f;
     AnimationComponent["HeroStance"].speed = 2.0f;
-    AnimationComponent["HeroDrawSword"].speed = 2.0f;
+    AnimationComponent["HeroDrawSword"].speed = 1.5f;
+    AnimationComponent["HeroSheathSword"].speed = 1.5f;
+    AnimationComponent["HeroAttack1"].speed = 1.5f;
+    AnimationComponent["HeroBlock"].speed = 2.0f;
   }
 
   int _animationIndex = 0;
+  /*
   List<string> _animations = new List<string>() 
   {
     "Bow1",
@@ -27,7 +41,21 @@ public class HeroController3D : MonoBehaviour
     "Bow3",
     "HeroDrawSword",
     "HeroStance",
-    "HeroStanceIdle"
+    "HeroStanceIdle",
+    "HeroStanceRun",
+    "HeroAttack1"
+  };
+  */
+
+  List<string> _animations = new List<string>() 
+  {
+    "HeroDrawSword",
+    "HeroStance",
+    "HeroStanceIdle",
+    "HeroBlock",
+    "HeroStanceRun",
+    "HeroAttack1",
+    "HeroSheathSword"
   };
 
   string _debugText = string.Empty;
@@ -48,7 +76,7 @@ public class HeroController3D : MonoBehaviour
       _battleState = !_battleState;
     }
 
-    _debugText += _battleState ? "WAR\n" : "PEACE\n";
+    _debugText += _battleState ? "Press 'Space' to play animations\n" : "Press 'B' to enter animation play mode\n";
 
     if (!_battleState)
     {
@@ -83,8 +111,17 @@ public class HeroController3D : MonoBehaviour
   void TestAnimations()
   {
     if (Input.GetKeyDown(KeyCode.Space))
-    {      
-      AnimationComponent.CrossFade(_animations[_animationIndex]);
+    {  
+      if (_animations[_animationIndex] == "HeroDrawSword")
+      {
+        StartCoroutine(DrawSwordRoutine());
+      }
+      else if (_animations[_animationIndex] == "HeroSheathSword")
+      {
+        StartCoroutine(SheathSwordRoutine());
+      }
+
+      AnimationComponent.CrossFade(_animations[_animationIndex], 0.1f);
       _animationIndex++;
 
       if (_animationIndex > _animations.Count - 1)
@@ -92,6 +129,34 @@ public class HeroController3D : MonoBehaviour
         _animationIndex = 0;
       }
     }
+  }
+
+  IEnumerator SheathSwordRoutine()
+  {
+    while (AnimationComponent["HeroSheathSword"].normalizedTime < 0.5f)
+    {
+      yield return null;
+    }
+
+    Weapon.transform.parent = BackTransform;
+    Weapon.transform.localPosition = SwordBackPosition;
+    Weapon.transform.localEulerAngles = SwordBackAngles;
+
+    yield return null;
+  }
+
+  IEnumerator DrawSwordRoutine()
+  {
+    while (AnimationComponent["HeroDrawSword"].normalizedTime < 0.5f)
+    {
+      yield return null;
+    }
+
+    Weapon.transform.parent = SwordHand;
+    Weapon.transform.localPosition = SwordHandPosition;
+    Weapon.transform.localEulerAngles = SwordHandAngles;
+
+    yield return null;
   }
 
   void ProcessWalk()
@@ -154,7 +219,8 @@ public class HeroController3D : MonoBehaviour
     "Idle3",
     "Idle4",
     "Idle5",
-    "Idle6"
+    "Idle6",
+    "Idle7"
   };
 
   bool _initializeIdleAnimationsOnce = true;
@@ -169,7 +235,7 @@ public class HeroController3D : MonoBehaviour
       _initializeIdleAnimationsOnce = false;
       _alarm = Random.Range(_pauseRange.x, _pauseRange.y);
       _waitingTime = 0.0f;
-      AnimationComponent.CrossFade("Idle", 0.1f);
+      AnimationComponent.CrossFade("Idle");
     }
 
     _waitingTime += Time.smoothDeltaTime;
@@ -188,7 +254,7 @@ public class HeroController3D : MonoBehaviour
         }
       }
       _lastPlayedIdleAnimationIndex = index;
-      AnimationComponent.CrossFade(_idleAnimations[index], 0.1f);
+      AnimationComponent.CrossFade(_idleAnimations[index]);
       if (_idleAnimations[index] != "Idle")
       {
         AnimationComponent.PlayQueued("Idle");

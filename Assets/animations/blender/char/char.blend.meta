@@ -51,6 +51,11 @@ ModelImporter:
     7400028: Bow2
     7400030: Bow3
     7400032: Idle6
+    7400034: HeroStanceRun
+    7400036: HeroAttack1
+    7400038: HeroBlock
+    7400040: HeroSheathSword
+    7400042: Idle7
     9500000: //RootNode
     11100000: //RootNode
     13700000: torso
@@ -810,7 +815,7 @@ ModelImporter:
       takeName: Idle5
       firstFrame: 0
       lastFrame: 35
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -978,6 +983,286 @@ ModelImporter:
       takeName: Idle6
       firstFrame: 0
       lastFrame: 144
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/LegUpper_L
+        weight: 1
+      - path: Armature/LegUpper_L/LegLower_L
+        weight: 1
+      - path: Armature/LegUpper_R
+        weight: 1
+      - path: Armature/LegUpper_R/LegLower_R
+        weight: 1
+      - path: Armature/TorsoLower
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L/ArmLower_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R/ArmLower_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/Head
+        weight: 1
+      - path: torso
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HeroStanceRun
+      takeName: HeroStanceRun
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/LegUpper_L
+        weight: 1
+      - path: Armature/LegUpper_L/LegLower_L
+        weight: 1
+      - path: Armature/LegUpper_R
+        weight: 1
+      - path: Armature/LegUpper_R/LegLower_R
+        weight: 1
+      - path: Armature/TorsoLower
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L/ArmLower_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R/ArmLower_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/Head
+        weight: 1
+      - path: torso
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HeroAttack1
+      takeName: HeroAttack1
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/LegUpper_L
+        weight: 1
+      - path: Armature/LegUpper_L/LegLower_L
+        weight: 1
+      - path: Armature/LegUpper_R
+        weight: 1
+      - path: Armature/LegUpper_R/LegLower_R
+        weight: 1
+      - path: Armature/TorsoLower
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L/ArmLower_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R/ArmLower_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/Head
+        weight: 1
+      - path: torso
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HeroBlock
+      takeName: HeroBlock
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/LegUpper_L
+        weight: 1
+      - path: Armature/LegUpper_L/LegLower_L
+        weight: 1
+      - path: Armature/LegUpper_R
+        weight: 1
+      - path: Armature/LegUpper_R/LegLower_R
+        weight: 1
+      - path: Armature/TorsoLower
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L/ArmLower_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R/ArmLower_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/Head
+        weight: 1
+      - path: torso
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HeroSheathSword
+      takeName: HeroSheathSword
+      firstFrame: 0
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/LegUpper_L
+        weight: 1
+      - path: Armature/LegUpper_L/LegLower_L
+        weight: 1
+      - path: Armature/LegUpper_R
+        weight: 1
+      - path: Armature/LegUpper_R/LegLower_R
+        weight: 1
+      - path: Armature/TorsoLower
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_L/ArmLower_L
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/ArmUpper_R/ArmLower_R
+        weight: 1
+      - path: Armature/TorsoLower/TorsoUpper/Head
+        weight: 1
+      - path: torso
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle7
+      takeName: Idle7
+      firstFrame: 0
+      lastFrame: 74
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
