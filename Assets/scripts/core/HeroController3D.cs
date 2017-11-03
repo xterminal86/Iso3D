@@ -138,6 +138,8 @@ public class HeroController3D : MonoBehaviour
       yield return null;
     }
 
+    Weapon.SetActive(false);
+
     Weapon.transform.parent = BackTransform;
     Weapon.transform.localPosition = SwordBackPosition;
     Weapon.transform.localEulerAngles = SwordBackAngles;
@@ -151,6 +153,8 @@ public class HeroController3D : MonoBehaviour
     {
       yield return null;
     }
+
+    Weapon.SetActive(true);
 
     Weapon.transform.parent = SwordHand;
     Weapon.transform.localPosition = SwordHandPosition;
