@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MainScene : MonoBehaviour 
 {
+  public Transform ObjectsHolder;
+
   void Awake()
   {
-    LevelLoader.Instance.InstantiateLevel();
+    LevelLoader.Instance.InstantiateLevel(ObjectsHolder);
   }
 }

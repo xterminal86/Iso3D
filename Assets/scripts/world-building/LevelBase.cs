@@ -52,15 +52,15 @@ public class LevelBase
   /// <summary>
   /// Call this method to generate your level.
   /// </summary>
-  public void Generate()
+  public void Generate(Transform objectsHolder)
   {
-    GenerateLevel();
+    GenerateLevel(objectsHolder);
   }
 
   /// <summary>
   /// Code for generation of a level goes here.
   /// </summary>
-  public virtual void GenerateLevel()
+  public virtual void GenerateLevel(Transform objectsHolder)
   {
   }
 
