@@ -195,7 +195,7 @@ public class HeroController3D : MonoBehaviour
         _direction = dir;
 
         _isRunning = Input.GetKey(KeyCode.LeftShift);
-        _heroMoveSpeed = _isRunning ? GlobalConstants.HeroMoveSpeed * 2.0f : GlobalConstants.HeroMoveSpeed;
+        _heroMoveSpeed = _isRunning ? GlobalConstants.HeroRunSpeed : GlobalConstants.HeroMoveSpeed;
 
         if (_isRunning)
         {
@@ -205,7 +205,7 @@ public class HeroController3D : MonoBehaviour
         {
           AnimationComponent.CrossFade("walking", 0.1f);
         }
-
+               
         RigidbodyComponent.rotation = Quaternion.AngleAxis(angle360, Vector3.up);
       }
     }

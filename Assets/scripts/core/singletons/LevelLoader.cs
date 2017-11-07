@@ -11,7 +11,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     get { return _levelMap; }
   }
 
-  Int3 _levelSize = new Int3(20, 10, 20);
+  Int3 _levelSize = new Int3(20, 1, 20);
   public Int3 LevelSize
   {
     get { return _levelSize; }
@@ -23,13 +23,14 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     {      
       case LevelsList.TEST:
         _levelMap = new TestLevel(_levelSize.X, _levelSize.Y, _levelSize.Z);
+        _levelMap.LoadLevel();
         break;
     }
   }
 
   public void InstantiateLevel(Transform objectsHolder)
   {
-    _levelMap.Generate(objectsHolder);
+    _levelMap.InstantiateLevel(objectsHolder);
     var hero = GameObject.Find("hero").GetComponent<HeroController3D>();
     hero.RigidbodyComponent.position = Util.MapToWorldCoordinates(new Vector3(_levelMap.PlayerPos.X, _levelMap.PlayerPos.Y, _levelMap.PlayerPos.Z));
     CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);

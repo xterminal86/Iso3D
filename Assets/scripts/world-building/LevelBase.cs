@@ -50,17 +50,17 @@ public class LevelBase
   }
 
   /// <summary>
-  /// Call this method to generate your level.
+  /// Loads the level (in future made in editor).
+  /// TODO: probably move loading code here later with no virtualization at all since loading will be standard.
   /// </summary>
-  public void Generate(Transform objectsHolder)
+  public virtual void LoadLevel()
   {
-    GenerateLevel(objectsHolder);
   }
 
   /// <summary>
-  /// Code for generation of a level goes here.
+  /// Instantiates level
   /// </summary>
-  public virtual void GenerateLevel(Transform objectsHolder)
+  public virtual void InstantiateLevel(Transform objectsHolder)
   {
   }
 

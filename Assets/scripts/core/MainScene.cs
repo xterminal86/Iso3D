@@ -7,7 +7,7 @@ public class MainScene : MonoBehaviour
   public Transform ObjectsHolder;
 
   void Awake()
-  {
+  {    
     LevelLoader.Instance.InstantiateLevel(ObjectsHolder);
   }
 }
