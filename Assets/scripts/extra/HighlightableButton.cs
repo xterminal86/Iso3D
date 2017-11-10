@@ -3,21 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class HighlightableButton : MonoBehaviour 
+public class HighlightableButton : HighlightableControl 
 {
-  public CustomControlGroup ControlGroupRef;
-
   public GameObject NormalSprite;
   public GameObject HighlightedSprite;
-
-  public AudioSource HighlightSound;
-
-  public List<AudioSource> ClickSounds;
-
-  public UnityEvent MethodToCall;
-
-  [HideInInspector]
-  public bool Selected = false;
 
   public void OnMouseEnter()
   {
@@ -66,11 +55,24 @@ public class HighlightableButton : MonoBehaviour
     }
   }
 
-  public void ResetStatus()
+  public override void ResetStatus()
   {
-    Selected = false;
+    base.ResetStatus();
 
     NormalSprite.gameObject.SetActive(true);
     HighlightedSprite.gameObject.SetActive(false);
+  }
+
+  public override void Select()
+  {
+    Selected = true;
+
+    NormalSprite.gameObject.SetActive(false);
+    HighlightedSprite.gameObject.SetActive(true);
+
+    if (MethodToCall != null)
+    {
+      MethodToCall.Invoke();
+    }     
   }
 }

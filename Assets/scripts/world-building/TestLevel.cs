@@ -27,6 +27,9 @@ public class TestLevel : LevelBase
       _level[x, 0, middle].SkipTransitionCheckHere = true;
     }
 
+    _level[10, 0, middle - 1].Texture1 = GlobalConstants.TEXTURE_TYPE.COBBLESTONE;
+    _level[10, 0, middle - 1].SkipTransitionCheckHere = true;
+
     for (int x = 2; x < 8; x++)
     {
       for (int z = 2; z < 8; z++)

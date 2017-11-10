@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class CustomControlGroup : MonoBehaviour 
 {
-  public List<HighlightableButton> Controls;
+  public List<HighlightableControl> Controls;
+
+  void Start()
+  {
+    if (Controls.Count != 0)
+    {
+      ResetControls();
+      Controls[0].Select();
+    }
+  }
 
   public void ResetControls()
   {

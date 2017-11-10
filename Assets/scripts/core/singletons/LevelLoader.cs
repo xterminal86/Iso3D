@@ -32,7 +32,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
   {
     _levelMap.InstantiateLevel(objectsHolder);
     var hero = GameObject.Find("hero").GetComponent<HeroController3D>();
-    hero.RigidbodyComponent.position = Util.MapToWorldCoordinates(new Vector3(_levelMap.PlayerPos.X, _levelMap.PlayerPos.Y, _levelMap.PlayerPos.Z));
+    hero.SetPlayerPosition(_levelMap.PlayerPos);
     CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);
   }
 

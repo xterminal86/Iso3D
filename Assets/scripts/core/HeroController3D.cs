@@ -9,6 +9,7 @@ public class HeroController3D : MonoBehaviour
   public Transform BackTransform;
 
   public GameObject Weapon;
+  public GameObject Cloak;
 
   public Rigidbody RigidbodyComponent;
   public Animation AnimationComponent;
@@ -213,6 +214,18 @@ public class HeroController3D : MonoBehaviour
     {
       _direction = Vector3.zero;
       PlayIdleAnimation();
+    }
+  }
+
+  public void SetPlayerPosition(Int3 pos)
+  {
+    RigidbodyComponent.position = Util.MapToWorldCoordinates(new Vector3(pos.X, pos.Y, pos.Z));
+
+    // When we modify position, cloth interprets it as a rapid movement, so it makes cloak
+    // go haywire. Thus, we first move the player and then activate cloak.
+    if (Cloak != null)
+    {
+      Cloak.SetActive(true);
     }
   }
 
