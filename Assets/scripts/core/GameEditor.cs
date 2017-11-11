@@ -8,7 +8,7 @@ public class GameEditor : MonoBehaviour
 {
   public Camera RaycastCamera;
 
-  public Transform GridHolder;
+  public Transform MapHolder;
   public Transform CameraHolder;
   public Transform EditorGridRaycastPlane;
   public Transform ObjectsGrid;
@@ -23,6 +23,10 @@ public class GameEditor : MonoBehaviour
   public CustomControlGroup ListOfItems;
   public HighlightableText TextItemPrefab;
 
+  public InputField NewMapSizeX;
+  public InputField NewMapSizeY;
+  public InputField NewMapSizeZ;
+
   public Text PageCount;
   public TextMesh PositionText;
 
@@ -36,12 +40,17 @@ public class GameEditor : MonoBehaviour
   Vector3 _worldPos = Vector3.zero;
   Vector3 _oldWorldPos = Vector3.zero;
 
-  int _mapSize = 25;
-
   Texture2D[] _floorTextures;
+
+  EditorLevel _level;
 
   void Awake()
   {
+    _level = new EditorLevel(10, 1, 10);
+
+    _cameraPos.Set(_level.MapX / 2.0f, 0.0f, _level.MapZ / 2.0f);
+    CameraHolder.position = _cameraPos;
+
     InitializeTextItems();
     LoadFloorTextures();
     CreateMapGrid();
@@ -53,27 +62,16 @@ public class GameEditor : MonoBehaviour
 
   void CreateMapGrid()
   {
-    for (int x = -_mapSize + 1; x < _mapSize - 1; x++)
+    for (int y = 0; y < _level.MapY; y++)
     {
-      for (int z = -_mapSize + 1; z < _mapSize - 1; z++)
+      for (int x = 1; x < _level.MapX - 1; x++)
       {
-        Instantiate(EditorMapGridPrefab, new Vector3(x, 0.0f, z), Quaternion.identity, GridHolder);
+        for (int z = 1; z < _level.MapZ - 1; z++)
+        {
+          Instantiate(EditorMapGridPrefab, new Vector3(x, y, z), Quaternion.identity, MapHolder);
+        }
       }
     }
-  }
-
-  public void ShowNewMapWidnow()
-  {
-    NewMapWindow.SetActive(true);
-  }
-
-  public void CloseNewMapWindow()
-  {
-    NewMapWindow.SetActive(false);
-  }
-
-  public void ClearMap()
-  {
   }
 
   int _gridAreaSize = 12;
@@ -81,9 +79,9 @@ public class GameEditor : MonoBehaviour
   {    
     for (int x = -_gridAreaSize; x <= _gridAreaSize; x++)
     {
-      for (int y = -_gridAreaSize; y <= _gridAreaSize; y++)
+      for (int z = -_gridAreaSize; z <= _gridAreaSize; z++)
       {
-        Instantiate(EditorGridFloorPrefab, new Vector3(x, 0.0f, y), Quaternion.identity, FloorGrid);
+        Instantiate(EditorGridFloorPrefab, new Vector3(x, 0.0f, z), Quaternion.identity, FloorGrid);
       }
     }
   }
@@ -92,9 +90,9 @@ public class GameEditor : MonoBehaviour
   {    
     for (float x = -_gridAreaSize; x <= _gridAreaSize; x += _gridSize)
     {
-      for (float y = -_gridAreaSize; y <= _gridAreaSize; y += _gridSize)
+      for (float z = -_gridAreaSize; z <= _gridAreaSize; z += _gridSize)
       {
-        Instantiate(EditorGridObjectsPrefab, new Vector3(x, 0.0f, y), Quaternion.identity, ObjectsGrid);
+        Instantiate(EditorGridObjectsPrefab, new Vector3(x, 0.0f, z), Quaternion.identity, ObjectsGrid);
       }
     }
   }
@@ -201,58 +199,6 @@ public class GameEditor : MonoBehaviour
     {
       //Debug.Log(Cursor.transform.position);
     }
-
-    /*
-    Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
-    int mask = LayerMask.GetMask("EditorGrid");
-    if (Physics.Raycast(r.origin, r.direction, out _hitInfo, Mathf.Infinity, mask))
-    {
-      Plane hPlane = new Plane(Vector3.up, Vector3.zero);
-      float distance = 0; 
-      Vector3 point = Vector3.zero;
-      if (hPlane.Raycast(r, out distance))
-      {
-        point = r.GetPoint(distance);
-        point.y = 0.0f;
-
-        float d = Vector3.Distance(point, _oldWorldPos);
-
-        if (d > _gridSize)
-        {          
-          float fx = point.x % _gridSize;
-          float fz = point.z % _gridSize;
-
-          point.x -= fx;
-          point.z -= fz;
-
-          point.x = Mathf.Clamp(point.x, -_mapSize + 1, _mapSize - 1);
-          point.z = Mathf.Clamp(point.z, -_mapSize + 1, _mapSize - 1);
-
-          Cursor.transform.position = point;
-          _oldWorldPos = point;
-        }
-      }
-    }
-
-    if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-    {
-      Vector3 pos = Cursor.transform.position;
-      pos.y = 0.5f;
-
-      var go = Instantiate(Object, pos, Quaternion.identity);
-      go.SetActive(true);
-    }
-    else if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
-    {
-      if (Physics.BoxCast(new Vector3(Cursor.transform.position.x, -1.0f, Cursor.transform.position.z), new Vector3(0.4f, 0.4f, 0.4f), Vector3.up, out _hitInfo, Quaternion.identity, Mathf.Infinity, ~mask))
-      {
-        if (_hitInfo.collider.name == "object(Clone)")
-        {
-          Destroy(_hitInfo.collider.gameObject);
-        }
-      }
-    }
-    */
   }
 
   Vector3 _gridBlockPos = Vector3.zero;
@@ -303,8 +249,8 @@ public class GameEditor : MonoBehaviour
       _cameraPos.z -= Time.smoothDeltaTime * _actualCameraSpeed;
     }
 
-    _cameraPos.x = Mathf.Clamp(_cameraPos.x, -_mapSize, _mapSize);
-    _cameraPos.z = Mathf.Clamp(_cameraPos.z, -_mapSize, _mapSize);
+    _cameraPos.x = Mathf.Clamp(_cameraPos.x, 0.0f, _level.MapX);
+    _cameraPos.z = Mathf.Clamp(_cameraPos.z, 0.0f, _level.MapZ);
 
     _gridBlockPos.x = (int)_cameraPos.x;
     _gridBlockPos.z = (int)_cameraPos.z;
@@ -331,5 +277,73 @@ public class GameEditor : MonoBehaviour
     }
 
     _editorMode = mode;
+  }
+
+  public void ShowNewMapWidnow()
+  {
+    NewMapWindow.SetActive(true);
+  }
+
+  public void CloseNewMapWindow()
+  {
+    NewMapWindow.SetActive(false);
+  }
+
+  public void NewMapHandler()
+  {
+    if (NewMapSizeX.text.Length == 0)
+    {
+      Debug.LogWarning("Please enter map size X!");
+      return;
+    }
+
+    if (NewMapSizeY.text.Length == 0)
+    {
+      Debug.LogWarning("Please enter map size Y!");
+      return;
+    }
+
+    if (NewMapSizeZ.text.Length == 0)
+    {
+      Debug.LogWarning("Please enter map size Z!");
+      return;
+    }
+
+    int mapX = int.Parse(NewMapSizeX.text);
+    int mapY = int.Parse(NewMapSizeY.text);
+    int mapZ = int.Parse(NewMapSizeZ.text);
+
+    _level = new EditorLevel(mapX, mapY, mapZ);
+
+    DestroyChildren(ObjectsGrid);
+    DestroyChildren(MapHolder);
+    DestroyChildren(FloorGrid);
+
+    // Instantiate call with parent transform argument makes object parent with preserving world position.
+    // E.g. if we have object1 at (2, 0) and object2 at (-2, 0) after parenting object2 to object1
+    // it will have (-4, 0) since its world position is recalculated relative to parent.
+    // Our grids are created fromm -N to N around (0, 0), so we need to reset their previous positions
+    // before creating new map, and then move their holders in Update() with camera.
+
+    ObjectsGrid.position = Vector3.zero;
+    FloorGrid.position = Vector3.zero;
+
+    CreateMapGrid();
+    CreateFloorGrid();
+    CreateObjectsGrid();
+
+    _cameraPos.Set(_level.MapX / 2.0f, 0.0f, _level.MapZ / 2.0f);
+    CameraHolder.position = _cameraPos;
+
+    CloseNewMapWindow();
+  }
+
+  void DestroyChildren(Transform t)
+  {
+    int childCount = t.childCount;
+    for (int i = 0; i < childCount; i++)
+    {
+      Destroy(t.GetChild(i).gameObject);
+    }
   }
 }
