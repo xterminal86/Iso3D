@@ -51,7 +51,13 @@ public class HighlightableText : HighlightableControl
       if (MethodToCall != null)
       {
         Selected = true;
-        MethodToCall.Invoke();
+        MethodToCall.Invoke(this);
+      }
+
+      if (MethodToCall0 != null)
+      {
+        Selected = true;
+        MethodToCall0.Invoke();
       }
     }
   }
@@ -73,7 +79,12 @@ public class HighlightableText : HighlightableControl
 
     if (MethodToCall != null)
     {
-      MethodToCall.Invoke();
-    }     
+      MethodToCall.Invoke(this);
+    }
+
+    if (MethodToCall0 != null)
+    {
+      MethodToCall0.Invoke();
+    }
   }
 }

@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections.Generic;
 
 public delegate void Callback();
 public delegate void CallbackO(object sender);
 public delegate void CallbackB(bool arg);
+
+public class MyUnityEvent : UnityEvent<HighlightableControl>
+{
+}
 
 public static class GlobalConstants 
 { 

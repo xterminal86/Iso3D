@@ -18,7 +18,8 @@ public class FloorBehaviour : MonoBehaviour
     block.FloorBehaviourRef = this;
     _blockRef = block;
 
-    string texture1Name = GlobalConstants.TextureNameByType[block.Texture1];
+    //string texture1Name = GlobalConstants.TextureNameByType[block.Texture1];
+    string texture1Name = block.Texture1Name;
 
     string tex1path = string.Format("textures/{0}", texture1Name);
     _texture1 = Resources.Load<Texture2D>(tex1path);
@@ -31,7 +32,9 @@ public class FloorBehaviour : MonoBehaviour
     }
     else
     {
-      string texture2Name = GlobalConstants.TextureNameByType[block.Texture2];
+      //string texture2Name = GlobalConstants.TextureNameByType[block.Texture2];
+      string texture2Name = block.Texture2Name;
+
       string tex2path = string.Format("textures/{0}", texture2Name);
 
       string maskTexPath = string.Format("masks/{0}", GlobalConstants.TransitionMaskTextureNameByType[block.Transition]);

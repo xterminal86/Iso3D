@@ -11,7 +11,8 @@ public class HighlightableControl : MonoBehaviour
 
   public List<AudioSource> ClickSounds;
 
-  public UnityEvent MethodToCall;
+  public MyUnityEvent MethodToCall = new MyUnityEvent();
+  public UnityEvent MethodToCall0;
 
   [HideInInspector]
   public bool Selected = false;

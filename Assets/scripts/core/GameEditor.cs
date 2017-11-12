@@ -13,8 +13,8 @@ public class GameEditor : MonoBehaviour
   public Transform EditorGridRaycastPlane;
   public Transform ObjectsGrid;
   public Transform FloorGrid;
+  public Transform InstantiatedObjectsHolder;
 
-  public GameObject Object;
   public GameObject Cursor;
   public GameObject EditorMapGridPrefab;
   public GameObject EditorGridFloorPrefab;
@@ -42,13 +42,24 @@ public class GameEditor : MonoBehaviour
 
   Texture2D[] _floorTextures;
 
-  EditorLevel _level;
+  EditorLevel _map;
 
+  List<string> _objectsPrefabsNamesList = new List<string>();
+  List<string> _floorTextureNames = new List<string>();
   void Awake()
   {
-    _level = new EditorLevel(10, 1, 10);
+    PrefabsManager.Instance.Initialize();
 
-    _cameraPos.Set(_level.MapX / 2.0f, 0.0f, _level.MapZ / 2.0f);
+    for (int i = 1; i < PrefabsManager.Instance.Prefabs.Count; i++)
+    {
+      _objectsPrefabsNamesList.Add(PrefabsManager.Instance.Prefabs[i].name);
+    }
+
+    _listToUpdate = _floorTextureNames;
+
+    _map = new EditorLevel(10, 1, 10);
+
+    _cameraPos.Set(_map.MapX / 2.0f, 0.0f, _map.MapZ / 2.0f);
     CameraHolder.position = _cameraPos;
 
     InitializeTextItems();
@@ -57,16 +68,16 @@ public class GameEditor : MonoBehaviour
     CreateFloorGrid();
     CreateObjectsGrid();
 
-    UpdatePage();
+    UpdatePage(_floorTextureNames);
   }
 
   void CreateMapGrid()
   {
-    for (int y = 0; y < _level.MapY; y++)
+    for (int y = 0; y < _map.MapY; y++)
     {
-      for (int x = 1; x < _level.MapX - 1; x++)
+      for (int x = 0; x < _map.MapX; x++)
       {
-        for (int z = 1; z < _level.MapZ - 1; z++)
+        for (int z = 0; z < _map.MapZ; z++)
         {
           Instantiate(EditorMapGridPrefab, new Vector3(x, y, z), Quaternion.identity, MapHolder);
         }
@@ -104,7 +115,11 @@ public class GameEditor : MonoBehaviour
   void LoadFloorTextures()
   {    
     _floorTextures = Resources.LoadAll<Texture2D>("textures");
-    _totalPages = _floorTextures.Length / _itemsOnPage;
+
+    for (int i = 0; i < _floorTextures.Length; i++)
+    {
+      _floorTextureNames.Add(_floorTextures[i].name);
+    }
   }
 
   void InitializeTextItems()
@@ -117,6 +132,29 @@ public class GameEditor : MonoBehaviour
       rt.anchoredPosition = new Vector2(5.0f, -5.0f - 20.0f * i);
       ListOfItems.Controls.Add(ht);
       ht.ControlGroupRef = ListOfItems;
+      ht.MethodToCall.AddListener(HandleTextItem);
+    }
+  }
+
+  float _previewObjectAngle = 0.0f;
+  GameObject _previewObject;
+
+  string _selectedListObject = string.Empty;
+  void HandleTextItem(HighlightableControl control)
+  {
+    _selectedListObject = (control as HighlightableText).NormalText.text;
+
+    if (_editorMode == 1)
+    {
+      if (_previewObject != null)
+      {
+        Destroy(_previewObject);
+      }
+
+      var prefab = PrefabsManager.Instance.FindPrefabByName(_selectedListObject);
+      _previewObject = Instantiate(prefab, Cursor.transform.position, Quaternion.identity);
+      _previewObject.name = "preview";
+      _previewObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     }
   }
 
@@ -129,7 +167,7 @@ public class GameEditor : MonoBehaviour
       _currentPage = 0;
     }
 
-    UpdatePage();
+    UpdatePage(_listToUpdate);
   }
 
   public void NextPage()
@@ -141,19 +179,20 @@ public class GameEditor : MonoBehaviour
       _currentPage = _totalPages;
     }
 
-    UpdatePage();
+    UpdatePage(_listToUpdate);
   }
 
-  void UpdatePage()
+  void UpdatePage(List<string> arrayOfItemNames)
   {
     foreach (var t in ListOfItems.Controls)
     {
+      (t as HighlightableText).ResetStatus();
       (t as HighlightableText).NormalText.text = "";
       (t as HighlightableText).HighlightedText.text = "";
     }
 
     int indexStart = _currentPage * _itemsOnPage;
-    int indexEnd = _floorTextures.Length - indexStart;
+    int indexEnd = arrayOfItemNames.Count - indexStart;
 
     if (indexEnd > _itemsOnPage)
     {
@@ -167,37 +206,180 @@ public class GameEditor : MonoBehaviour
     int itemsIndex = 0;
     for (int i = indexStart; i < indexEnd; i++)
     {
-      var s = _floorTextures[i];
-      (ListOfItems.Controls[itemsIndex] as HighlightableText).NormalText.text = s.name;
-      (ListOfItems.Controls[itemsIndex] as HighlightableText).HighlightedText.text = s.name;
+      string s = arrayOfItemNames[i];
+      (ListOfItems.Controls[itemsIndex] as HighlightableText).NormalText.text = s;
+      (ListOfItems.Controls[itemsIndex] as HighlightableText).HighlightedText.text = s;
       itemsIndex++;
     }
 
     PageCount.text = string.Format("{0} / {1}", _currentPage + 1, _totalPages + 1);
   }
 
+  Vector3 _cursorPositionClamped = Vector3.zero;
   RaycastHit _hitInfo;
   void Update()
   { 
     ControlCamera();
 
-    //_gridSize = (_editorMode == 0) ? 1.0f : 0.5f;
-
     _mousePos = Input.mousePosition;
     _mousePos.z = Camera.main.nearClipPlane;
 
     Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
-    int mask = LayerMask.GetMask("EditorGrid");
+    int mask = LayerMask.GetMask("PlacementGrid");
     if (Physics.Raycast(r.origin, r.direction, out _hitInfo, Mathf.Infinity, mask))
     {
-      Cursor.transform.position = _hitInfo.collider.transform.position;
+      _cursorPositionClamped = _hitInfo.collider.transform.position;
+
+      _cursorPositionClamped.x = Mathf.Clamp(_cursorPositionClamped.x, 0.0f, _map.MapX - 1);
+      _cursorPositionClamped.z = Mathf.Clamp(_cursorPositionClamped.z, 0.0f, _map.MapZ - 1);
+
+      Cursor.transform.position = _cursorPositionClamped;
     }
 
     PositionText.text = string.Format("{0}", Cursor.transform.position);
 
-    if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+    ProcessPreviewObjectRotation();
+
+    if (_previewObject != null)
     {
-      //Debug.Log(Cursor.transform.position);
+      _previewObject.transform.position = Cursor.transform.position;
+      _previewObject.transform.localEulerAngles = new Vector3(0.0f, _previewObjectAngle, 0.0f);
+    }
+
+    bool condPlace = (_editorMode == 0) ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
+    bool condRemove = (_editorMode == 0) ? Input.GetMouseButton(1) : Input.GetMouseButtonDown(1);
+
+    if (condPlace && !EventSystem.current.IsPointerOverGameObject())
+    {
+      PlaceObject(_editorMode);
+    }
+    else if (condRemove && !EventSystem.current.IsPointerOverGameObject())
+    {
+      RemoveObject(_editorMode);
+    }
+  }
+
+  void ProcessPreviewObjectRotation()
+  {
+    if (_editorMode == 1)
+    {
+      if (Input.GetKeyDown(KeyCode.E))
+      {
+        _previewObjectAngle += 45.0f;
+      }
+      else if (Input.GetKeyDown(KeyCode.Q))
+      {
+        _previewObjectAngle -= 45.0f;
+      }
+    }
+  }
+
+  void RemoveObject(int editorMode)
+  {
+    if (editorMode == 0)
+    {
+      RemoveFloor();
+    }
+    else if (editorMode == 1)
+    {
+      RemoveMapObject();
+    }
+  }
+
+  void PlaceObject(int editorMode)
+  {
+    if (editorMode == 0)
+    {
+      PlaceFloor();
+    }
+    else if (editorMode == 1)
+    {
+      PlaceMapObject();
+    }
+  }
+
+  RaycastHit _objectPlacementInfo;
+  void PlaceMapObject()
+  { 
+    int mask = LayerMask.GetMask("EditorMapObject");
+    Vector3 center = new Vector3(Cursor.transform.position.x, -1.0f, Cursor.transform.position.z);
+    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _objectPlacementInfo, Quaternion.identity, Mathf.Infinity, mask))
+    {
+      Debug.Log("Occupied by " + _objectPlacementInfo.collider);
+      return;
+    }
+
+    var go = Instantiate(_previewObject);
+    go.transform.parent = InstantiatedObjectsHolder;
+
+    int layer = LayerMask.NameToLayer("EditorMapObject");
+    foreach (Transform t in go.transform)
+    {
+      t.gameObject.layer = layer;
+    }
+
+    go.layer = layer;
+  }
+
+  void RemoveMapObject()
+  {
+    Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
+    int mask = LayerMask.GetMask("EditorMapObject");
+    if (Physics.Raycast(r.origin, r.direction, out _objectPlacementInfo, Mathf.Infinity, mask))          
+    {
+      Destroy(_objectPlacementInfo.collider.transform.parent.gameObject);
+    }
+
+    /*
+    int mask = LayerMask.GetMask("EditorMapObject");
+    Vector3 center = new Vector3(Cursor.transform.position.x, -1.0f, Cursor.transform.position.z);
+    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _objectPlacementInfo, Quaternion.identity, Mathf.Infinity, mask))
+    {
+      Debug.Log(_objectPlacementInfo.collider);
+    }
+    */
+  }
+
+  string _lastTextureName = string.Empty;
+  RaycastHit _placementHitInfo;
+  void PlaceFloor()
+  {
+    int x = (int)Cursor.transform.position.x;
+    int y = (int)Cursor.transform.position.y;
+    int z = (int)Cursor.transform.position.z;
+
+    FloorBehaviour fb;
+
+    Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
+    int mask = LayerMask.GetMask("PlacementGrid") | LayerMask.GetMask("EditorMapGrid");
+    if (Physics.Raycast(r.origin, r.direction, out _placementHitInfo, Mathf.Infinity, ~mask))          
+    {
+      if (_map.Level[x, y, z].Texture1Name.Equals(_selectedListObject))
+      {
+        return;
+      }
+
+      fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
+      Destroy(fb.gameObject);
+    }
+
+    _map.Level[x, y, z].Texture1Name = _selectedListObject;
+    _lastTextureName = _selectedListObject;
+
+    var go = PrefabsManager.Instance.InstantiatePrefab("floor-template", Cursor.transform.position, Quaternion.identity);
+    go.transform.parent = InstantiatedObjectsHolder;
+    go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    fb = go.GetComponent<FloorBehaviour>();
+    fb.Init(_map.Level[x, y, z]);
+  }
+
+  void RemoveFloor()
+  {
+    Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
+    int mask = LayerMask.GetMask("PlacementGrid") | LayerMask.GetMask("EditorMapGrid");
+    if (Physics.Raycast(r.origin, r.direction, out _placementHitInfo, Mathf.Infinity, ~mask))          
+    {
+      Destroy(_placementHitInfo.collider.transform.parent.gameObject);
     }
   }
 
@@ -249,8 +431,8 @@ public class GameEditor : MonoBehaviour
       _cameraPos.z -= Time.smoothDeltaTime * _actualCameraSpeed;
     }
 
-    _cameraPos.x = Mathf.Clamp(_cameraPos.x, 0.0f, _level.MapX);
-    _cameraPos.z = Mathf.Clamp(_cameraPos.z, 0.0f, _level.MapZ);
+    _cameraPos.x = Mathf.Clamp(_cameraPos.x, 0.0f, _map.MapX);
+    _cameraPos.z = Mathf.Clamp(_cameraPos.z, 0.0f, _map.MapZ);
 
     _gridBlockPos.x = (int)_cameraPos.x;
     _gridBlockPos.z = (int)_cameraPos.z;
@@ -262,21 +444,43 @@ public class GameEditor : MonoBehaviour
     EditorGridRaycastPlane.position = _cameraPos;
   }
 
+  List<string> _listToUpdate;
+
   int _editorMode = 0;
   public void SetEditorMode(int mode)
   {
-    if (mode == 0)
+    _editorMode = mode;
+    _currentPage = 0;
+
+    if (_editorMode == 0)
     {
+      if (_previewObject != null)
+      {
+        Destroy(_previewObject);
+      }
+
+      _totalPages = _floorTextureNames.Count / _itemsOnPage;
+
       ObjectsGrid.gameObject.SetActive(false);
       FloorGrid.gameObject.SetActive(true);
+
+      _listToUpdate = _floorTextureNames;
+
+      UpdatePage(_listToUpdate);
     }
     else
     {
+      _totalPages = _objectsPrefabsNamesList.Count / _itemsOnPage;
+
       ObjectsGrid.gameObject.SetActive(true);
       FloorGrid.gameObject.SetActive(false);
+
+      _listToUpdate = _objectsPrefabsNamesList;
+
+      UpdatePage(_listToUpdate);
     }
 
-    _editorMode = mode;
+    ListOfItems.Controls[0].Select();
   }
 
   public void ShowNewMapWidnow()
@@ -313,8 +517,9 @@ public class GameEditor : MonoBehaviour
     int mapY = int.Parse(NewMapSizeY.text);
     int mapZ = int.Parse(NewMapSizeZ.text);
 
-    _level = new EditorLevel(mapX, mapY, mapZ);
+    _map = new EditorLevel(mapX, mapY, mapZ);
 
+    DestroyChildren(InstantiatedObjectsHolder);
     DestroyChildren(ObjectsGrid);
     DestroyChildren(MapHolder);
     DestroyChildren(FloorGrid);
@@ -332,7 +537,7 @@ public class GameEditor : MonoBehaviour
     CreateFloorGrid();
     CreateObjectsGrid();
 
-    _cameraPos.Set(_level.MapX / 2.0f, 0.0f, _level.MapZ / 2.0f);
+    _cameraPos.Set(_map.MapX / 2.0f, 0.0f, _map.MapZ / 2.0f);
     CameraHolder.position = _cameraPos;
 
     CloseNewMapWindow();

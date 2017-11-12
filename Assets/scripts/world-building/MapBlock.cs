@@ -10,6 +10,9 @@ public class MapBlock
   public GlobalConstants.TEXTURE_TYPE Texture1 = GlobalConstants.TEXTURE_TYPE.NONE;
   public GlobalConstants.TEXTURE_TYPE Texture2 = GlobalConstants.TEXTURE_TYPE.NONE;
 
+  public string Texture1Name = string.Empty;
+  public string Texture2Name = string.Empty;
+
   public bool SkipTransitionCheckHere = false;
 
   public FloorBehaviour FloorBehaviourRef;
