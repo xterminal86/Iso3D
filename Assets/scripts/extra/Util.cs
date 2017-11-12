@@ -11,6 +11,19 @@ public static class Util
                        mapCoords.y * GlobalConstants.ScaleFactor, 
                        mapCoords.z * GlobalConstants.ScaleFactor);
   }
+
+  public static void SetGameObjectLayer(GameObject go, int layer, bool recursive = false)
+  {
+    go.layer = layer;
+
+    if (recursive)
+    {
+      foreach (Transform t in go.transform)
+      {
+        SetGameObjectLayer(t.gameObject, layer, recursive);
+      }
+    }
+  }
 }
 
 public class Int2

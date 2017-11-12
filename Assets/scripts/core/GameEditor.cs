@@ -16,6 +16,7 @@ public class GameEditor : MonoBehaviour
   public Transform InstantiatedObjectsHolder;
 
   public GameObject Cursor;
+  public GameObject FloorCursor;
   public GameObject EditorMapGridPrefab;
   public GameObject EditorGridFloorPrefab;
   public GameObject EditorGridObjectsPrefab;
@@ -28,6 +29,8 @@ public class GameEditor : MonoBehaviour
   public InputField NewMapSizeZ;
 
   public Text PageCount;
+  public Text FloorCount;
+
   public TextMesh PositionText;
 
   public CustomControlGroup ModesGroup;
@@ -57,10 +60,12 @@ public class GameEditor : MonoBehaviour
 
     _listToUpdate = _floorTextureNames;
 
-    _map = new EditorLevel(10, 1, 10);
+    _map = new EditorLevel(10, 2, 10);
 
     _cameraPos.Set(_map.MapX / 2.0f, 0.0f, _map.MapZ / 2.0f);
     CameraHolder.position = _cameraPos;
+
+    UpdateFloorCounter();
 
     InitializeTextItems();
     LoadFloorTextures();
@@ -73,14 +78,11 @@ public class GameEditor : MonoBehaviour
 
   void CreateMapGrid()
   {
-    for (int y = 0; y < _map.MapY; y++)
+    for (int x = 0; x < _map.MapX; x++)
     {
-      for (int x = 0; x < _map.MapX; x++)
+      for (int z = 0; z < _map.MapZ; z++)
       {
-        for (int z = 0; z < _map.MapZ; z++)
-        {
-          Instantiate(EditorMapGridPrefab, new Vector3(x, y, z), Quaternion.identity, MapHolder);
-        }
+        Instantiate(EditorMapGridPrefab, new Vector3(x, 0.0f, z), Quaternion.identity, MapHolder);
       }
     }
   }
@@ -156,6 +158,56 @@ public class GameEditor : MonoBehaviour
       _previewObject.name = "preview";
       _previewObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     }
+  }
+
+  void UpdateFloorCounter()
+  {
+    FloorCount.text = string.Format("{0}/{1}", _currentFloor + 1, _map.MapY);
+  }
+
+  int _currentFloor = 0;
+  public void FloorUp()
+  {
+    _currentFloor++;
+
+    if (_currentFloor > _map.MapY - 1)
+    {
+      _currentFloor = _map.MapY - 1;
+    }
+
+    if (_currentFloor != 0 && !FloorCursor.activeSelf)
+    {
+      FloorCursor.SetActive(true);
+    }
+
+    UpdateFloorCounter();
+  }
+
+  public void FloorDown()
+  {
+    _currentFloor--;
+
+    if (_currentFloor < 0)
+    {
+      _currentFloor = 0;
+    }
+
+    if (_currentFloor == 0)
+    {
+      FloorCursor.SetActive(false);
+    }
+
+    UpdateFloorCounter();
+  }
+
+  Vector3 _floorCursorPosition = Vector3.zero;
+  Vector3 _floorCursorScale = Vector3.one;
+  void UpdateFloorCursorPosition()
+  {
+    _floorCursorScale.Set(1.0f, (_currentFloor == 0) ? 1.0f : _currentFloor, 1.0f);
+    _floorCursorPosition.Set(Cursor.transform.position.x, Cursor.transform.position.y, Cursor.transform.position.z);
+    FloorCursor.transform.position = _floorCursorPosition;
+    FloorCursor.transform.localScale = _floorCursorScale;
   }
 
   public void PreviousPage()
@@ -234,7 +286,10 @@ public class GameEditor : MonoBehaviour
       _cursorPositionClamped.z = Mathf.Clamp(_cursorPositionClamped.z, 0.0f, _map.MapZ - 1);
 
       Cursor.transform.position = _cursorPositionClamped;
+      UpdateFloorCursorPosition();
     }
+
+    DrawFloorDebugLines();
 
     PositionText.text = string.Format("{0}", Cursor.transform.position);
 
@@ -256,6 +311,23 @@ public class GameEditor : MonoBehaviour
     else if (condRemove && !EventSystem.current.IsPointerOverGameObject())
     {
       RemoveObject(_editorMode);
+    }
+  }
+
+  RaycastHit _debugRayInfo;
+  void DrawFloorDebugLines()
+  {
+    if (_currentFloor != 0)
+    {
+      int mask = LayerMask.GetMask("EditorMapGrid");
+      int x = (int)Cursor.transform.position.x;
+      int y = (int)Cursor.transform.position.y;
+      int z = (int)Cursor.transform.position.z;
+      Vector3 center = new Vector3(x, y - 0.5f, z);
+      if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.down, out _debugRayInfo, Quaternion.identity, Mathf.Infinity, mask))
+      {
+        Debug.DrawRay(new Vector3(x, y, z), Vector3.down * _currentFloor, Color.green, 1.0f);
+      }
     }
   }
 
@@ -313,10 +385,7 @@ public class GameEditor : MonoBehaviour
     go.transform.parent = InstantiatedObjectsHolder;
 
     int layer = LayerMask.NameToLayer("EditorMapObject");
-    foreach (Transform t in go.transform)
-    {
-      t.gameObject.layer = layer;
-    }
+    Util.SetGameObjectLayer(go, layer, true);
 
     go.layer = layer;
   }
@@ -350,6 +419,20 @@ public class GameEditor : MonoBehaviour
 
     FloorBehaviour fb;
 
+    int mask = LayerMask.GetMask("EditorMapFloor");
+    Vector3 center = new Vector3(x, y - 0.5f, z);
+    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _placementHitInfo, Quaternion.identity, Mathf.Infinity, mask))
+    {
+      if (_map.Level[x, y, z].Texture1Name.Equals(_selectedListObject))
+      {
+        return;
+      }
+
+      fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
+      Destroy(fb.gameObject);
+    }
+
+    /*
     Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
     int mask = LayerMask.GetMask("PlacementGrid") | LayerMask.GetMask("EditorMapGrid");
     if (Physics.Raycast(r.origin, r.direction, out _placementHitInfo, Mathf.Infinity, ~mask))          
@@ -362,6 +445,7 @@ public class GameEditor : MonoBehaviour
       fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
       Destroy(fb.gameObject);
     }
+    */
 
     _map.Level[x, y, z].Texture1Name = _selectedListObject;
     _lastTextureName = _selectedListObject;
@@ -369,17 +453,23 @@ public class GameEditor : MonoBehaviour
     var go = PrefabsManager.Instance.InstantiatePrefab("floor-template", Cursor.transform.position, Quaternion.identity);
     go.transform.parent = InstantiatedObjectsHolder;
     go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
     fb = go.GetComponent<FloorBehaviour>();
     fb.Init(_map.Level[x, y, z]);
   }
 
   void RemoveFloor()
   {
-    Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
-    int mask = LayerMask.GetMask("PlacementGrid") | LayerMask.GetMask("EditorMapGrid");
-    if (Physics.Raycast(r.origin, r.direction, out _placementHitInfo, Mathf.Infinity, ~mask))          
+    int x = (int)Cursor.transform.position.x;
+    int y = (int)Cursor.transform.position.y;
+    int z = (int)Cursor.transform.position.z;
+
+    int mask = LayerMask.GetMask("EditorMapFloor");
+    Vector3 center = new Vector3(x, y - 0.5f, z);
+    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _placementHitInfo, Quaternion.identity, Mathf.Infinity, mask))      
     {
-      Destroy(_placementHitInfo.collider.transform.parent.gameObject);
+      FloorBehaviour fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
+      Destroy(fb.gameObject);
     }
   }
 
@@ -435,6 +525,7 @@ public class GameEditor : MonoBehaviour
     _cameraPos.z = Mathf.Clamp(_cameraPos.z, 0.0f, _map.MapZ);
 
     _gridBlockPos.x = (int)_cameraPos.x;
+    _gridBlockPos.y = _currentFloor;
     _gridBlockPos.z = (int)_cameraPos.z;
 
     FloorGrid.position = _gridBlockPos;
@@ -518,6 +609,8 @@ public class GameEditor : MonoBehaviour
     int mapZ = int.Parse(NewMapSizeZ.text);
 
     _map = new EditorLevel(mapX, mapY, mapZ);
+
+    UpdateFloorCounter();
 
     DestroyChildren(InstantiatedObjectsHolder);
     DestroyChildren(ObjectsGrid);
