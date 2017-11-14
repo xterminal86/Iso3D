@@ -35,6 +35,7 @@ public class GameEditor : MonoBehaviour
   public Text FloorCount;
 
   public TextMesh PositionText;
+  public Text Text3D;
 
   public CustomControlGroup ModesGroup;
 
@@ -312,6 +313,7 @@ public class GameEditor : MonoBehaviour
     }
 
     PositionText.text = string.Format("{0}\n{1}", Cursor.transform.position, _previewObjectAngle);
+    Text3D.text = string.Format("{0} {1}", Cursor.transform.position, _previewObjectAngle);
 
     ProcessPreviewObjectRotation();
 
