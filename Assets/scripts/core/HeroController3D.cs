@@ -91,7 +91,7 @@ public class HeroController3D : MonoBehaviour
     RaycastHit res;
     int mask = LayerMask.GetMask("Ramp");
     float raycastLength = 1.0f;
-    Debug.DrawRay(RaycastPoint.position, Vector3.down * raycastLength, Color.green, 1.0f);
+    //Debug.DrawRay(RaycastPoint.position, Vector3.down * raycastLength, Color.green, 1.0f);
     if (Physics.Raycast(RaycastPoint.position, Vector3.down, out res, raycastLength, mask))
     {
       _heroMoveSpeed *= 0.5f;

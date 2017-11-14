@@ -326,14 +326,80 @@ public class GameEditor : MonoBehaviour
     bool condPlace = (_editorMode == 0) ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
     bool condRemove = (_editorMode == 0) ? Input.GetMouseButton(1) : Input.GetMouseButtonDown(1);
 
-    if (condPlace && !EventSystem.current.IsPointerOverGameObject())
+    if (!Input.GetKey(KeyCode.LeftShift))
     {
-      PlaceObject(_editorMode);
+      if (condPlace && !EventSystem.current.IsPointerOverGameObject())
+      {
+        PlaceObject(_editorMode);
+      }
+      else if (condRemove && !EventSystem.current.IsPointerOverGameObject())
+      {
+        RemoveObject(_editorMode);
+      }
     }
-    else if (condRemove && !EventSystem.current.IsPointerOverGameObject())
+    else
     {
-      RemoveObject(_editorMode);
+      if (_editorMode == 0 && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+      {
+        FillFloor();
+      }
+      else if (_editorMode == 0 && Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+      {
+        UnfillFloor();
+      }
     }
+  }
+
+  void FillFloor()
+  {
+    int cx = (int)Cursor.transform.position.x;
+    int cy = (int)Cursor.transform.position.y;
+    int cz = (int)Cursor.transform.position.z;
+
+    int area = 1;
+
+    int sx = cx - area;
+    int ex = cx + area;
+    int sz = cz - area;
+    int ez = cz + area;
+
+    bool shouldEnd = false;
+
+    while (!shouldEnd)
+    {
+      for (int x = sx; x <= ex; x++)
+      {
+        if (x < 0 || x > _map.MapX - 1)
+        {
+          shouldEnd = true;
+          continue;
+        }
+
+        shouldEnd = false;
+
+        for (int z = sz; sz <= ez; z++)
+        {
+          if (z < 0 || z > _map.MapZ - 1)
+          {
+            shouldEnd = true;
+            continue;
+          }
+
+          shouldEnd = false;
+
+          string name = _map.Level[x, cy, z].Texture1Name;
+
+          if (name.Equals(_selectedListObject))
+          {
+            continue;
+          }
+        }
+      }
+    }
+  }
+
+  void UnfillFloor()
+  {
   }
 
   void ProcessPreviewObjectRotation()
@@ -380,6 +446,7 @@ public class GameEditor : MonoBehaviour
   RaycastHit _objectPlacementInfo;
   void PlaceMapObject()
   { 
+    /*
     int mask = LayerMask.GetMask("EditorMapObject");
     Vector3 center = new Vector3(Cursor.transform.position.x, -1.0f, Cursor.transform.position.z);
     if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _objectPlacementInfo, Quaternion.identity, 1.5f, mask))
@@ -387,6 +454,7 @@ public class GameEditor : MonoBehaviour
       Debug.Log("Occupied by " + _objectPlacementInfo.collider);
       return;
     }
+    */
 
     var go = Instantiate(_previewObject);
     var wob = go.GetComponent<WorldObjectBase>();
