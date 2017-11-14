@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallWorldObject : WorldObjectBase 
+public class ColumnWorldObject : WorldObjectBase 
 {
-  public MeshRenderer WallQuad1;
-  public MeshRenderer WallQuad2;
+  public MeshRenderer ColumnRenderer;
 
   Material _material;
 
@@ -24,7 +23,6 @@ public class WallWorldObject : WorldObjectBase
     _material = new Material(m);
     _material.SetTexture("_MainTex", _texture);
 
-    WallQuad1.material = _material;
-    WallQuad2.material = _material;
+    ColumnRenderer.material = _material;
   }
 }
