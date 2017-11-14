@@ -16,23 +16,6 @@ public static class GlobalConstants
   public const float HeroMoveSpeed = 1.5f;
   public const float HeroRunSpeed = 4.0f;
 
-  public enum TEXTURE_TYPE
-  {
-    NONE = 0,
-    GRASS,
-    SAND,
-    COBBLESTONE,
-    DIRT,
-    WATER
-  }
-
-  public static Dictionary<TEXTURE_TYPE, string> TextureNameByType = new Dictionary<TEXTURE_TYPE, string>() 
-  {
-    { TEXTURE_TYPE.GRASS, "grass-green" },
-    { TEXTURE_TYPE.SAND, "sand" },
-    { TEXTURE_TYPE.COBBLESTONE, "cobblestone" }
-  };
-
   /*
   public static int[] TransitionBitmasks = new int[]
   {

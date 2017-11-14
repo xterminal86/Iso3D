@@ -7,9 +7,6 @@ public class MapBlock
   public Vector3 ArrayCoordinates = Vector3.zero;
   public Vector3 WorldCoordinates = Vector3.zero;
 
-  public GlobalConstants.TEXTURE_TYPE Texture1 = GlobalConstants.TEXTURE_TYPE.NONE;
-  public GlobalConstants.TEXTURE_TYPE Texture2 = GlobalConstants.TEXTURE_TYPE.NONE;
-
   public string Texture1Name = string.Empty;
   public string Texture2Name = string.Empty;
 

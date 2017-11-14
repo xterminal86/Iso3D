@@ -25,6 +25,11 @@ public class LevelLoader : MonoSingleton<LevelLoader>
         _levelMap = new TestLevel(_levelSize.X, _levelSize.Y, _levelSize.Z);
         _levelMap.LoadLevel();
         break;
+
+      case LevelsList.MADE_IN_EDITOR:
+        _levelMap = new EditorLevel();
+        _levelMap.LoadLevel();
+        break;
     }
   }
 

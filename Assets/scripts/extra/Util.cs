@@ -93,6 +93,7 @@ public class RoomBounds
   }
 }
 
+[Serializable]
 public class Int3
 {
   int _x = 0;

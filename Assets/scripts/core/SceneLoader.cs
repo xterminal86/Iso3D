@@ -15,7 +15,7 @@ public class SceneLoader : MonoBehaviour
     PrefabsManager.Instance.Initialize();
     CameraController.Instance.Initialize();
 
-    LevelLoader.Instance.LoadLevel(LevelsList.TEST);
+    LevelLoader.Instance.LoadLevel(LevelToLoad);
 
     if (SkipTitleScreen)
     {      
@@ -30,5 +30,6 @@ public class SceneLoader : MonoBehaviour
 
 public enum LevelsList
 {
-  TEST = 0
+  TEST = 0,
+  MADE_IN_EDITOR
 }

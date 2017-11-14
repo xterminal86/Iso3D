@@ -13,12 +13,16 @@ public class FloorBehaviour : MonoBehaviour
   Material _material;
 
   MapBlock _blockRef;
+  public MapBlock BlockRef
+  {
+    get { return _blockRef; }
+  }
+
   public void Init(MapBlock block)
   {
     block.FloorBehaviourRef = this;
     _blockRef = block;
 
-    //string texture1Name = GlobalConstants.TextureNameByType[block.Texture1];
     string texture1Name = block.Texture1Name;
 
     string tex1path = string.Format("textures/{0}", texture1Name);
@@ -32,7 +36,6 @@ public class FloorBehaviour : MonoBehaviour
     }
     else
     {
-      //string texture2Name = GlobalConstants.TextureNameByType[block.Texture2];
       string texture2Name = block.Texture2Name;
 
       string tex2path = string.Format("textures/{0}", texture2Name);
@@ -50,6 +53,17 @@ public class FloorBehaviour : MonoBehaviour
       _material.SetTexture("_SecTex", _texture2);
       _material.SetTexture("_FilTex", _maskTexture);
     }
+
+    FloorPlane.material = _material;
+  }
+
+  public void SetTexture(string textureName)
+  {
+    string tex1path = string.Format("textures/{0}", textureName);
+    var texture = Resources.Load<Texture2D>(tex1path);
+    Material m = Resources.Load<Material>("materials/floor-simple");
+    _material = new Material(m);
+    _material.SetTexture("_MainTex", texture);
 
     FloorPlane.material = _material;
   }
