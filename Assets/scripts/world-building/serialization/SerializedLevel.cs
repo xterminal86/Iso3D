@@ -49,4 +49,9 @@ public class SerializedVector3
     Y = arg.y;
     Z = arg.z;
   }
+
+  public override string ToString()
+  {
+    return string.Format("[SerializedVector3: {0} {1} {2}]", X, Y, Z);
+  }
 }

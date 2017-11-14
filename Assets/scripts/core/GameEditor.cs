@@ -380,7 +380,7 @@ public class GameEditor : MonoBehaviour
   { 
     int mask = LayerMask.GetMask("EditorMapObject");
     Vector3 center = new Vector3(Cursor.transform.position.x, -1.0f, Cursor.transform.position.z);
-    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _objectPlacementInfo, Quaternion.identity, Mathf.Infinity, mask))
+    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _objectPlacementInfo, Quaternion.identity, 1.5f, mask))
     {
       Debug.Log("Occupied by " + _objectPlacementInfo.collider);
       return;
@@ -662,14 +662,27 @@ public class GameEditor : MonoBehaviour
     _levelToSave = (SerializedLevel)formatter.Deserialize(stream);  
     stream.Close();
 
+    //PrintLevelInfo(path);
+
     CreateNewLevel(_levelToSave.LevelSize.X, _levelToSave.LevelSize.Y, _levelToSave.LevelSize.Z);
     InstantiateLoadedLevel();
+  }
 
-    // If we save a level, then after loading the _levelToSave.FloorTiles and _levelToSave.Objects lists will be populated.
-    // If we don't clear them after loading, there will be duplicate objects during save, because wew will traverse
-    // the scene transform and put the same object again in the list.
+  void PrintLevelInfo(string path)
+  {
+    string output = string.Format("{0} loaded\n", path);
 
-    _levelToSave.Init(_map.MapX, _map.MapY, _map.MapZ);
+    output += string.Format("Floor tiles {0}\n", _levelToSave.FloorTiles.Count);
+    output += string.Format("Objects {0}\n", _levelToSave.Objects.Count);
+
+    int number = 0;
+    foreach (var item in _levelToSave.Objects)
+    {
+      output += string.Format("{0} - {1} {2} {3}\n", number + 1, item.PrefabName, item.Angle, item.WorldPosition);
+      number++;
+    }
+
+    Debug.Log(output);
   }
 
   void InstantiateLoadedLevel()
@@ -695,16 +708,27 @@ public class GameEditor : MonoBehaviour
       go.transform.parent = InstantiatedObjectsHolder;
       go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapObject"), true);
-      var wall = go.GetComponent<WallWorldObject>();
-      if (wall != null)
+      var wo = go.GetComponent<WorldObjectBase>();
+      if (wo is WallWorldObject)
       {
-        wall.Init((item as SerializedWall).TextureName);
+        (wo as WallWorldObject).PrefabName = "wall-template";
+        (wo as WallWorldObject).Init((item as SerializedWall).TextureName);
+      }
+      else
+      {
+        wo.PrefabName = item.PrefabName;
       }
     }
   }
 
   void SaveLevel(string path)
   {    
+    // If we save a level, then after loading the _levelToSave.FloorTiles and _levelToSave.Objects lists will be populated.
+    // If we don't clear them after loading, there will be duplicate objects during save, because wew will traverse
+    // the scene transform and put the same object again in the list.
+
+    _levelToSave.Init(_map.MapX, _map.MapY, _map.MapZ);
+
     foreach (Transform t in InstantiatedFloorHolder)
     {
       FloorBehaviour fb = t.gameObject.GetComponent<FloorBehaviour>();
