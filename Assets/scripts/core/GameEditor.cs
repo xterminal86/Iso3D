@@ -341,65 +341,110 @@ public class GameEditor : MonoBehaviour
     {
       if (_editorMode == 0 && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
       {
-        FillFloor();
+        FillFloor(_selectedListObject);
       }
       else if (_editorMode == 0 && Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
       {
-        UnfillFloor();
+        FillFloor(string.Empty);
       }
     }
   }
 
-  void FillFloor()
+  Queue<Int2> _fillQueue = new Queue<Int2>();
+  void FillFloor(string replacement)
   {
+    Vector3 placementPos = Vector3.zero;
+
     int cx = (int)Cursor.transform.position.x;
     int cy = (int)Cursor.transform.position.y;
     int cz = (int)Cursor.transform.position.z;
 
-    int area = 1;
+    string target = _map.Level[cx, cy, cz].Texture1Name;
 
-    int sx = cx - area;
-    int ex = cx + area;
-    int sz = cz - area;
-    int ez = cz + area;
+    _fillQueue.Clear();
 
-    bool shouldEnd = false;
+    ReplaceFloorTile(cx, cy, cz, replacement);
+    _fillQueue.Enqueue(new Int2(cx, cz));
 
-    while (!shouldEnd)
+    int safeguard = 0;
+
+    while (_fillQueue.Count != 0)
     {
-      for (int x = sx; x <= ex; x++)
+      if (safeguard > 1000)
       {
-        if (x < 0 || x > _map.MapX - 1)
-        {
-          shouldEnd = true;
-          continue;
-        }
-
-        shouldEnd = false;
-
-        for (int z = sz; sz <= ez; z++)
-        {
-          if (z < 0 || z > _map.MapZ - 1)
-          {
-            shouldEnd = true;
-            continue;
-          }
-
-          shouldEnd = false;
-
-          string name = _map.Level[x, cy, z].Texture1Name;
-
-          if (name.Equals(_selectedListObject))
-          {
-            continue;
-          }
-        }
+        Debug.LogWarning("Terminated by safeguard!");
+        break;
       }
+        
+      Int2 node = _fillQueue.Dequeue();
+
+      int lx = node.X - 1;
+      int hx = node.X + 1;
+      int lz = node.Y - 1;
+      int hz = node.Y + 1;
+
+      if (lx >= 0 && _map.Level[lx, cy, node.Y].Texture1Name.Equals(target))
+      {
+        ReplaceFloorTile(lx, cy, node.Y, replacement);
+        _fillQueue.Enqueue(new Int2(lx, node.Y));
+      }
+
+      if (lz >= 0 && _map.Level[node.X, cy, lz].Texture1Name.Equals(target))
+      {
+        ReplaceFloorTile(node.X, cy, lz, replacement);
+        _fillQueue.Enqueue(new Int2(node.X, lz));
+      }
+
+      if (hx < _map.MapX && _map.Level[hx, cy, node.Y].Texture1Name.Equals(target))
+      {
+        ReplaceFloorTile(hx, cy, node.Y, replacement);
+        _fillQueue.Enqueue(new Int2(hx, node.Y));
+      }
+
+      if (hz < _map.MapZ && _map.Level[node.X, cy, hz].Texture1Name.Equals(target))
+      {
+        ReplaceFloorTile(node.X, cy, hz, replacement);
+        _fillQueue.Enqueue(new Int2(node.X, hz));
+      }
+
+      safeguard++;
     }
   }
 
-  void UnfillFloor()
+  void ReplaceFloorTile(int x, int y, int z, string textureName)
   {
+    if (string.IsNullOrEmpty(textureName))
+    {
+      RemoveFloorTile(x, y, z);
+    }
+    else
+    {
+      FloorBehaviour fb;
+
+      int mask = LayerMask.GetMask("EditorMapFloor");
+      Vector3 center = new Vector3(x, y - 0.5f, z);
+      if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _placementHitInfo, Quaternion.identity, Mathf.Infinity, mask))
+      {
+        fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
+        if (fb != null)
+        {
+          Destroy(fb.gameObject);
+        }
+      }
+
+      Vector3 placementPos = Vector3.zero;
+
+      placementPos.Set(x, y, z);
+
+      _map.Level[x, y, z].Texture1Name = _selectedListObject;
+
+      var go = PrefabsManager.Instance.InstantiatePrefab("floor-template", placementPos, Quaternion.identity);
+      go.transform.parent = InstantiatedFloorHolder;
+      go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+      Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
+      fb = go.GetComponent<FloorBehaviour>();
+      fb.Init(_map.Level[x, y, z]);
+    }
   }
 
   void ProcessPreviewObjectRotation()
@@ -494,29 +539,7 @@ public class GameEditor : MonoBehaviour
     int y = (int)Cursor.transform.position.y;
     int z = (int)Cursor.transform.position.z;
 
-    FloorBehaviour fb;
-
-    int mask = LayerMask.GetMask("EditorMapFloor");
-    Vector3 center = new Vector3(x, y - 0.5f, z);
-    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _placementHitInfo, Quaternion.identity, Mathf.Infinity, mask))
-    {
-      if (_map.Level[x, y, z].Texture1Name.Equals(_selectedListObject))
-      {
-        return;
-      }
-
-      fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
-      Destroy(fb.gameObject);
-    }
-
-    _map.Level[x, y, z].Texture1Name = _selectedListObject;
-
-    var go = PrefabsManager.Instance.InstantiatePrefab("floor-template", Cursor.transform.position, Quaternion.identity);
-    go.transform.parent = InstantiatedFloorHolder;
-    go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-    Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
-    fb = go.GetComponent<FloorBehaviour>();
-    fb.Init(_map.Level[x, y, z]);
+    ReplaceFloorTile(x, y, z, _selectedListObject);
   }
 
   void RemoveFloor()
@@ -531,6 +554,19 @@ public class GameEditor : MonoBehaviour
     {
       FloorBehaviour fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
       Destroy(fb.gameObject);
+      _map.Level[x, y, z].Texture1Name = string.Empty;
+    }
+  }
+
+  void RemoveFloorTile(int x, int y, int z)
+  {
+    int mask = LayerMask.GetMask("EditorMapFloor");
+    Vector3 center = new Vector3(x, y - 0.5f, z);
+    if (Physics.BoxCast(center, new Vector3(0.4f, 0.1f, 0.4f), Vector3.up, out _placementHitInfo, Quaternion.identity, Mathf.Infinity, mask))      
+    {
+      FloorBehaviour fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
+      Destroy(fb.gameObject);
+      _map.Level[x, y, z].Texture1Name = string.Empty;
     }
   }
 
