@@ -17,10 +17,13 @@ public class HighlightableControl : MonoBehaviour
   [HideInInspector]
   public bool Selected = false;
 
+  public bool Enabled = true;
+
   public virtual void ResetStatus()
   {
     Selected = false;
   }
 
   public virtual void Select() { }
+  public virtual void SetStatus(bool isEnabled) { }
 }

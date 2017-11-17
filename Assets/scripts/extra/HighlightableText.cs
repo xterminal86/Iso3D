@@ -8,10 +8,27 @@ public class HighlightableText : HighlightableControl
 {  
   public Text NormalText;
   public Text HighlightedText;
+  public Text DisabledText;
+
+  void Start()
+  {
+    if (!Enabled)
+    {
+      NormalText.gameObject.SetActive(false);
+      HighlightedText.gameObject.SetActive(false);
+      DisabledText.gameObject.SetActive(true);
+    }
+    else
+    {
+      NormalText.gameObject.SetActive(true);
+      HighlightedText.gameObject.SetActive(false);
+      DisabledText.gameObject.SetActive(false);
+    }
+  }
 
   public void OnMouseEnter()
   {
-    if (Selected)
+    if (Selected || !Enabled)
     {
       return;
     }
@@ -24,7 +41,7 @@ public class HighlightableText : HighlightableControl
 
   public void OnMouseExit()
   {
-    if (Selected)
+    if (Selected || !Enabled)
     {
       return;
     }
@@ -35,6 +52,11 @@ public class HighlightableText : HighlightableControl
 
   public void OnMouseDown()
   {
+    if (!Enabled)
+    {
+      return;
+    }
+
     int index = Random.Range(0, ClickSounds.Count);
 
     ClickSounds[index].Play();
@@ -76,6 +98,7 @@ public class HighlightableText : HighlightableControl
 
     NormalText.gameObject.SetActive(false);
     HighlightedText.gameObject.SetActive(true);
+    DisabledText.gameObject.SetActive(false);
 
     if (MethodToCall != null)
     {
@@ -85,6 +108,24 @@ public class HighlightableText : HighlightableControl
     if (MethodToCall0 != null)
     {
       MethodToCall0.Invoke();
+    }
+  }
+
+  public override void SetStatus(bool isEnabled)
+  {
+    Enabled = isEnabled;
+
+    if (!Enabled)
+    {
+      NormalText.gameObject.SetActive(false);
+      HighlightedText.gameObject.SetActive(false);
+      DisabledText.gameObject.SetActive(true);
+    }
+    else
+    {
+      NormalText.gameObject.SetActive(true);
+      HighlightedText.gameObject.SetActive(false);
+      DisabledText.gameObject.SetActive(false);
     }
   }
 }

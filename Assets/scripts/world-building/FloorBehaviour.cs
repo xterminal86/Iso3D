@@ -5,6 +5,7 @@ using UnityEngine;
 public class FloorBehaviour : MonoBehaviour 
 {
   public MeshRenderer FloorPlane;
+  public GameObject PathMarker;
 
   Texture2D _texture1;
   Texture2D _texture2;

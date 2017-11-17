@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GUIControls : MonoBehaviour 
 {
+  public HighlightableText TextControl;
+
   public Texture2D CursorWait;
 
   public void OnMouseEnter()

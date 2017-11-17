@@ -14,7 +14,8 @@ public class EditorLevel : LevelBase
   public override void LoadLevel()
   {
     var formatter = new BinaryFormatter();  
-    Stream stream = new FileStream("maps/level.lvl", FileMode.Open, FileAccess.Read, FileShare.Read);  
+    //Stream stream = new FileStream("maps/level.lvl", FileMode.Open, FileAccess.Read, FileShare.Read);  
+    Stream stream = new FileStream("maps/path-test.lvl", FileMode.Open, FileAccess.Read, FileShare.Read);  
     _loadedLevel = (SerializedLevel)formatter.Deserialize(stream);  
     stream.Close();
 
@@ -45,6 +46,7 @@ public class EditorLevel : LevelBase
       z = (int)item.WorldPosition.Z;
 
       _level[x, y, z].Texture1Name = item.TextureName;
+      _level[x, y, z].SkipTransitionCheckHere = item.SkipTransitionCheck;
     }
   }
 

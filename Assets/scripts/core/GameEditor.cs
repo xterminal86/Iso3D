@@ -323,8 +323,8 @@ public class GameEditor : MonoBehaviour
       _previewObject.transform.localEulerAngles = new Vector3(0.0f, _previewObjectAngle, 0.0f);
     }
 
-    bool condPlace = (_editorMode == 0) ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
-    bool condRemove = (_editorMode == 0) ? Input.GetMouseButton(1) : Input.GetMouseButtonDown(1);
+    bool condPlace = (_editorMode == 0 || _editorMode == 4) ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
+    bool condRemove = (_editorMode == 0 || _editorMode == 4) ? Input.GetMouseButton(1) : Input.GetMouseButtonDown(1);
 
     if (!Input.GetKey(KeyCode.LeftShift))
     {
@@ -437,6 +437,7 @@ public class GameEditor : MonoBehaviour
       placementPos.Set(x, y, z);
 
       _map.Level[x, y, z].Texture1Name = _selectedListObject;
+      _map.Level[x, y, z].SkipTransitionCheckHere = false;
 
       var go = PrefabsManager.Instance.InstantiatePrefab("floor-template", placementPos, Quaternion.identity);
       go.transform.parent = InstantiatedFloorHolder;
@@ -474,6 +475,10 @@ public class GameEditor : MonoBehaviour
     {
       RemoveMapObject();
     }
+    else if (editorMode == 4)
+    {
+      UnsetPath();
+    }
   }
 
   void PlaceObject(int editorMode)
@@ -486,6 +491,40 @@ public class GameEditor : MonoBehaviour
     {
       PlaceMapObject();
     }
+    else if (editorMode == 4)
+    {      
+      SetPath();
+    }
+  }
+
+  void SetPath()
+  {    
+    int x = (int)Cursor.transform.position.x;
+    int y = (int)Cursor.transform.position.y;
+    int z = (int)Cursor.transform.position.z;
+
+    if (_map.Level[x, y, z].FloorBehaviourRef == null)
+    {
+      return;
+    }
+
+    _map.Level[x, y, z].SkipTransitionCheckHere = true;
+    _map.Level[x, y, z].FloorBehaviourRef.PathMarker.SetActive(true);
+  }
+
+  void UnsetPath()
+  {
+    int x = (int)Cursor.transform.position.x;
+    int y = (int)Cursor.transform.position.y;
+    int z = (int)Cursor.transform.position.z;
+
+    if (_map.Level[x, y, z].FloorBehaviourRef == null)
+    {
+      return;
+    }
+
+    _map.Level[x, y, z].SkipTransitionCheckHere = false;
+    _map.Level[x, y, z].FloorBehaviourRef.PathMarker.SetActive(false);
   }
 
   RaycastHit _objectPlacementInfo;
@@ -567,6 +606,7 @@ public class GameEditor : MonoBehaviour
       FloorBehaviour fb = _placementHitInfo.collider.GetComponentInParent<FloorBehaviour>();
       Destroy(fb.gameObject);
       _map.Level[x, y, z].Texture1Name = string.Empty;
+      _map.Level[x, y, z].SkipTransitionCheckHere = false;
     }
   }
 
@@ -670,15 +710,15 @@ public class GameEditor : MonoBehaviour
 
       ListOfItems.Controls[0].Select();
     }
-    else if (_editorMode == 2)
+    else if (_editorMode == 2 || _editorMode == 4)
     {
       if (_previewObject != null)
       {
         Destroy(_previewObject);
       }
 
-      ObjectsPlacementGridHolder.gameObject.SetActive(true);
-      FloorPlacementGridHolder.gameObject.SetActive(false);
+      FloorPlacementGridHolder.gameObject.SetActive(true);
+      ObjectsPlacementGridHolder.gameObject.SetActive(false);
 
       UpdatePage(null);
     }
@@ -804,6 +844,13 @@ public class GameEditor : MonoBehaviour
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
       FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
       _map.Level[(int)pos.X, (int)pos.Y, (int)pos.Z].Texture1Name = item.TextureName;
+      _map.Level[(int)pos.X, (int)pos.Y, (int)pos.Z].SkipTransitionCheckHere = item.SkipTransitionCheck;
+
+      if (item.SkipTransitionCheck)
+      {
+        fb.PathMarker.SetActive(true);
+      }
+
       fb.Init(_map.Level[(int)pos.X, (int)pos.Y, (int)pos.Z]);
     }
 
@@ -840,6 +887,7 @@ public class GameEditor : MonoBehaviour
       FloorBehaviour fb = t.gameObject.GetComponent<FloorBehaviour>();
       SerializedFloor sf = new SerializedFloor();
       sf.TextureName = fb.BlockRef.Texture1Name;
+      sf.SkipTransitionCheck = fb.BlockRef.SkipTransitionCheckHere;
       sf.WorldPosition.Set(fb.transform.position);
       _levelToSave.FloorTiles.Add(sf);
     }
