@@ -20,6 +20,7 @@ public class GameEditor : MonoBehaviour
 
   public GameObject Cursor;
   public GameObject ElevationCursor;
+  public GameObject SelectedObjectCursor;
   public GameObject EditorMapGridPrefab;
   public GameObject EditorFloorPlacementGridPrefab;
   public GameObject EditorObjectsPlacementGridPrefab;
@@ -33,6 +34,7 @@ public class GameEditor : MonoBehaviour
 
   public Text PageCount;
   public Text FloorCount;
+  public Text InfoBarText;
 
   public TextMesh PositionText;
   public Text Text3D;
@@ -40,9 +42,9 @@ public class GameEditor : MonoBehaviour
   public CustomControlGroup ModesGroup;
 
   public GameObject NewMapWindow;
+  public GameObject SelectedObjectPropertiesWindow;
 
   float _objectsPlacementGridSize = 0.5f;
-  float _wallsPlacementGridSize = 0.25f;
 
   Vector3 _mousePos = Vector3.zero;
 
@@ -323,6 +325,8 @@ public class GameEditor : MonoBehaviour
       _previewObject.transform.localEulerAngles = new Vector3(0.0f, _previewObjectAngle, 0.0f);
     }
 
+    ProcessElevation();
+
     bool condPlace = (_editorMode == 0 || _editorMode == 4) ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
     bool condRemove = (_editorMode == 0 || _editorMode == 4) ? Input.GetMouseButton(1) : Input.GetMouseButtonDown(1);
 
@@ -330,11 +334,11 @@ public class GameEditor : MonoBehaviour
     {
       if (condPlace && !EventSystem.current.IsPointerOverGameObject())
       {
-        PlaceObject(_editorMode);
+        ProcessLMB(_editorMode);
       }
       else if (condRemove && !EventSystem.current.IsPointerOverGameObject())
       {
-        RemoveObject(_editorMode);
+        ProcessRMB(_editorMode);
       }
     }
     else
@@ -347,6 +351,20 @@ public class GameEditor : MonoBehaviour
       {
         FillFloor(string.Empty);
       }
+    }
+  }
+
+  void ProcessElevation()
+  {
+    float wheel = Input.GetAxis("Mouse ScrollWheel");
+
+    if (wheel > 0.0f)
+    {
+      FloorUp();
+    }
+    else if (wheel < 0.0f)
+    {
+      FloorDown();
     }
   }
 
@@ -465,7 +483,7 @@ public class GameEditor : MonoBehaviour
     }
   }
 
-  void RemoveObject(int editorMode)
+  void ProcessRMB(int editorMode)
   {
     if (editorMode == 0)
     {
@@ -475,13 +493,18 @@ public class GameEditor : MonoBehaviour
     {
       RemoveMapObject();
     }
+    else if (_editorMode == 2)
+    {
+      SelectedObjectPropertiesWindow.SetActive(false);
+      SelectedObjectCursor.SetActive(false);
+    }
     else if (editorMode == 4)
     {
       UnsetPath();
     }
   }
 
-  void PlaceObject(int editorMode)
+  void ProcessLMB(int editorMode)
   {
     if (editorMode == 0)
     {
@@ -491,9 +514,31 @@ public class GameEditor : MonoBehaviour
     {
       PlaceMapObject();
     }
+    else if (editorMode == 2)
+    {
+      TryToSelectObject();
+    }
     else if (editorMode == 4)
     {      
       SetPath();
+    }
+  }
+
+  void TryToSelectObject()
+  {
+    Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
+    int mask = LayerMask.GetMask("EditorMapObject");
+    if (Physics.Raycast(r.origin, r.direction, out _objectPlacementInfo, Mathf.Infinity, mask))
+    {
+      WorldObjectBase wo = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
+      SelectedObjectCursor.SetActive(true);
+      SelectedObjectPropertiesWindow.SetActive(true);
+      SelectedObjectCursor.transform.position = wo.transform.position;
+    }
+    else
+    {
+      SelectedObjectPropertiesWindow.SetActive(false);
+      SelectedObjectCursor.SetActive(false);
     }
   }
 
@@ -617,6 +662,7 @@ public class GameEditor : MonoBehaviour
   float _cameraZoomSpeed = 0.3f;
   void ControlCamera()
   {
+    /*
     if (Input.GetAxis("Mouse ScrollWheel") < 0)
     {
       RaycastCamera.orthographicSize += _cameraZoomSpeed;
@@ -625,6 +671,7 @@ public class GameEditor : MonoBehaviour
     {
       RaycastCamera.orthographicSize -= _cameraZoomSpeed;
     }
+    */
 
     RaycastCamera.orthographicSize = Mathf.Clamp(RaycastCamera.orthographicSize, 1.0f, 10.0f);
 
@@ -678,6 +725,14 @@ public class GameEditor : MonoBehaviour
   {
     _editorMode = mode;
     _currentPage = 0;
+
+    Cursor.SetActive(_editorMode != 2);
+
+    if (SelectedObjectCursor.activeSelf && _editorMode != 2)
+    {
+      SelectedObjectPropertiesWindow.SetActive(false);
+      SelectedObjectCursor.SetActive(false);
+    }
 
     if (_editorMode == 0)
     {
@@ -785,7 +840,7 @@ public class GameEditor : MonoBehaviour
 
   public void SaveMapHandler()
   {
-    string path = StandaloneFileBrowser.SaveFilePanel("Save Map", "", "level", "lvl");
+    string path = StandaloneFileBrowser.SaveFilePanel("Save Map", "", "level", "bytes");
     if (!string.IsNullOrEmpty(path))
     {
       SaveLevel(path);
@@ -794,7 +849,7 @@ public class GameEditor : MonoBehaviour
 
   public void LoadMapHandler()
   {
-    string[] paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", "lvl", false);
+    string[] paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", "bytes", false);
     if (paths.Length != 0 && !string.IsNullOrEmpty(paths[0]))
     {
       LoadLevel(paths[0]);
@@ -956,5 +1011,44 @@ public class GameEditor : MonoBehaviour
     {
       Destroy(t.GetChild(i).gameObject);
     }
+  }
+
+  string _infoBarText = string.Empty;
+  public void SetInfoBarText(int editorMode)
+  {
+    switch (editorMode)
+    {
+      case 0:
+        _infoBarText = "Place floor tiles (hold Left Shift to bucket fill)";
+        break;
+
+      case 1:
+        _infoBarText = "Place objects (Q E to rotate)";
+        break;
+      
+      case 2:
+        _infoBarText = "Select mode";
+        break;
+
+      case 3:
+        _infoBarText = "Place walls (Q E to rotate)";
+        break;
+
+      case 4:
+        _infoBarText = "Mark floor tiles as \"path\" for correct transition visualization";
+        break;
+
+      case 5:
+        _infoBarText = "Place exit zones";
+        break;        
+    }
+
+    InfoBarText.text = _infoBarText;
+  }
+
+  public void ClearInfoBarText()
+  {
+    _infoBarText = "";
+    InfoBarText.text = _infoBarText;
   }
 }

@@ -12,10 +12,15 @@ public class EditorLevel : LevelBase
 
   SerializedLevel _loadedLevel;
   public override void LoadLevel()
-  {
+  {   
+    string level = "levels/level2";
+    //string level = "levels/path-test";
+
+    TextAsset ta = Resources.Load(level) as TextAsset;
+
+    Stream stream = new MemoryStream(ta.bytes);
+
     var formatter = new BinaryFormatter();  
-    //Stream stream = new FileStream("maps/level.lvl", FileMode.Open, FileAccess.Read, FileShare.Read);  
-    Stream stream = new FileStream("maps/path-test.lvl", FileMode.Open, FileAccess.Read, FileShare.Read);  
     _loadedLevel = (SerializedLevel)formatter.Deserialize(stream);  
     stream.Close();
 
