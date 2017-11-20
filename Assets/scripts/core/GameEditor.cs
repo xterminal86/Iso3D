@@ -17,6 +17,7 @@ public class GameEditor : MonoBehaviour
   public Transform FloorPlacementGridHolder;
   public Transform InstantiatedFloorHolder;
   public Transform InstantiatedObjectsHolder;
+  public RectTransform CursorTextHolder;
 
   public GameObject Cursor;
   public GameObject ElevationCursor;
@@ -657,9 +658,11 @@ public class GameEditor : MonoBehaviour
 
   Vector3 _gridBlockPos = Vector3.zero;
   Vector3 _cameraPos = Vector3.zero;
-  float _cameraSpeed = 6.0f;
+  float _cameraSpeed = 10.0f;
   float _actualCameraSpeed = 0.0f;
   float _cameraZoomSpeed = 0.3f;
+  float _cameraRotationY = 45.0f;
+  float _cameraRotationSpeed = 100.0f;
   void ControlCamera()
   {
     /*
@@ -672,6 +675,12 @@ public class GameEditor : MonoBehaviour
       RaycastCamera.orthographicSize -= _cameraZoomSpeed;
     }
     */
+
+    float cos = Mathf.Cos(_cameraRotationY * Mathf.Deg2Rad);
+    float sin = Mathf.Sin(_cameraRotationY * Mathf.Deg2Rad);
+
+    float strafeCos = Mathf.Cos((_cameraRotationY - 90.0f) * Mathf.Deg2Rad);
+    float strafeSin = Mathf.Sin((_cameraRotationY - 90.0f) * Mathf.Deg2Rad);
 
     RaycastCamera.orthographicSize = Mathf.Clamp(RaycastCamera.orthographicSize, 1.0f, 10.0f);
 
@@ -686,27 +695,37 @@ public class GameEditor : MonoBehaviour
 
     if (Input.GetKey(KeyCode.A))
     {
-      _cameraPos.x -= Time.smoothDeltaTime * _actualCameraSpeed;
-      _cameraPos.z += Time.smoothDeltaTime * _actualCameraSpeed;
+      _cameraPos.x += strafeSin * (Time.smoothDeltaTime * _actualCameraSpeed);
+      _cameraPos.z += strafeCos * (Time.smoothDeltaTime * _actualCameraSpeed);
     }
     else if (Input.GetKey(KeyCode.D))
     {
-      _cameraPos.x += Time.smoothDeltaTime * _actualCameraSpeed;
-      _cameraPos.z -= Time.smoothDeltaTime * _actualCameraSpeed;
+      _cameraPos.x -= strafeSin * (Time.smoothDeltaTime * _actualCameraSpeed);
+      _cameraPos.z -= strafeCos * (Time.smoothDeltaTime * _actualCameraSpeed);
     }
-    else if (Input.GetKey(KeyCode.W))
-    {
-      _cameraPos.x += Time.smoothDeltaTime * _actualCameraSpeed;
-      _cameraPos.z += Time.smoothDeltaTime * _actualCameraSpeed;
+
+    if (Input.GetKey(KeyCode.W))
+    {    
+      _cameraPos.x += sin * (Time.smoothDeltaTime * _actualCameraSpeed);
+      _cameraPos.z += cos * (Time.smoothDeltaTime * _actualCameraSpeed);
     }
     else if (Input.GetKey(KeyCode.S))
     {
-      _cameraPos.x -= Time.smoothDeltaTime * _actualCameraSpeed;
-      _cameraPos.z -= Time.smoothDeltaTime * _actualCameraSpeed;
+      _cameraPos.x -= sin * (Time.smoothDeltaTime * _actualCameraSpeed);
+      _cameraPos.z -= cos * (Time.smoothDeltaTime * _actualCameraSpeed);
     }
 
-    _cameraPos.x = Mathf.Clamp(_cameraPos.x, 0.0f, _map.MapX);
-    _cameraPos.z = Mathf.Clamp(_cameraPos.z, 0.0f, _map.MapZ);
+    if (Input.GetKey(KeyCode.Z))
+    {
+      _cameraRotationY += Time.smoothDeltaTime * _cameraRotationSpeed;
+    }
+    else if (Input.GetKey(KeyCode.X))
+    {
+      _cameraRotationY -= Time.smoothDeltaTime * _cameraRotationSpeed;
+    }
+
+    _cameraPos.x = Mathf.Clamp(_cameraPos.x, -5.0f, _map.MapX + 5.0f);
+    _cameraPos.z = Mathf.Clamp(_cameraPos.z, -5.0f, _map.MapZ + 5.0f);
 
     _gridBlockPos.x = (int)_cameraPos.x;
     _gridBlockPos.y = _currentFloor;
@@ -716,6 +735,14 @@ public class GameEditor : MonoBehaviour
     ObjectsPlacementGridHolder.position = _gridBlockPos;
 
     CameraHolder.position = _cameraPos;
+
+    Vector3 angles = CameraHolder.transform.eulerAngles;
+    angles.y = _cameraRotationY;
+    CameraHolder.transform.eulerAngles = angles;
+
+    Vector3 cursorTextAngles = CursorTextHolder.localEulerAngles;
+    cursorTextAngles.y = _cameraRotationY;
+    CursorTextHolder.localEulerAngles = cursorTextAngles;
   }
 
   List<string> _listToUpdate;

@@ -28,12 +28,12 @@ public class HighlightableText : HighlightableControl
 
   public void OnMouseEnter()
   {
+    HighlightSound.Play();
+
     if (Selected || !Enabled)
     {
       return;
     }
-
-    HighlightSound.Play();
 
     NormalText.gameObject.SetActive(false);
     HighlightedText.gameObject.SetActive(true);

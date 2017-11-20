@@ -14,8 +14,11 @@ public class SceneLoader : MonoBehaviour
     DebugForm.Instance.Initialize();
     PrefabsManager.Instance.Initialize();
     CameraController.Instance.Initialize();
+    LoadingScreen.Instance.Initialize();
 
     LevelLoader.Instance.LoadLevel(LevelToLoad);
+
+    SceneManager.sceneLoaded += LevelLoader.Instance.SceneLoadedHandler;
 
     if (SkipTitleScreen)
     {      

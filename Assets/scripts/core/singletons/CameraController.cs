@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 public class CameraController : MonoSingleton<CameraController>
 {
+  public Transform CameraHolder;
+  public Transform InnerCameraHolder;
+
   public GameObject MouseMap;
 
   Vector3 _mouseMapPosition = Vector3.zero;
@@ -22,5 +25,35 @@ public class CameraController : MonoSingleton<CameraController>
     _mouseMapPosition = newPosition;
     _mouseMap.transform.position = _mouseMapPosition;
     transform.position = newPosition;
+  }
+
+  float _angle = 45.0f;
+  float _posZ = -12.0f;
+  void Update()
+  {
+    float wheel = Input.GetAxis("Mouse ScrollWheel");
+
+    if (wheel < 0.0f)
+    {
+      _angle += 5.0f;
+      _posZ -= 0.5f;
+    }
+    else if (wheel > 0.0f)
+    {
+      _angle -= 5.0f;
+      _posZ += 0.5f;
+    }
+
+    _angle = Mathf.Clamp(_angle, 5.0f, 45.0f);
+    _posZ = Mathf.Clamp(_posZ, -12.0f, -5.0f);
+
+    Vector3 pos = InnerCameraHolder.localPosition;
+    Vector3 angles = CameraHolder.eulerAngles;
+
+    pos.z = _posZ;
+    angles.x = _angle;
+
+    InnerCameraHolder.localPosition = pos;
+    CameraHolder.eulerAngles = angles;
   }
 }
