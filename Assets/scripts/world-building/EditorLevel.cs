@@ -13,7 +13,7 @@ public class EditorLevel : LevelBase
   SerializedLevel _loadedLevel;
   public override void LoadLevel()
   {   
-    string level = "levels/level2";
+    string level = "levels/level3";
     //string level = "levels/path-test";
 
     TextAsset ta = Resources.Load(level) as TextAsset;

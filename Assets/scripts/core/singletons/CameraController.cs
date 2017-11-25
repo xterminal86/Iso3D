@@ -29,8 +29,19 @@ public class CameraController : MonoSingleton<CameraController>
 
   float _angle = 45.0f;
   float _posZ = -12.0f;
+  float _cameraRotationY = 45.0f;
+  float _cameraRotationSpeed = 100.0f;
   void Update()
   {
+    if (Input.GetKey(KeyCode.Z))
+    {
+      _cameraRotationY += Time.smoothDeltaTime * _cameraRotationSpeed;
+    }
+    else if (Input.GetKey(KeyCode.X))
+    {
+      _cameraRotationY -= Time.smoothDeltaTime * _cameraRotationSpeed;
+    }
+
     float wheel = Input.GetAxis("Mouse ScrollWheel");
 
     if (wheel < 0.0f)
@@ -52,6 +63,7 @@ public class CameraController : MonoSingleton<CameraController>
 
     pos.z = _posZ;
     angles.x = _angle;
+    angles.y = _cameraRotationY;
 
     InnerCameraHolder.localPosition = pos;
     CameraHolder.eulerAngles = angles;

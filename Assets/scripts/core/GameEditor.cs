@@ -17,6 +17,7 @@ public class GameEditor : MonoBehaviour
   public Transform FloorPlacementGridHolder;
   public Transform InstantiatedFloorHolder;
   public Transform InstantiatedObjectsHolder;
+  public Transform LightNoShadows;
   public RectTransform CursorTextHolder;
 
   public GameObject Cursor;
@@ -380,6 +381,11 @@ public class GameEditor : MonoBehaviour
 
     string target = _map.Level[cx, cy, cz].Texture1Name;
 
+    if (target.Equals(replacement))
+    {
+      return;
+    }
+
     _fillQueue.Clear();
 
     ReplaceFloorTile(cx, cy, cz, replacement);
@@ -739,6 +745,7 @@ public class GameEditor : MonoBehaviour
     Vector3 angles = CameraHolder.transform.eulerAngles;
     angles.y = _cameraRotationY;
     CameraHolder.transform.eulerAngles = angles;
+    LightNoShadows.eulerAngles = angles;
 
     Vector3 cursorTextAngles = CursorTextHolder.localEulerAngles;
     cursorTextAngles.y = _cameraRotationY;
@@ -890,7 +897,7 @@ public class GameEditor : MonoBehaviour
     _levelToSave = (SerializedLevel)formatter.Deserialize(stream);  
     stream.Close();
 
-    //PrintLevelInfo(path);
+    PrintLevelInfo(path);
 
     CreateNewLevel(_levelToSave.LevelSize.X, _levelToSave.LevelSize.Y, _levelToSave.LevelSize.Z);
     InstantiateLoadedLevel();

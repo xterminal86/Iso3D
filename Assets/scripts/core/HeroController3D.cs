@@ -107,6 +107,8 @@ public class HeroController3D : MonoBehaviour
     _debugText += string.Format("speed: {0}\n", _heroMoveSpeed);
 
     DebugForm.Instance.DebugText.text = _debugText;
+
+    CameraController.Instance.UpdateCameraPosition(RigidbodyComponent.position);
   }
 
   void TestAnimations()
@@ -282,6 +284,5 @@ public class HeroController3D : MonoBehaviour
   void FixedUpdate()
   {
     RigidbodyComponent.MovePosition(RigidbodyComponent.position + _direction * (_heroMoveSpeed * Time.fixedDeltaTime));
-    CameraController.Instance.UpdateCameraPosition(RigidbodyComponent.position);
   }
 }
