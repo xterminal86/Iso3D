@@ -166,6 +166,8 @@ public class HeroController3D : MonoBehaviour
     yield return null;
   }
 
+  Quaternion _fromRotation = Quaternion.identity;
+  Quaternion _toRotation = Quaternion.identity;
   void ProcessWalk()
   {
     if (Input.GetMouseButton(0))
@@ -208,8 +210,11 @@ public class HeroController3D : MonoBehaviour
         {
           AnimationComponent.CrossFade("walking", 0.1f);
         }
-               
-        RigidbodyComponent.rotation = Quaternion.AngleAxis(angle360, Vector3.up);
+          
+        _fromRotation = RigidbodyComponent.rotation;
+        _toRotation = Quaternion.AngleAxis(angle360, Vector3.up);
+
+        //RigidbodyComponent.rotation = Quaternion.AngleAxis(angle360, Vector3.up);
       }
     }
     else
@@ -284,5 +289,6 @@ public class HeroController3D : MonoBehaviour
   void FixedUpdate()
   {
     RigidbodyComponent.MovePosition(RigidbodyComponent.position + _direction * (_heroMoveSpeed * Time.fixedDeltaTime));
+    RigidbodyComponent.rotation = Quaternion.Slerp(_fromRotation, _toRotation, Time.fixedDeltaTime * GlobalConstants.HeroRotateSpeed);
   }
 }
