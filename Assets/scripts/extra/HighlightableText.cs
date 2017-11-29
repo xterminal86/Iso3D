@@ -27,38 +27,47 @@ public class HighlightableText : HighlightableControl
   }
 
   public void OnMouseEnter()
-  {
-    HighlightSound.Play();
-
+  { 
     if (Selected || !Enabled)
     {
       return;
     }
+
+    Highlighted = true;
+
+    //Debug.Log("Mouse Enter");
+
+    HighlightSound.Play();
 
     NormalText.gameObject.SetActive(false);
     HighlightedText.gameObject.SetActive(true);
   }
 
   public void OnMouseExit()
-  {
+  {    
     if (Selected || !Enabled)
     {
       return;
     }
+
+    Highlighted = false;
+     
+    //Debug.Log("Mouse Exit");
 
     HighlightedText.gameObject.SetActive(false);
     NormalText.gameObject.SetActive(true);
   }
 
   public void OnMouseDown()
-  {
-    if (!Enabled)
+  {    
+    if (!Enabled || !Highlighted)
     {
       return;
     }
 
-    int index = Random.Range(0, ClickSounds.Count);
+    //Debug.Log("Mouse Down");
 
+    int index = Random.Range(0, ClickSounds.Count);
     ClickSounds[index].Play();
 
     if (Selected)

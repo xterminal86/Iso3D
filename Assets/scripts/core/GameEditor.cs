@@ -531,6 +531,7 @@ public class GameEditor : MonoBehaviour
     }
   }
 
+  Vector3 _selectedObjectCursorPosition = Vector3.zero;
   void TryToSelectObject()
   {
     Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
@@ -540,7 +541,8 @@ public class GameEditor : MonoBehaviour
       WorldObjectBase wo = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
       SelectedObjectCursor.SetActive(true);
       SelectedObjectPropertiesWindow.SetActive(true);
-      SelectedObjectCursor.transform.position = wo.transform.position;
+      _selectedObjectCursorPosition.Set(wo.transform.position.x, wo.transform.position.y + 0.01f, wo.transform.position.z);
+      SelectedObjectCursor.transform.position = _selectedObjectCursorPosition;
     }
     else
     {
@@ -732,6 +734,7 @@ public class GameEditor : MonoBehaviour
 
     _cameraPos.x = Mathf.Clamp(_cameraPos.x, -5.0f, _map.MapX + 5.0f);
     _cameraPos.z = Mathf.Clamp(_cameraPos.z, -5.0f, _map.MapZ + 5.0f);
+    _cameraPos.y = _currentFloor;
 
     _gridBlockPos.x = (int)_cameraPos.x;
     _gridBlockPos.y = _currentFloor;
@@ -897,10 +900,13 @@ public class GameEditor : MonoBehaviour
     _levelToSave = (SerializedLevel)formatter.Deserialize(stream);  
     stream.Close();
 
-    PrintLevelInfo(path);
+    //PrintLevelInfo(path);
 
     CreateNewLevel(_levelToSave.LevelSize.X, _levelToSave.LevelSize.Y, _levelToSave.LevelSize.Z);
     InstantiateLoadedLevel();
+
+    SelectedObjectPropertiesWindow.SetActive(false);
+    SelectedObjectCursor.SetActive(false);
   }
 
   void PrintLevelInfo(string path)

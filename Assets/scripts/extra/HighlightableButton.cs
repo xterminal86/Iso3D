@@ -15,6 +15,8 @@ public class HighlightableButton : HighlightableControl
       return;
     }
 
+    Highlighted = true;
+
     HighlightSound.Play();
 
     NormalSprite.gameObject.SetActive(false);
@@ -28,18 +30,24 @@ public class HighlightableButton : HighlightableControl
       return;
     }
 
+    Highlighted = false;
+
     HighlightedSprite.gameObject.SetActive(false);
     NormalSprite.gameObject.SetActive(true);
   }
 
   public void OnMouseDown()
   {
-    int index = Random.Range(0, ClickSounds.Count);
+    if (!Enabled || !Highlighted)
+    {
+      return;
+    }
 
+    int index = Random.Range(0, ClickSounds.Count);
     ClickSounds[index].Play();
 
     if (Selected)
-    {
+    {      
       return;
     }
 
