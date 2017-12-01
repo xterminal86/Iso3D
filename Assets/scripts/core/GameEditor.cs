@@ -37,6 +37,7 @@ public class GameEditor : MonoBehaviour
   public Text PageCount;
   public Text FloorCount;
   public Text InfoBarText;
+  public Text CurrentLevelName;
 
   public TextMesh PositionText;
   public Text Text3D;
@@ -175,7 +176,7 @@ public class GameEditor : MonoBehaviour
         Destroy(_previewObject);
       }
 
-      var prefab = PrefabsManager.Instance.FindPrefabByName("4.wall-template");
+      var prefab = PrefabsManager.Instance.FindPrefabByName(GlobalConstants.WallTemplatePrefabName);
       _previewObject = Instantiate(prefab, Cursor.transform.position, Quaternion.identity);
       _previewObject.name = _selectedListObject;
       _previewObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -295,11 +296,16 @@ public class GameEditor : MonoBehaviour
     PageCount.text = string.Format("{0} / {1}", _currentPage + 1, _totalPages + 1);
   }
 
+  public bool EnteringText = false;
+
   Vector3 _cursorPositionClamped = Vector3.zero;
   RaycastHit _hitInfo;
   void Update()
   { 
-    ControlCamera();
+    if (!EnteringText)
+    {
+      ControlCamera();
+    }
 
     _mousePos = Input.mousePosition;
     _mousePos.z = Camera.main.nearClipPlane;
@@ -466,7 +472,7 @@ public class GameEditor : MonoBehaviour
       _map.Level[x, y, z].Texture1Name = _selectedListObject;
       _map.Level[x, y, z].SkipTransitionCheckHere = false;
 
-      var go = PrefabsManager.Instance.InstantiatePrefab("1.floor-template", placementPos, Quaternion.identity);
+      var go = PrefabsManager.Instance.InstantiatePrefab(GlobalConstants.FloorTemplatePrefabName, placementPos, Quaternion.identity);
       go.transform.parent = InstantiatedFloorHolder;
       go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
@@ -543,8 +549,9 @@ public class GameEditor : MonoBehaviour
     int cy = (int)Cursor.transform.position.y;
     int cz = (int)Cursor.transform.position.z;
 
-    var prefab = PrefabsManager.Instance.FindPrefabByName("3.exit-zone");
+    var prefab = PrefabsManager.Instance.FindPrefabByName(GlobalConstants.ExitZonePrefabName);
     var go = Instantiate(prefab, new Vector3(cx, cy, cz), Quaternion.identity);
+    go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     go.transform.parent = InstantiatedObjectsHolder;
 
     int layer = LayerMask.NameToLayer("EditorMapObject");
@@ -620,7 +627,7 @@ public class GameEditor : MonoBehaviour
     var wob = go.GetComponent<WorldObjectBase>();
     if (wob is WallWorldObject)
     {
-      (wob as WallWorldObject).PrefabName = "4.wall-template";
+      (wob as WallWorldObject).PrefabName = GlobalConstants.WallTemplatePrefabName;
       (wob as WallWorldObject).TextureName = _previewObject.name;
     }
     else
@@ -895,6 +902,9 @@ public class GameEditor : MonoBehaviour
     CreateNewLevel(mapX, mapY, mapZ);
 
     CloseNewMapWindow();
+
+    SelectedObjectPropertiesWindow.DeselectObject();
+    SelectedObjectCursor.SetActive(false);
   }
 
   public void SaveMapHandler()
@@ -903,6 +913,7 @@ public class GameEditor : MonoBehaviour
     if (!string.IsNullOrEmpty(path))
     {
       SaveLevel(path);
+      CurrentLevelName.text = path;
     }
   }
 
@@ -929,6 +940,8 @@ public class GameEditor : MonoBehaviour
 
     SelectedObjectPropertiesWindow.DeselectObject();
     SelectedObjectCursor.SetActive(false);
+
+    CurrentLevelName.text = path;
   }
 
   void PrintLevelInfo(string path)
@@ -955,7 +968,7 @@ public class GameEditor : MonoBehaviour
     foreach (var item in _levelToSave.FloorTiles)
     {
       pos = item.WorldPosition;
-      go = PrefabsManager.Instance.InstantiatePrefab("1.floor-template", new Vector3(pos.X, pos.Y, pos.Z), Quaternion.identity);
+      go = PrefabsManager.Instance.InstantiatePrefab(GlobalConstants.FloorTemplatePrefabName, new Vector3(pos.X, pos.Y, pos.Z), Quaternion.identity);
       go.transform.parent = InstantiatedFloorHolder;
       go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
@@ -981,8 +994,12 @@ public class GameEditor : MonoBehaviour
       var wo = go.GetComponent<WorldObjectBase>();
       if (wo is WallWorldObject)
       {
-        (wo as WallWorldObject).PrefabName = "4.wall-template";
+        (wo as WallWorldObject).PrefabName = GlobalConstants.WallTemplatePrefabName;
         (wo as WallWorldObject).Init((item as SerializedWall).TextureName);
+      }
+      else if (wo is ExitZoneObject)
+      {
+        (wo as ExitZoneObject).ExitZoneToSave = (item as SerializedExitZone);
       }
       else
       {
@@ -994,7 +1011,7 @@ public class GameEditor : MonoBehaviour
   void SaveLevel(string path)
   {    
     // If we save a level, then after loading the _levelToSave.FloorTiles and _levelToSave.Objects lists will be populated.
-    // If we don't clear them after loading, there will be duplicate objects during save, because wew will traverse
+    // If we don't clear them after loading, there will be duplicate objects during save, because we will traverse
     // the scene transform and put the same object again in the list.
 
     _levelToSave.Init(_map.MapX, _map.MapY, _map.MapZ);
@@ -1020,6 +1037,11 @@ public class GameEditor : MonoBehaviour
         sw.Angle = (wo as WallWorldObject).transform.eulerAngles.y;
         sw.WorldPosition.Set((wo as WallWorldObject).transform.position);
         _levelToSave.Objects.Add(sw);
+      }
+      else if (wo is ExitZoneObject)
+      {        
+        (wo as ExitZoneObject).ExitZoneToSave.WorldPosition.Set((wo as ExitZoneObject).transform.position);
+        _levelToSave.Objects.Add((wo as ExitZoneObject).ExitZoneToSave);
       }
       else
       {
@@ -1064,6 +1086,8 @@ public class GameEditor : MonoBehaviour
 
     _cameraPos.Set(_map.MapX / 2.0f, 0.0f, _map.MapZ / 2.0f);
     CameraHolder.position = _cameraPos;
+
+    CurrentLevelName.text = "Untitled";
   }
 
   void DestroyChildren(Transform t)

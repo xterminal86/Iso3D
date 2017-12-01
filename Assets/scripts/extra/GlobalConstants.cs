@@ -17,6 +17,12 @@ public static class GlobalConstants
   public const float HeroRunSpeed = 4.0f;
   public const float HeroRotateSpeed = 10.0f;
 
+  public const string FloorTemplatePrefabName = "1.floor-template";
+  public const string PathMarkerPrefabName = "2.path-marker";
+  public const string ExitZonePrefabName = "3.exit-zone";
+  public const string WallTemplatePrefabName = "4.wall-template";
+
+
   /*
   public static int[] TransitionBitmasks = new int[]
   {

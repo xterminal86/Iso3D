@@ -5,11 +5,15 @@ using UnityEngine;
 public class ExitZoneObject : WorldObjectBase 
 {
   [HideInInspector]
-  public string LevelNameToLoad = string.Empty;
+  public SerializedExitZone ExitZoneToSave = new SerializedExitZone();
 
-  [HideInInspector]
-  public Int3 ArrivalMapPosition = Int3.Zero;
+  void Start()
+  {
+    ExitZoneToSave.PrefabName = GlobalConstants.ExitZonePrefabName;
+  }
 
-  [HideInInspector]
-  public float ArrivalCharacterOrientation = 0.0f; 
+  void OnTriggerEnter(Collider c)
+  {
+    Debug.Log("Loading " + ExitZoneToSave.LevelNameToLoad);
+  }
 }

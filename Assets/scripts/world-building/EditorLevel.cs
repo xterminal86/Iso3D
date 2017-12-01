@@ -13,8 +13,7 @@ public class EditorLevel : LevelBase
   SerializedLevel _loadedLevel;
   public override void LoadLevel()
   {   
-    string level = "levels/level3";
-    //string level = "levels/path-test";
+    string level = "levels/level";
 
     TextAsset ta = Resources.Load(level) as TextAsset;
 
@@ -70,7 +69,7 @@ public class EditorLevel : LevelBase
       z = (int)item.WorldPosition.Z;
 
       pos = item.WorldPosition;
-      go = PrefabsManager.Instance.InstantiatePrefab("floor-template", _level[x, y, z].WorldCoordinates, Quaternion.identity);
+      go = PrefabsManager.Instance.InstantiatePrefab(GlobalConstants.FloorTemplatePrefabName, _level[x, y, z].WorldCoordinates, Quaternion.identity);
       go.transform.parent = objectsHolder;
       FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
       fb.Init(_level[x, y, z]);
@@ -89,6 +88,10 @@ public class EditorLevel : LevelBase
       if (wob is WallWorldObject)
       {
         (wob as WallWorldObject).Init((item as SerializedWall).TextureName);
+      }
+      else if (wob is ExitZoneObject)
+      {
+        (wob as ExitZoneObject).ExitZoneToSave = item as SerializedExitZone;
       }
     }
   }
