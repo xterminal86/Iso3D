@@ -44,7 +44,8 @@ public class GameEditor : MonoBehaviour
   public CustomControlGroup ModesGroup;
 
   public GameObject NewMapWindow;
-  public GameObject SelectedObjectPropertiesWindow;
+
+  public ObjectPropertiesWindow SelectedObjectPropertiesWindow;
 
   float _objectsPlacementGridSize = 0.5f;
 
@@ -62,7 +63,7 @@ public class GameEditor : MonoBehaviour
   {
     PrefabsManager.Instance.Initialize();
 
-    for (int i = 1; i < PrefabsManager.Instance.Prefabs.Count; i++)
+    for (int i = 4; i < PrefabsManager.Instance.Prefabs.Count; i++)
     {
       _objectsPrefabsNamesList.Add(PrefabsManager.Instance.Prefabs[i].name);
     }
@@ -174,7 +175,7 @@ public class GameEditor : MonoBehaviour
         Destroy(_previewObject);
       }
 
-      var prefab = PrefabsManager.Instance.FindPrefabByName("wall-template");
+      var prefab = PrefabsManager.Instance.FindPrefabByName("4.wall-template");
       _previewObject = Instantiate(prefab, Cursor.transform.position, Quaternion.identity);
       _previewObject.name = _selectedListObject;
       _previewObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -329,6 +330,7 @@ public class GameEditor : MonoBehaviour
 
     ProcessElevation();
 
+    // "Paint" mode works only for floors and paths (_editorMode 0 and 4)
     bool condPlace = (_editorMode == 0 || _editorMode == 4) ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
     bool condRemove = (_editorMode == 0 || _editorMode == 4) ? Input.GetMouseButton(1) : Input.GetMouseButtonDown(1);
 
@@ -464,7 +466,7 @@ public class GameEditor : MonoBehaviour
       _map.Level[x, y, z].Texture1Name = _selectedListObject;
       _map.Level[x, y, z].SkipTransitionCheckHere = false;
 
-      var go = PrefabsManager.Instance.InstantiatePrefab("floor-template", placementPos, Quaternion.identity);
+      var go = PrefabsManager.Instance.InstantiatePrefab("1.floor-template", placementPos, Quaternion.identity);
       go.transform.parent = InstantiatedFloorHolder;
       go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
@@ -496,13 +498,13 @@ public class GameEditor : MonoBehaviour
     {
       RemoveFloor();
     }
-    else if (editorMode == 1 || editorMode == 3)
+    else if (editorMode == 1 || editorMode == 3 || editorMode == 5)
     {
       RemoveMapObject();
     }
     else if (_editorMode == 2)
     {
-      SelectedObjectPropertiesWindow.SetActive(false);
+      SelectedObjectPropertiesWindow.DeselectObject();
       SelectedObjectCursor.SetActive(false);
     }
     else if (editorMode == 4)
@@ -529,6 +531,26 @@ public class GameEditor : MonoBehaviour
     {      
       SetPath();
     }
+    else if (editorMode == 5)
+    {
+      PlaceExitZone();
+    }
+  }
+
+  void PlaceExitZone()
+  {
+    int cx = (int)Cursor.transform.position.x;
+    int cy = (int)Cursor.transform.position.y;
+    int cz = (int)Cursor.transform.position.z;
+
+    var prefab = PrefabsManager.Instance.FindPrefabByName("3.exit-zone");
+    var go = Instantiate(prefab, new Vector3(cx, cy, cz), Quaternion.identity);
+    go.transform.parent = InstantiatedObjectsHolder;
+
+    int layer = LayerMask.NameToLayer("EditorMapObject");
+    Util.SetGameObjectLayer(go, layer, true);
+
+    go.layer = layer;
   }
 
   Vector3 _selectedObjectCursorPosition = Vector3.zero;
@@ -538,15 +560,15 @@ public class GameEditor : MonoBehaviour
     int mask = LayerMask.GetMask("EditorMapObject");
     if (Physics.Raycast(r.origin, r.direction, out _objectPlacementInfo, Mathf.Infinity, mask))
     {
-      WorldObjectBase wo = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
-      SelectedObjectCursor.SetActive(true);
-      SelectedObjectPropertiesWindow.SetActive(true);
+      var wo = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
+      SelectedObjectPropertiesWindow.SelectObject(wo);
       _selectedObjectCursorPosition.Set(wo.transform.position.x, wo.transform.position.y + 0.01f, wo.transform.position.z);
       SelectedObjectCursor.transform.position = _selectedObjectCursorPosition;
+      SelectedObjectCursor.SetActive(true);
     }
     else
     {
-      SelectedObjectPropertiesWindow.SetActive(false);
+      SelectedObjectPropertiesWindow.DeselectObject();
       SelectedObjectCursor.SetActive(false);
     }
   }
@@ -598,7 +620,7 @@ public class GameEditor : MonoBehaviour
     var wob = go.GetComponent<WorldObjectBase>();
     if (wob is WallWorldObject)
     {
-      (wob as WallWorldObject).PrefabName = "wall-template";
+      (wob as WallWorldObject).PrefabName = "4.wall-template";
       (wob as WallWorldObject).TextureName = _previewObject.name;
     }
     else
@@ -767,7 +789,7 @@ public class GameEditor : MonoBehaviour
 
     if (SelectedObjectCursor.activeSelf && _editorMode != 2)
     {
-      SelectedObjectPropertiesWindow.SetActive(false);
+      SelectedObjectPropertiesWindow.DeselectObject();
       SelectedObjectCursor.SetActive(false);
     }
 
@@ -802,7 +824,7 @@ public class GameEditor : MonoBehaviour
 
       ListOfItems.Controls[0].Select();
     }
-    else if (_editorMode == 2 || _editorMode == 4)
+    else if (_editorMode == 2 || _editorMode == 4 || _editorMode == 5)
     {
       if (_previewObject != null)
       {
@@ -905,7 +927,7 @@ public class GameEditor : MonoBehaviour
     CreateNewLevel(_levelToSave.LevelSize.X, _levelToSave.LevelSize.Y, _levelToSave.LevelSize.Z);
     InstantiateLoadedLevel();
 
-    SelectedObjectPropertiesWindow.SetActive(false);
+    SelectedObjectPropertiesWindow.DeselectObject();
     SelectedObjectCursor.SetActive(false);
   }
 
@@ -933,7 +955,7 @@ public class GameEditor : MonoBehaviour
     foreach (var item in _levelToSave.FloorTiles)
     {
       pos = item.WorldPosition;
-      go = PrefabsManager.Instance.InstantiatePrefab("floor-template", new Vector3(pos.X, pos.Y, pos.Z), Quaternion.identity);
+      go = PrefabsManager.Instance.InstantiatePrefab("1.floor-template", new Vector3(pos.X, pos.Y, pos.Z), Quaternion.identity);
       go.transform.parent = InstantiatedFloorHolder;
       go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapFloor"), true);
@@ -959,7 +981,7 @@ public class GameEditor : MonoBehaviour
       var wo = go.GetComponent<WorldObjectBase>();
       if (wo is WallWorldObject)
       {
-        (wo as WallWorldObject).PrefabName = "wall-template";
+        (wo as WallWorldObject).PrefabName = "4.wall-template";
         (wo as WallWorldObject).Init((item as SerializedWall).TextureName);
       }
       else
