@@ -28,7 +28,13 @@ public class LevelLoader : MonoSingleton<LevelLoader>
         break;
 
       case LevelsList.MADE_IN_EDITOR:
-        _levelMap = new EditorLevel();
+        SerializedExitZone zone = new SerializedExitZone();
+
+        zone.LevelNameToLoad = "level";
+        zone.ArrivalMapPosition.Set(0, 0, 0);
+        zone.ArrivalCharacterAngle = 0.0f;
+
+        _levelMap = new EditorLevel(zone.LevelNameToLoad, zone.ArrivalMapPosition, zone.ArrivalCharacterAngle);
         _levelMap.LoadLevel();
         break;
     }
@@ -36,6 +42,8 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
   public void SceneLoadedHandler(Scene s, LoadSceneMode mode)
   {
+    SceneManager.sceneLoaded -= LevelLoader.Instance.SceneLoadedHandler;
+
     InstantiateLevel();
   }
 
@@ -44,21 +52,26 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     GameObject holder = new GameObject("MapHolder");
     _levelMap.InstantiateLevel(holder.transform);
     var hero = GameObject.Find("hero").GetComponent<HeroController3D>();
-    hero.SetPlayerPosition(_levelMap.PlayerPos);
+    hero.InitPlayerPosition(_levelMap.PlayerPos, _levelMap.PlayerRotation);
     CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);
   }
 
-  bool _loading = false;
-  void Update()
+  bool _isNewLevelBeingLoaded = false;
+  public bool IsNewLevelBeingLoaded
   {
-    if (Input.GetKeyDown(KeyCode.R) && !_loading)
+    get { return _isNewLevelBeingLoaded; }
+  }
+
+  public void LoadNewLevel(SerializedExitZone exitZone)
+  {
+    if (!_isNewLevelBeingLoaded)
     {
-      _loading = true;
-      StartCoroutine(LoadLevelRoutine());
+      _isNewLevelBeingLoaded = true;
+      StartCoroutine(LoadLevelRoutine(exitZone));
     }
   }
 
-  IEnumerator LoadLevelRoutine()
+  IEnumerator LoadLevelRoutine(SerializedExitZone exitZone)
   { 
     yield return LoadingScreen.Instance.TakeScreenshotRoutine();
 
@@ -66,7 +79,9 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
     //yield return new WaitForSeconds(1);
 
-    LoadLevel(LevelsList.TEST);
+    _levelMap = new EditorLevel(exitZone.LevelNameToLoad, exitZone.ArrivalMapPosition, exitZone.ArrivalCharacterAngle);
+    _levelMap.LoadLevel();
+
     var res = SceneManager.LoadSceneAsync("main");
 
     res.allowSceneActivation = false;
@@ -87,7 +102,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     LoadingScreen.Instance.HideScreen();
     InstantiateLevel();
 
-    _loading = false;
+    _isNewLevelBeingLoaded = false;
 
     yield return null;
   }

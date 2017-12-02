@@ -70,6 +70,11 @@ public class HeroController3D : MonoBehaviour
   RaycastHit _hitInfo;
   void Update()
   {     
+    if (LevelLoader.Instance.IsNewLevelBeingLoaded)
+    {
+      return;
+    }
+
     _debugText = "";
 
     if (Input.GetKeyDown(KeyCode.B))
@@ -224,9 +229,11 @@ public class HeroController3D : MonoBehaviour
     }
   }
 
-  public void SetPlayerPosition(Int3 pos)
+  public void InitPlayerPosition(Int3 pos, float rotationAngle)
   {
     RigidbodyComponent.position = Util.MapToWorldCoordinates(new Vector3(pos.X, pos.Y, pos.Z));
+    _fromRotation = Quaternion.AngleAxis(rotationAngle, Vector3.up);
+    _toRotation = _fromRotation;
 
     // When we modify position, cloth interprets it as a rapid movement, so it makes cloak
     // go haywire. Thus, we first move the player and then activate cloak.

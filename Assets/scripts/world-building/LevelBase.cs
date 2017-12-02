@@ -28,6 +28,12 @@ public class LevelBase
     get { return _mapZ; }
   }
 
+  protected string _levelName = string.Empty;
+  public string LevelName
+  {
+    get { return _levelName; }
+  }
+
   /// <summary>
   /// Position of player (might be starting pos and saved for subsequent loading).
   /// Indicates array coordinates of a block in which player is located.
@@ -37,6 +43,12 @@ public class LevelBase
   public Int3 PlayerPos
   {
     get { return _playerPos; }
+  }
+
+  protected float _playerRotation = 0.0f;
+  public float PlayerRotation
+  {
+    get { return _playerRotation; }
   }
 
   public LevelBase()

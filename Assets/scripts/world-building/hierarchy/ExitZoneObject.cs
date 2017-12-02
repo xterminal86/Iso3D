@@ -14,6 +14,6 @@ public class ExitZoneObject : WorldObjectBase
 
   void OnTriggerEnter(Collider c)
   {
-    Debug.Log("Loading " + ExitZoneToSave.LevelNameToLoad);
+    LevelLoader.Instance.LoadNewLevel(ExitZoneToSave);
   }
 }

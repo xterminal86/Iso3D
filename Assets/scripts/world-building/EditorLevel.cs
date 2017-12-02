@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EditorLevel : LevelBase 
-{
-  public EditorLevel()
+{  
+  public EditorLevel(string levelName, Int3 pos, float angle)
   {     
+    _levelName = "levels/" + levelName;
+    _playerPos.Set(new Vector3(pos.X, pos.Y, pos.Z));
+    _playerRotation = angle;
   }
 
   SerializedLevel _loadedLevel;
   public override void LoadLevel()
-  {   
-    string level = "levels/level";
-
-    TextAsset ta = Resources.Load(level) as TextAsset;
+  { 
+    TextAsset ta = Resources.Load(_levelName) as TextAsset;
 
     Stream stream = new MemoryStream(ta.bytes);
 
@@ -33,8 +34,6 @@ public class EditorLevel : LevelBase
 
     FillMapBlocksInfo();
     ProcessFloorTransitions();
-
-    _playerPos.Set(new Vector3(0.0f, 0.0f, 0.0f));
   }
 
   void FillMapBlocksInfo()
