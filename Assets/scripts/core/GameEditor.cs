@@ -1000,6 +1000,7 @@ public class GameEditor : MonoBehaviour
       else if (wo is ExitZoneObject)
       {
         (wo as ExitZoneObject).ExitZoneToSave = (item as SerializedExitZone);
+        //Debug.Log((item as SerializedExitZone));
       }
       else
       {
@@ -1042,6 +1043,7 @@ public class GameEditor : MonoBehaviour
       {        
         (wo as ExitZoneObject).ExitZoneToSave.WorldPosition.Set((wo as ExitZoneObject).transform.position);
         _levelToSave.Objects.Add((wo as ExitZoneObject).ExitZoneToSave);
+        //Debug.Log((wo as ExitZoneObject).ExitZoneToSave);
       }
       else
       {
@@ -1057,6 +1059,12 @@ public class GameEditor : MonoBehaviour
     Stream s = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
     formatter.Serialize(s, _levelToSave);
     s.Close();
+
+    // Without this, files saved in the Resources folder directly won't be updated
+    // until Unity editor is refreshed (e.g. minimized/maximized)
+    #if UNITY_EDITOR
+    UnityEditor.AssetDatabase.Refresh();
+    #endif
   }
 
   void CreateNewLevel(int mapX, int mapY, int mapZ)

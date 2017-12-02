@@ -91,6 +91,7 @@ public class EditorLevel : LevelBase
       else if (wob is ExitZoneObject)
       {
         (wob as ExitZoneObject).ExitZoneToSave = item as SerializedExitZone;
+        //Debug.Log(item as SerializedExitZone);
       }
     }
   }

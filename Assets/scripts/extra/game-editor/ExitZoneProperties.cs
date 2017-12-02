@@ -15,7 +15,7 @@ public class ExitZoneProperties : BaseObjectProperties
 
   ExitZoneObject _zoneRef;
   public override void Init(WorldObjectBase gameObject)
-  {    
+  { 
     _zoneRef = gameObject as ExitZoneObject;
 
     LevelToLoad.text = _zoneRef.ExitZoneToSave.LevelNameToLoad;

@@ -73,11 +73,13 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
   IEnumerator LoadLevelRoutine(SerializedExitZone exitZone)
   { 
+    LoadingScreen.Instance.ProgressBar.value = 0.0f;
+
     yield return LoadingScreen.Instance.TakeScreenshotRoutine();
 
     LoadingScreen.Instance.ShowScreen();
 
-    //yield return new WaitForSeconds(1);
+    yield return new WaitForSeconds(0.25f);
 
     _levelMap = new EditorLevel(exitZone.LevelNameToLoad, exitZone.ArrivalMapPosition, exitZone.ArrivalCharacterAngle);
     _levelMap.LoadLevel();
