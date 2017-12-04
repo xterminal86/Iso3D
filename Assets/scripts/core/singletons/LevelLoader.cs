@@ -51,7 +51,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
   {
     GameObject holder = new GameObject("MapHolder");
     _levelMap.InstantiateLevel(holder.transform);
-    var hero = GameObject.Find("hero").GetComponent<HeroController3D>();
+    var hero = GameObject.Find("hero").GetComponentInChildren<HeroController3D>();
     hero.InitPlayerPosition(_levelMap.PlayerPos, _levelMap.PlayerRotation);
     CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);
   }
@@ -73,6 +73,9 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
   IEnumerator LoadLevelRoutine(SerializedExitZone exitZone)
   { 
+    // Without this game crashes after several zone transitions
+    System.GC.Collect();
+
     LoadingScreen.Instance.ProgressBar.value = 0.0f;
 
     yield return LoadingScreen.Instance.TakeScreenshotRoutine();
