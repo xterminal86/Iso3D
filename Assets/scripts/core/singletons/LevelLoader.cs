@@ -42,6 +42,8 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
   public void SceneLoadedHandler(Scene s, LoadSceneMode mode)
   {
+    Debug.Log("Level " + _levelMap.LevelName + " loaded");
+
     SceneManager.sceneLoaded -= LevelLoader.Instance.SceneLoadedHandler;
 
     InstantiateLevel();

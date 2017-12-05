@@ -88,6 +88,10 @@ public class EditorLevel : LevelBase
       {
         (wob as WallWorldObject).Init((item as SerializedWall).TextureName);
       }
+      else if (wob is RampWorldObject)
+      {
+        (wob as RampWorldObject).Init(item as SerializedRamp);
+      }
       else if (wob is ExitZoneObject)
       {
         (wob as ExitZoneObject).ExitZoneToSave = item as SerializedExitZone;

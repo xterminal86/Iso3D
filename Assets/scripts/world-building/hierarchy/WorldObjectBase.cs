@@ -6,4 +6,8 @@ public class WorldObjectBase : MonoBehaviour
 {
   [HideInInspector]
   public string PrefabName = string.Empty;
+
+  public virtual void Deselect()
+  {
+  }
 }

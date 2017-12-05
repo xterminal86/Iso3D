@@ -560,6 +560,8 @@ public class GameEditor : MonoBehaviour
     go.layer = layer;
   }
 
+  WorldObjectBase _currentlySelectedObject;
+
   Vector3 _selectedObjectCursorPosition = Vector3.zero;
   void TryToSelectObject()
   {
@@ -567,9 +569,15 @@ public class GameEditor : MonoBehaviour
     int mask = LayerMask.GetMask("EditorMapObject");
     if (Physics.Raycast(r.origin, r.direction, out _objectPlacementInfo, Mathf.Infinity, mask))
     {
-      var wo = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
-      SelectedObjectPropertiesWindow.SelectObject(wo);
-      _selectedObjectCursorPosition.Set(wo.transform.position.x, wo.transform.position.y + 0.01f, wo.transform.position.z);
+      // If we select different object of the same type we should "deselect" state of the currently selected one
+      if (_currentlySelectedObject != null)
+      {
+        _currentlySelectedObject.Deselect();
+      }
+
+      _currentlySelectedObject = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
+      SelectedObjectPropertiesWindow.SelectObject(_currentlySelectedObject);
+      _selectedObjectCursorPosition.Set(_currentlySelectedObject.transform.position.x, _currentlySelectedObject.transform.position.y + 0.01f, _currentlySelectedObject.transform.position.z);
       SelectedObjectCursor.transform.position = _selectedObjectCursorPosition;
       SelectedObjectCursor.SetActive(true);
     }
@@ -577,6 +585,8 @@ public class GameEditor : MonoBehaviour
     {
       SelectedObjectPropertiesWindow.DeselectObject();
       SelectedObjectCursor.SetActive(false);
+
+      _currentlySelectedObject = null;
     }
   }
 
@@ -1002,6 +1012,10 @@ public class GameEditor : MonoBehaviour
         (wo as ExitZoneObject).ExitZoneToSave = (item as SerializedExitZone);
         //Debug.Log((item as SerializedExitZone));
       }
+      else if (wo is RampWorldObject)
+      {
+        (wo as RampWorldObject).SerializedRampObject = (item as SerializedRamp);
+      }
       else
       {
         wo.PrefabName = item.PrefabName;
@@ -1044,6 +1058,13 @@ public class GameEditor : MonoBehaviour
         (wo as ExitZoneObject).ExitZoneToSave.WorldPosition.Set((wo as ExitZoneObject).transform.position);
         _levelToSave.Objects.Add((wo as ExitZoneObject).ExitZoneToSave);
         //Debug.Log((wo as ExitZoneObject).ExitZoneToSave);
+      }
+      else if (wo is RampWorldObject)
+      {        
+        (wo as RampWorldObject).SerializedRampObject.PrefabName = wo.PrefabName;
+        (wo as RampWorldObject).SerializedRampObject.Angle = wo.transform.eulerAngles.y;
+        (wo as RampWorldObject).SerializedRampObject.WorldPosition.Set(wo.transform.position);
+        _levelToSave.Objects.Add((wo as RampWorldObject).SerializedRampObject);
       }
       else
       {

@@ -15,6 +15,7 @@ public class SceneLoader : MonoBehaviour
     PrefabsManager.Instance.Initialize();
     CameraController.Instance.Initialize();
     LoadingScreen.Instance.Initialize();
+    LevelLoader.Instance.Initialize();
 
     LevelLoader.Instance.LoadLevel(LevelToLoad);
 
