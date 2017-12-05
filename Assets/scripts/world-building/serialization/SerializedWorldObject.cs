@@ -7,7 +7,6 @@ using UnityEngine;
 public class SerializedWorldObject
 {
   public SerializedVector3 WorldPosition = SerializedVector3.Zero;
-
-  public float Angle = 0.0f;
+  public float RotationAngle = 0.0f;
   public string PrefabName = string.Empty;
 }

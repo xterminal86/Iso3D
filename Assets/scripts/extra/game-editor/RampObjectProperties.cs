@@ -8,27 +8,29 @@ public class RampObjectProperties : BaseObjectProperties
   public Toggle LeftColliderToggle;
   public Toggle RightColliderToggle;
 
-  RampWorldObject _ramp;
+  RampWorldObject _rampBehaviour;
+  SerializedRamp _rampSerialized;
   public override void Init(WorldObjectBase gameObject)
   {
-    _ramp = gameObject as RampWorldObject;
+    _rampBehaviour = gameObject as RampWorldObject;
+    _rampSerialized = _rampBehaviour.SerializedObject as SerializedRamp;
 
-    LeftColliderToggle.isOn = _ramp.SerializedRampObject.LeftColliderOn;
-    RightColliderToggle.isOn = _ramp.SerializedRampObject.RightColliderOn;
+    LeftColliderToggle.isOn = _rampSerialized.LeftColliderOn;
+    RightColliderToggle.isOn = _rampSerialized.RightColliderOn;
 
-    _ramp.EditorLeftWall.SetActive(LeftColliderToggle.isOn);
-    _ramp.EditorRightWall.SetActive(RightColliderToggle.isOn);
+    _rampBehaviour.EditorLeftWall.SetActive(LeftColliderToggle.isOn);
+    _rampBehaviour.EditorRightWall.SetActive(RightColliderToggle.isOn);
   }
 
   public void LeftToggleHandler()
   {
-    _ramp.SerializedRampObject.LeftColliderOn = LeftColliderToggle.isOn;
-    _ramp.EditorLeftWall.SetActive(LeftColliderToggle.isOn);
+    _rampSerialized.LeftColliderOn = LeftColliderToggle.isOn;
+    _rampBehaviour.EditorLeftWall.SetActive(LeftColliderToggle.isOn);
   }
 
   public void RightToggleHandler()
   {
-    _ramp.SerializedRampObject.RightColliderOn = RightColliderToggle.isOn;
-    _ramp.EditorRightWall.SetActive(RightColliderToggle.isOn);
+    _rampSerialized.RightColliderOn = RightColliderToggle.isOn;
+    _rampBehaviour.EditorRightWall.SetActive(RightColliderToggle.isOn);
   }
 }

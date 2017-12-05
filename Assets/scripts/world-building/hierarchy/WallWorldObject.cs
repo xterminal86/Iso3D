@@ -13,8 +13,22 @@ public class WallWorldObject : WorldObjectBase
   [HideInInspector]
   public string TextureName = string.Empty;
 
-  public void Init(string textureName)
+  void Awake()
   {
+    SerializedObject = new SerializedWall();
+
+    PrefabName = GlobalConstants.WallTemplatePrefabName;
+  }
+
+  public override void Init(SerializedWorldObject serializedObject)
+  {
+    SerializedObject = serializedObject;
+
+    ApplyTexture((serializedObject as SerializedWall).TextureName);
+  }
+
+  public void ApplyTexture(string textureName)
+  {    
     TextureName = textureName;
     string tex1path = string.Format("textures/{0}", textureName);
     _texture = Resources.Load<Texture2D>(tex1path);

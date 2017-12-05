@@ -180,7 +180,7 @@ public class GameEditor : MonoBehaviour
       _previewObject = Instantiate(prefab, Cursor.transform.position, Quaternion.identity);
       _previewObject.name = _selectedListObject;
       _previewObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-      _previewObject.GetComponent<WallWorldObject>().Init(_selectedListObject);
+      _previewObject.GetComponent<WallWorldObject>().ApplyTexture(_selectedListObject);
     }
   }
 
@@ -636,8 +636,7 @@ public class GameEditor : MonoBehaviour
     var go = Instantiate(_previewObject);
     var wob = go.GetComponent<WorldObjectBase>();
     if (wob is WallWorldObject)
-    {
-      (wob as WallWorldObject).PrefabName = GlobalConstants.WallTemplatePrefabName;
+    {      
       (wob as WallWorldObject).TextureName = _previewObject.name;
     }
     else
@@ -964,7 +963,7 @@ public class GameEditor : MonoBehaviour
     int number = 0;
     foreach (var item in _levelToSave.Objects)
     {
-      output += string.Format("{0} - {1} {2} {3}\n", number + 1, item.PrefabName, item.Angle, item.WorldPosition);
+      output += string.Format("{0} - {1} {2} {3}\n", number + 1, item.PrefabName, item.RotationAngle, item.WorldPosition);
       number++;
     }
 
@@ -997,29 +996,19 @@ public class GameEditor : MonoBehaviour
     foreach (var item in _levelToSave.Objects)
     {
       pos = item.WorldPosition;
-      go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, new Vector3(pos.X, pos.Y, pos.Z), Quaternion.Euler(0.0f, item.Angle, 0.0f));
+      go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, new Vector3(pos.X, pos.Y, pos.Z), Quaternion.Euler(0.0f, item.RotationAngle, 0.0f));
       go.transform.parent = InstantiatedObjectsHolder;
       go.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
       Util.SetGameObjectLayer(go, LayerMask.NameToLayer("EditorMapObject"), true);
       var wo = go.GetComponent<WorldObjectBase>();
-      if (wo is WallWorldObject)
-      {
-        (wo as WallWorldObject).PrefabName = GlobalConstants.WallTemplatePrefabName;
-        (wo as WallWorldObject).Init((item as SerializedWall).TextureName);
-      }
-      else if (wo is ExitZoneObject)
-      {
-        (wo as ExitZoneObject).ExitZoneToSave = (item as SerializedExitZone);
-        //Debug.Log((item as SerializedExitZone));
-      }
-      else if (wo is RampWorldObject)
-      {
-        (wo as RampWorldObject).SerializedRampObject = (item as SerializedRamp);
-      }
-      else
-      {
-        wo.PrefabName = item.PrefabName;
-      }
+
+      wo.SerializedObject = item;
+
+      wo.PrefabName = item.PrefabName;
+      wo.RotationAngle = item.RotationAngle;
+      wo.WorldPosition.Set(item.WorldPosition.X, item.WorldPosition.Y, item.WorldPosition.Z);
+
+      wo.Init(item);
     }
   }
 
@@ -1044,36 +1033,24 @@ public class GameEditor : MonoBehaviour
     foreach (Transform t in InstantiatedObjectsHolder)
     {
       WorldObjectBase wo = t.gameObject.GetComponent<WorldObjectBase>();
+
+      // Wall is not edited via properties window
+
       if (wo is WallWorldObject)
-      {
-        SerializedWall sw = new SerializedWall();
-        sw.PrefabName = (wo as WallWorldObject).PrefabName;
-        sw.TextureName = (wo as WallWorldObject).TextureName;
-        sw.Angle = (wo as WallWorldObject).transform.eulerAngles.y;
-        sw.WorldPosition.Set((wo as WallWorldObject).transform.position);
-        _levelToSave.Objects.Add(sw);
-      }
-      else if (wo is ExitZoneObject)
       {        
-        (wo as ExitZoneObject).ExitZoneToSave.WorldPosition.Set((wo as ExitZoneObject).transform.position);
-        _levelToSave.Objects.Add((wo as ExitZoneObject).ExitZoneToSave);
-        //Debug.Log((wo as ExitZoneObject).ExitZoneToSave);
+        (wo.SerializedObject as SerializedWall).TextureName = (wo as WallWorldObject).TextureName;
       }
-      else if (wo is RampWorldObject)
-      {        
-        (wo as RampWorldObject).SerializedRampObject.PrefabName = wo.PrefabName;
-        (wo as RampWorldObject).SerializedRampObject.Angle = wo.transform.eulerAngles.y;
-        (wo as RampWorldObject).SerializedRampObject.WorldPosition.Set(wo.transform.position);
-        _levelToSave.Objects.Add((wo as RampWorldObject).SerializedRampObject);
-      }
-      else
-      {
-        SerializedWorldObject swo = new SerializedWorldObject();
-        swo.PrefabName = (wo as WorldObjectBase).PrefabName;
-        swo.Angle = (wo as WorldObjectBase).transform.eulerAngles.y;
-        swo.WorldPosition.Set((wo as WorldObjectBase).transform.position);
-        _levelToSave.Objects.Add(swo);
-      }
+
+      // Common properties for all
+
+      wo.RotationAngle = wo.transform.eulerAngles.y;
+      wo.WorldPosition.Set(wo.transform.position.x, wo.transform.position.y, wo.transform.position.z);
+
+      wo.SerializedObject.PrefabName = wo.PrefabName;
+      wo.SerializedObject.RotationAngle = wo.RotationAngle;
+      wo.SerializedObject.WorldPosition.Set(wo.WorldPosition);
+
+      _levelToSave.Objects.Add(wo.SerializedObject);
     }
 
     var formatter = new BinaryFormatter();

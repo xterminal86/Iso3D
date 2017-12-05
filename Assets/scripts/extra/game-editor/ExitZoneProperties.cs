@@ -18,11 +18,13 @@ public class ExitZoneProperties : BaseObjectProperties
   { 
     _zoneRef = gameObject as ExitZoneObject;
 
-    LevelToLoad.text = _zoneRef.ExitZoneToSave.LevelNameToLoad;
-    PosX.text = _zoneRef.ExitZoneToSave.ArrivalMapPosition.X.ToString();
-    PosY.text = _zoneRef.ExitZoneToSave.ArrivalMapPosition.Y.ToString();
-    PosZ.text = _zoneRef.ExitZoneToSave.ArrivalMapPosition.Z.ToString();
-    RotationAngle.text = _zoneRef.ExitZoneToSave.ArrivalCharacterAngle.ToString();
+    SerializedExitZone ez = _zoneRef.SerializedObject as SerializedExitZone;
+
+    LevelToLoad.text = ez.LevelNameToLoad;
+    PosX.text = ez.ArrivalMapPosition.X.ToString();
+    PosY.text = ez.ArrivalMapPosition.Y.ToString();
+    PosZ.text = ez.ArrivalMapPosition.Z.ToString();
+    RotationAngle.text = ez.ArrivalCharacterAngle.ToString();
   }
 
   public void OnEndEditHandler()
@@ -35,9 +37,11 @@ public class ExitZoneProperties : BaseObjectProperties
     arrivalPosition.Y = string.IsNullOrEmpty(PosY.text) ? 0 : int.Parse(PosY.text);
     arrivalPosition.Z = string.IsNullOrEmpty(PosZ.text) ? 0 : int.Parse(PosZ.text);
 
-    _zoneRef.ExitZoneToSave.ArrivalCharacterAngle = angle;
-    _zoneRef.ExitZoneToSave.ArrivalMapPosition.Set(arrivalPosition);
-    _zoneRef.ExitZoneToSave.LevelNameToLoad = LevelToLoad.text;
+    SerializedExitZone ez = _zoneRef.SerializedObject as SerializedExitZone;
+
+    ez.ArrivalCharacterAngle = angle;
+    ez.ArrivalMapPosition.Set(arrivalPosition);
+    ez.LevelNameToLoad = LevelToLoad.text;
 
     GameEditorScript.EnteringText = false;
   }

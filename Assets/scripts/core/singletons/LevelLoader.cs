@@ -42,7 +42,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
   public void SceneLoadedHandler(Scene s, LoadSceneMode mode)
   {
-    Debug.Log("Level " + _levelMap.LevelName + " loaded");
+    //Debug.Log("Level " + _levelMap.LevelName + " loaded");
 
     SceneManager.sceneLoaded -= LevelLoader.Instance.SceneLoadedHandler;
 
@@ -64,12 +64,12 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     get { return _isNewLevelBeingLoaded; }
   }
 
-  public void LoadNewLevel(SerializedExitZone exitZone)
+  public void LoadNewLevel(SerializedWorldObject exitZone)
   {
     if (!_isNewLevelBeingLoaded)
     {
       _isNewLevelBeingLoaded = true;
-      StartCoroutine(LoadLevelRoutine(exitZone));
+      StartCoroutine(LoadLevelRoutine(exitZone as SerializedExitZone));
     }
   }
 

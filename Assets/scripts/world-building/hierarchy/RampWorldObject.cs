@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RampWorldObject : WorldObjectBase 
-{
-  [HideInInspector]
-  public SerializedRamp SerializedRampObject = new SerializedRamp();
-
+{  
   public GameObject EditorLeftWall;
   public GameObject EditorRightWall;
 
   public BoxCollider LeftCollider;
   public BoxCollider RightCollider;
+  public BoxCollider BackCollider;
 
-  public void Init(SerializedRamp ramp)
+  void Awake()
   {
-    SerializedRampObject = ramp;
+    SerializedObject = new SerializedRamp();
+  }
 
-    LeftCollider.enabled = SerializedRampObject.LeftColliderOn;
-    RightCollider.enabled = SerializedRampObject.RightColliderOn;
+  public override void Init(SerializedWorldObject serializedObject)
+  {
+    SerializedObject = serializedObject;
+
+    SerializedRamp ramp = serializedObject as SerializedRamp;
+
+    LeftCollider.enabled = ramp.LeftColliderOn;
+    RightCollider.enabled = ramp.RightColliderOn;
   }
 
   public override void Deselect()

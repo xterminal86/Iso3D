@@ -81,22 +81,11 @@ public class EditorLevel : LevelBase
       z = (int)item.WorldPosition.Z;
 
       pos = item.WorldPosition;
-      go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, _level[x, y, z].WorldCoordinates, Quaternion.Euler(0.0f, item.Angle, 0.0f));
+      go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, _level[x, y, z].WorldCoordinates, Quaternion.Euler(0.0f, item.RotationAngle, 0.0f));
       go.transform.parent = objectsHolder;
       WorldObjectBase wob = go.GetComponent<WorldObjectBase>();
-      if (wob is WallWorldObject)
-      {
-        (wob as WallWorldObject).Init((item as SerializedWall).TextureName);
-      }
-      else if (wob is RampWorldObject)
-      {
-        (wob as RampWorldObject).Init(item as SerializedRamp);
-      }
-      else if (wob is ExitZoneObject)
-      {
-        (wob as ExitZoneObject).ExitZoneToSave = item as SerializedExitZone;
-        //Debug.Log(item as SerializedExitZone);
-      }
+
+      wob.Init(item);
     }
   }
 }
