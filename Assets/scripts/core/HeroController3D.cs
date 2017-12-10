@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class HeroController3D : MonoBehaviour 
 {
@@ -175,7 +176,7 @@ public class HeroController3D : MonoBehaviour
   Quaternion _toRotation = Quaternion.identity;
   void ProcessWalk()
   {
-    if (Input.GetMouseButton(0))
+    if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
     {
       _initializeIdleAnimationsOnce = true;
 
