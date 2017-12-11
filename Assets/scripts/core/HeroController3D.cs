@@ -22,6 +22,8 @@ public class HeroController3D : MonoBehaviour
   public Vector3 SwordBackPosition = new Vector3(0.0f, 1.75f, -1.1f);
   public Vector3 SwordBackAngles = new Vector3(0.0f, 0.0f, -40.0f);
 
+  CharData _heroData = new CharData("Delia", 20, 10, 15, 5, 30);
+
   void Start()
   {
     AnimationComponent["running"].speed = 1.5f;

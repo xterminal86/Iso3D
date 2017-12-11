@@ -66,7 +66,13 @@ public class Int2
     set { _y = value; }
     get { return _y; }
   }
-  
+
+  public void Set(int x, int y)
+  {
+    _x = x;
+    _y = y;
+  }
+
   public override string ToString()
   {
     return string.Format("[Int2: X={0}, Y={1}]", X, Y);

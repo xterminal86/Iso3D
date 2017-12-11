@@ -5,20 +5,17 @@ using UnityEngine;
 public class MainScene : MonoBehaviour 
 {
   public GameObject PortraitGui;
-  public GameObject LowerPanel;
   public GameObject UnityBar;
 
-  public void LowerPanelMouseEnter()
+  public void MouseEnterHandler()
   {
     PortraitGui.SetActive(true);
-    LowerPanel.SetActive(true);
     UnityBar.SetActive(true);
   }
 
-  public void LowerPanelMouseExit()
+  public void MouseExitHandler()
   {
     PortraitGui.SetActive(false);
-    LowerPanel.SetActive(false);
     UnityBar.SetActive(false);
   }
 }
