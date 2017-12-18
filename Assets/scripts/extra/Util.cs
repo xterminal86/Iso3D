@@ -26,9 +26,13 @@ public static class Util
   }
 }
 
+[Serializable]
 public class Int2
 {
+  [SerializeField]
   int _x = 0;
+
+  [SerializeField]
   int _y = 0;
   
   public Int2()
