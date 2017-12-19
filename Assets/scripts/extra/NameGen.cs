@@ -13,7 +13,7 @@ public class NameGen : MonoBehaviour
 
   List<string> _endings = new List<string>()
   {
-    "IA", "YA", "ND", "NT", "SH", "RSH", "EY", "URGH", "URG"
+    "IA", "YA", "ND", "NT", "SH", "RSH", "EY", "URGH", "URG", "STAN"
   };
 
   void Awake()
