@@ -6,6 +6,11 @@ public class MusicLoopTest : MonoBehaviour
 {
   public AudioSource MusicTrack;
 
+  // battle1: loopstart = 326663
+  // tavern1: loopStart = 18847
+
+  int _loopStartSamples = 18847; 
+
 	void Start() 
   {
     // To create endless loop first we play original track until the end
@@ -16,9 +21,9 @@ public class MusicLoopTest : MonoBehaviour
     GameObject loopSegment = new GameObject("Loop Fragment");
     AudioSource loop = loopSegment.AddComponent<AudioSource>();
     loop.playOnAwake = false;
-    float[] samples = new float[(MusicTrack.clip.samples - 326663) * MusicTrack.clip.channels];
-    MusicTrack.clip.GetData(samples, 326663);
-    loop.clip = AudioClip.Create(MusicTrack.clip.name + "-loop", MusicTrack.clip.samples - 326663, MusicTrack.clip.channels, MusicTrack.clip.frequency, false);
+    float[] samples = new float[(MusicTrack.clip.samples - _loopStartSamples) * MusicTrack.clip.channels];
+    MusicTrack.clip.GetData(samples, _loopStartSamples);
+    loop.clip = AudioClip.Create(MusicTrack.clip.name + "-loop", MusicTrack.clip.samples - _loopStartSamples, MusicTrack.clip.channels, MusicTrack.clip.frequency, false);
     loop.clip.SetData(samples, 0);
     loop.loop = true;
     loop.PlayScheduled(AudioSettings.dspTime + MusicTrack.clip.length);
