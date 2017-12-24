@@ -68,6 +68,7 @@ public class EditorLevel : LevelBase
       z = (int)item.WorldPosition.Z;
 
       pos = item.WorldPosition;
+
       go = PrefabsManager.Instance.InstantiatePrefab(GlobalConstants.FloorTemplatePrefabName, _level[x, y, z].WorldCoordinates, Quaternion.identity);
       go.transform.parent = objectsHolder;
       FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
@@ -81,6 +82,11 @@ public class EditorLevel : LevelBase
       z = (int)item.WorldPosition.Z;
 
       pos = item.WorldPosition;
+
+      // World objects are have their own world position, which is serialized in the editor.
+
+      _level[x, y, z].WorldCoordinates.Set(pos.X * GlobalConstants.ScaleFactor, pos.Y * GlobalConstants.ScaleFactor, pos.Z * GlobalConstants.ScaleFactor);
+
       go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, _level[x, y, z].WorldCoordinates, Quaternion.Euler(0.0f, item.RotationAngle, 0.0f));
       go.transform.parent = objectsHolder;
       WorldObjectBase wob = go.GetComponent<WorldObjectBase>();

@@ -91,6 +91,8 @@ public class LevelBase
         {
           _level[x, y, z] = new MapBlock();
           _level[x, y, z].ArrayCoordinates.Set(x, y, z);
+
+          // Assume tile's world coordinates as default
           _level[x, y, z].WorldCoordinates.Set(x * GlobalConstants.ScaleFactor, y * GlobalConstants.ScaleFactor, z * GlobalConstants.ScaleFactor);
         }
       }
