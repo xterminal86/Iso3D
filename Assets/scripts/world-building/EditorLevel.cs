@@ -90,6 +90,7 @@ public class EditorLevel : LevelBase
       go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, _level[x, y, z].WorldCoordinates, Quaternion.Euler(0.0f, item.RotationAngle, 0.0f));
       go.transform.parent = objectsHolder;
       WorldObjectBase wob = go.GetComponent<WorldObjectBase>();
+      wob.RotationAngle = item.RotationAngle;
 
       wob.Init(item);
     }
