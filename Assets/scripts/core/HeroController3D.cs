@@ -222,6 +222,8 @@ public class HeroController3D : MonoBehaviour
 
         //RigidbodyComponent.rotation = Quaternion.AngleAxis(angle360, Vector3.up);
       }
+
+      RigidbodyComponent.rotation = Quaternion.Slerp(_fromRotation, _toRotation, Time.smoothDeltaTime * GlobalConstants.HeroRotateSpeed);
     }
     else
     {
@@ -303,6 +305,5 @@ public class HeroController3D : MonoBehaviour
   void FixedUpdate()
   {
     RigidbodyComponent.MovePosition(RigidbodyComponent.position + _direction * (_heroMoveSpeed * Time.fixedDeltaTime));
-    RigidbodyComponent.rotation = Quaternion.Slerp(_fromRotation, _toRotation, Time.fixedDeltaTime * GlobalConstants.HeroRotateSpeed);
   }
 }
