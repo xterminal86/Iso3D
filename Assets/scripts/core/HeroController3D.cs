@@ -110,7 +110,8 @@ public class HeroController3D : MonoBehaviour
       RigidbodyComponent.useGravity = true;
     }
 
-    _debugText += string.Format("speed: {0}\n", _heroMoveSpeed);
+    _debugText += string.Format("World position: [{0}]\n", RigidbodyComponent.position);
+    _debugText += string.Format("Direction: {0}\n", _direction);
 
     DebugForm.Instance.DebugText.text = _debugText;
 
@@ -201,7 +202,7 @@ public class HeroController3D : MonoBehaviour
         Vector3 v1 = new Vector3(0.0f, 0.0f, 1.0f);
         float angle = Vector3.Angle(v1, dir);
         float angle360 = Mathf.Sign(Vector3.Cross(v1, dir).y) < 0 ? (360 - angle) % 360 : angle;
-        _debugText += string.Format("[{0}] {1} {2:N1} {3:N1}\n", RigidbodyComponent.position, dir, angle, angle360);
+        _debugText += string.Format("Angle: {0:N1} Angle 360: {1:N1}\n", angle, angle360);
 
         _direction = dir;
 
@@ -226,7 +227,7 @@ public class HeroController3D : MonoBehaviour
       RigidbodyComponent.rotation = Quaternion.Slerp(_fromRotation, _toRotation, Time.smoothDeltaTime * GlobalConstants.HeroRotateSpeed);
     }
     else
-    {
+    {      
       _direction = Vector3.zero;
       PlayIdleAnimation();
     }
@@ -237,6 +238,8 @@ public class HeroController3D : MonoBehaviour
     transform.position = Util.MapToWorldCoordinates(new Vector3(pos.X, pos.Y, pos.Z));
     _fromRotation = Quaternion.AngleAxis(rotationAngle, Vector3.up);
     _toRotation = _fromRotation;
+
+    transform.rotation = _fromRotation;
 
     // When we modify position, cloth interprets it as a rapid movement, so it makes cloak
     // go haywire. Thus, we first move the player and then activate cloak.
@@ -303,7 +306,7 @@ public class HeroController3D : MonoBehaviour
   }
 
   void FixedUpdate()
-  {
+  {    
     RigidbodyComponent.MovePosition(RigidbodyComponent.position + _direction * (_heroMoveSpeed * Time.fixedDeltaTime));
   }
 }
