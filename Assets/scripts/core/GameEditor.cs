@@ -48,7 +48,7 @@ public class GameEditor : MonoBehaviour
 
   public ObjectPropertiesWindow SelectedObjectPropertiesWindow;
 
-  float _objectsPlacementGridSize = 0.25f;
+  float _objectsPlacementGridSize = 0.5f;
 
   Vector3 _mousePos = Vector3.zero;
 
