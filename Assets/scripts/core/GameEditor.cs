@@ -48,7 +48,7 @@ public class GameEditor : MonoBehaviour
 
   public ObjectPropertiesWindow SelectedObjectPropertiesWindow;
 
-  float _objectsPlacementGridSize = 0.5f;
+  float _objectsPlacementGridSize = 0.25f;
 
   Vector3 _mousePos = Vector3.zero;
 
@@ -657,7 +657,7 @@ public class GameEditor : MonoBehaviour
     Ray r = RaycastCamera.ScreenPointToRay(_mousePos);
     int mask = LayerMask.GetMask("EditorMapObject");
     if (Physics.Raycast(r.origin, r.direction, out _objectPlacementInfo, Mathf.Infinity, mask))          
-    {
+    {      
       var res = _objectPlacementInfo.collider.GetComponentInParent<WorldObjectBase>();
       Destroy(res.gameObject);
     }

@@ -14,12 +14,21 @@ public static class Util
 
   public static void SetGameObjectLayer(GameObject go, int layer, bool recursive = false)
   {
-    go.layer = layer;
+    // Some objects may contain additional layers (e.g. door zones colliders are on separate layers) or belong to special layer.
+    // If we change everything to one layer in game editor we might sometimes hit those layers with raycast
+    // which can cause wrong behaviour (e.g. door gets deleted when it shouldn't because we hit one of those zones collider)
+    // Also stairs belong to special layer because they are handled specially.
+
+    string layerName = LayerMask.LayerToName(go.layer);
+    if (layerName == "Default" || layerName == "Ramp")
+    {
+      go.layer = layer;
+    }
 
     if (recursive)
     {
       foreach (Transform t in go.transform)
-      {
+      {        
         SetGameObjectLayer(t.gameObject, layer, recursive);
       }
     }
