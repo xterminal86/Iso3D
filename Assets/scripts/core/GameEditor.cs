@@ -74,6 +74,8 @@ public class GameEditor : MonoBehaviour
     _map = new LevelBase(10, 2, 10);
     _levelToSave.Init(10, 2, 10);
 
+    _cameraZoom = RaycastCamera.transform.localPosition.z;
+
     _cameraPos.Set(_map.MapX / 2.0f, 0.0f, _map.MapZ / 2.0f);
     CameraHolder.position = _cameraPos;
 
@@ -601,7 +603,8 @@ public class GameEditor : MonoBehaviour
       return;
     }
 
-    _map.Level[x, y, z].SkipTransitionCheckHere = true;
+    //_map.Level[x, y, z].SkipTransitionCheckHere = true;
+    _map.Level[x, y, z].AllowBlending = true;
     _map.Level[x, y, z].FloorBehaviourRef.PathMarker.SetActive(true);
   }
 
@@ -616,7 +619,8 @@ public class GameEditor : MonoBehaviour
       return;
     }
 
-    _map.Level[x, y, z].SkipTransitionCheckHere = false;
+    //_map.Level[x, y, z].SkipTransitionCheckHere = false;
+    _map.Level[x, y, z].AllowBlending = false;
     _map.Level[x, y, z].FloorBehaviourRef.PathMarker.SetActive(false);
   }
 
@@ -706,21 +710,28 @@ public class GameEditor : MonoBehaviour
   Vector3 _cameraPos = Vector3.zero;
   float _cameraSpeed = 10.0f;
   float _actualCameraSpeed = 0.0f;
-  float _cameraZoomSpeed = 0.3f;
+  float _cameraZoomSpeed = 10.0f;
   float _cameraRotationY = 45.0f;
   float _cameraRotationSpeed = 100.0f;
+  float _cameraZoom = 0.0f;
+  Vector3 _cameraZoomVector3 = Vector3.zero;
   void ControlCamera()
-  {
-    /*
-    if (Input.GetAxis("Mouse ScrollWheel") < 0)
+  {    
+    if (Input.GetKey(KeyCode.F))
     {
-      RaycastCamera.orthographicSize += _cameraZoomSpeed;
+      //RaycastCamera.orthographicSize += _cameraZoomSpeed;
+      _cameraZoom += _cameraZoomSpeed * Time.deltaTime;
     }
-    else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+    else if (Input.GetKey(KeyCode.R))
     {
-      RaycastCamera.orthographicSize -= _cameraZoomSpeed;
+      //RaycastCamera.orthographicSize -= _cameraZoomSpeed;
+      _cameraZoom -= _cameraZoomSpeed * Time.deltaTime;
     }
-    */
+
+    _cameraZoom = Mathf.Clamp(_cameraZoom, -30.0f, -1.0f);
+
+    _cameraZoomVector3.z = _cameraZoom;
+    RaycastCamera.transform.localPosition = _cameraZoomVector3;
 
     float cos = Mathf.Cos(_cameraRotationY * Mathf.Deg2Rad);
     float sin = Mathf.Sin(_cameraRotationY * Mathf.Deg2Rad);
@@ -984,8 +995,9 @@ public class GameEditor : MonoBehaviour
       FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
       _map.Level[(int)pos.X, (int)pos.Y, (int)pos.Z].Texture1Name = item.TextureName;
       _map.Level[(int)pos.X, (int)pos.Y, (int)pos.Z].SkipTransitionCheckHere = item.SkipTransitionCheck;
+      _map.Level[(int)pos.X, (int)pos.Y, (int)pos.Z].AllowBlending = item.AllowBlending;
 
-      if (item.SkipTransitionCheck)
+      if (item.AllowBlending)
       {
         fb.PathMarker.SetActive(true);
       }
@@ -1026,6 +1038,7 @@ public class GameEditor : MonoBehaviour
       SerializedFloor sf = new SerializedFloor();
       sf.TextureName = fb.BlockRef.Texture1Name;
       sf.SkipTransitionCheck = fb.BlockRef.SkipTransitionCheckHere;
+      sf.AllowBlending = fb.BlockRef.AllowBlending;
       sf.WorldPosition.Set(fb.transform.position);
       _levelToSave.FloorTiles.Add(sf);
     }

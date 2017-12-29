@@ -11,6 +11,16 @@ public class CameraController : MonoSingleton<CameraController>
 
   public GameObject MouseMap;
 
+  [Range(-30.0f, -5.0f)]    
+  public float CameraDistanceToChar = -20.0f;
+
+  void Awake()
+  {
+    Vector3 pos = InnerCameraHolder.localPosition;
+    pos.z = CameraDistanceToChar;
+    InnerCameraHolder.localPosition = pos;
+  }
+
   Vector3 _mouseMapPosition = Vector3.zero;
   GameObject _mouseMap;
   public void SetupCamera(Vector3 playerPos)
@@ -28,7 +38,7 @@ public class CameraController : MonoSingleton<CameraController>
   }
 
   float _angle = 45.0f;
-  float _posZ = -12.0f;
+  float _posZ = -20.0f;
   float _cameraRotationY = 45.0f;
   float _cameraRotationSpeed = 100.0f;
   void Update()
@@ -42,30 +52,11 @@ public class CameraController : MonoSingleton<CameraController>
       _cameraRotationY -= Time.smoothDeltaTime * _cameraRotationSpeed;
     }
 
-    float wheel = Input.GetAxis("Mouse ScrollWheel");
-
-    if (wheel < 0.0f)
-    {
-      _angle += 5.0f;
-      _posZ -= 0.5f;
-    }
-    else if (wheel > 0.0f)
-    {
-      _angle -= 5.0f;
-      _posZ += 0.5f;
-    }
-
-    _angle = Mathf.Clamp(_angle, 5.0f, 45.0f);
-    _posZ = Mathf.Clamp(_posZ, -12.0f, -5.0f);
-
-    Vector3 pos = InnerCameraHolder.localPosition;
     Vector3 angles = CameraHolder.eulerAngles;
 
-    pos.z = _posZ;
     angles.x = _angle;
     angles.y = _cameraRotationY;
 
-    InnerCameraHolder.localPosition = pos;
     CameraHolder.eulerAngles = angles;
   }
 }

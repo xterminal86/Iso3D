@@ -107,7 +107,9 @@ public class LevelBase
       {
         for (int z = 1; z < _mapZ - 1; z++)
         {          
-          if (_level[x, y, z].SkipTransitionCheckHere || string.IsNullOrEmpty(_level[x, y, z].Texture1Name))
+          if (!_level[x, y, z].AllowBlending 
+            || _level[x, y, z].SkipTransitionCheckHere 
+            || string.IsNullOrEmpty(_level[x, y, z].Texture1Name))
           {
             continue;
           }

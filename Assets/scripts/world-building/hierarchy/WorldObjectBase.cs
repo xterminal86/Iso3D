@@ -32,4 +32,11 @@ public class WorldObjectBase : MonoBehaviour
   public virtual void Init(SerializedWorldObject serializedObject)
   {
   }
+
+  /// <summary>
+  /// Do something else after all initialization has completed
+  /// </summary>
+  public virtual void PostProcess()
+  {
+  }
 }

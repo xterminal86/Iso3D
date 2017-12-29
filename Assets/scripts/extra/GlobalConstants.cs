@@ -14,8 +14,8 @@ public class MyUnityEvent : UnityEvent<HighlightableControl>
 public static class GlobalConstants 
 { 
   public const float ScaleFactor = 2.0f;
-  public const float HeroMoveSpeed = 1.5f;
-  public const float HeroRunSpeed = 4.0f;
+  public const float HeroMoveSpeed = 2.0f;
+  public const float HeroRunSpeed = 6.0f;
   public const float HeroRotateSpeed = 10.0f;
 
   public const string FloorTemplatePrefabName = "1.floor-template";

@@ -10,6 +10,7 @@ public class MapBlock
   public string Texture1Name = string.Empty;
   public string Texture2Name = string.Empty;
 
+  public bool AllowBlending = false;
   public bool SkipTransitionCheckHere = false;
 
   public FloorBehaviour FloorBehaviourRef;

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 14912c89196d43846ab3e7da3c78b053
-timeCreated: 1514414861
+guid: 7adb753ca1186ed4ba71c8b2404aa53e
+timeCreated: 1514552404
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -16,8 +16,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: None__GrayBrick_png
-    second: {fileID: 2100000, guid: 42683f518a148c649ba982188213845a, type: 2}
+      name: None__cobblestone_png
+    second: {fileID: 2100000, guid: 73df889a8056dc34db3c2690da24d239, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -67,10 +67,10 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

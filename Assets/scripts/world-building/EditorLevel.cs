@@ -50,6 +50,7 @@ public class EditorLevel : LevelBase
 
       _level[x, y, z].Texture1Name = item.TextureName;
       _level[x, y, z].SkipTransitionCheckHere = item.SkipTransitionCheck;
+      _level[x, y, z].AllowBlending = item.AllowBlending;
     }
   }
 
@@ -70,9 +71,12 @@ public class EditorLevel : LevelBase
       pos = item.WorldPosition;
 
       go = PrefabsManager.Instance.InstantiatePrefab(GlobalConstants.FloorTemplatePrefabName, _level[x, y, z].WorldCoordinates, Quaternion.identity);
-      go.transform.parent = objectsHolder;
-      FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
-      fb.Init(_level[x, y, z]);
+      if (go != null)
+      {
+        go.transform.parent = objectsHolder;
+        FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
+        fb.Init(_level[x, y, z]);
+      }
     }
 
     foreach (var item in _loadedLevel.Objects)
@@ -88,11 +92,15 @@ public class EditorLevel : LevelBase
       _level[x, y, z].WorldCoordinates.Set(pos.X * GlobalConstants.ScaleFactor, pos.Y * GlobalConstants.ScaleFactor, pos.Z * GlobalConstants.ScaleFactor);
 
       go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, _level[x, y, z].WorldCoordinates, Quaternion.Euler(0.0f, item.RotationAngle, 0.0f));
-      go.transform.parent = objectsHolder;
-      WorldObjectBase wob = go.GetComponent<WorldObjectBase>();
-      wob.RotationAngle = item.RotationAngle;
+      if (go != null)
+      {
+        go.transform.parent = objectsHolder;
+        WorldObjectBase wob = go.GetComponent<WorldObjectBase>();
+        wob.RotationAngle = item.RotationAngle;
 
-      wob.Init(item);
+        wob.Init(item);
+        wob.PostProcess();
+      }
     }
   }
 }
