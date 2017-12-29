@@ -10,6 +10,8 @@ public class SerializedLevel
   public List<SerializedFloor> FloorTiles = new List<SerializedFloor>();
   public List<SerializedWorldObject> Objects = new List<SerializedWorldObject>();
 
+  public MapProperties MapPropertiesObject = new MapProperties();
+
   public void Init(int mapX, int mapY, int mapZ)
   {
     Clear();
@@ -23,6 +25,14 @@ public class SerializedLevel
     Objects.Clear();
   }
 }
+
+[Serializable]
+public struct MapProperties
+{
+  public string MapName;
+  public string MapAuthor;
+  public string MapComments;
+};
 
 [Serializable]
 public class SerializedVector3

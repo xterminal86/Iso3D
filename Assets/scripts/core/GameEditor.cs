@@ -30,6 +30,10 @@ public class GameEditor : MonoBehaviour
   public CustomControlGroup ListOfItems;
   public HighlightableText TextItemPrefab;
 
+  public InputField MapNameInput;
+  public InputField MapAuthorInput;
+  public InputField MapCommentsInput;
+
   public InputField NewMapSizeX;
   public InputField NewMapSizeY;
   public InputField NewMapSizeZ;
@@ -45,6 +49,7 @@ public class GameEditor : MonoBehaviour
   public CustomControlGroup ModesGroup;
 
   public GameObject NewMapWindow;
+  public GameObject MapPropertiesWindow;
 
   public ObjectPropertiesWindow SelectedObjectPropertiesWindow;
 
@@ -891,6 +896,38 @@ public class GameEditor : MonoBehaviour
   public void CloseNewMapWindow()
   {
     NewMapWindow.SetActive(false);
+  }
+
+  public void MapPropertiesWindowOpen()
+  {
+    EnteringText = true;
+
+    UpdateMapProperties();
+
+    MapPropertiesWindow.SetActive(true);
+  }
+
+  public void MapPropertiesWindowClose()
+  {
+    EnteringText = false;
+    
+    SetMapProperties();
+
+    MapPropertiesWindow.SetActive(false);
+  }
+
+  void SetMapProperties()
+  {
+    _levelToSave.MapPropertiesObject.MapName = MapNameInput.text;
+    _levelToSave.MapPropertiesObject.MapAuthor = MapAuthorInput.text;
+    _levelToSave.MapPropertiesObject.MapComments = MapCommentsInput.text;
+  }
+
+  void UpdateMapProperties()
+  {
+    MapNameInput.text = _levelToSave.MapPropertiesObject.MapName;
+    MapAuthorInput.text = _levelToSave.MapPropertiesObject.MapAuthor;
+    MapCommentsInput.text = _levelToSave.MapPropertiesObject.MapComments;
   }
 
   public void NewMapHandler()
