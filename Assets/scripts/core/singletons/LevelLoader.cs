@@ -31,7 +31,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
         SerializedExitZone zone = new SerializedExitZone();
 
         zone.LevelNameToLoad = "level";
-        zone.ArrivalMapPosition.Set(0, 0, 0);
+        zone.ArrivalMapPosition.Set(6, 0, 9);
         zone.ArrivalCharacterAngle = 0.0f;
 
         _levelMap = new EditorLevel(zone.LevelNameToLoad, zone.ArrivalMapPosition, zone.ArrivalCharacterAngle);
