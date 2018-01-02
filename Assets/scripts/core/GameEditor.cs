@@ -1173,7 +1173,7 @@ public class GameEditor : MonoBehaviour
         break;
 
       case 3:
-        _infoBarText = "Place walls (Q E to rotate)";
+        _infoBarText = "Place quad walls (Q E to rotate)";
         break;
 
       case 4:
