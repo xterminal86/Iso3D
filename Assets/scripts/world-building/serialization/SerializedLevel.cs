@@ -32,6 +32,8 @@ public struct MapProperties
   public string MapName;
   public string MapAuthor;
   public string MapComments;
+
+  public bool DirectionalLightEnabled;
 };
 
 [Serializable]

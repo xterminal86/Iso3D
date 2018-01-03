@@ -13,7 +13,6 @@ public class EditorLevel : LevelBase
     _playerRotation = angle;
   }
 
-  SerializedLevel _loadedLevel;
   public override void LoadLevel()
   { 
     TextAsset ta = Resources.Load(_levelName) as TextAsset;

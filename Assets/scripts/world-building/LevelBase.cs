@@ -28,6 +28,12 @@ public class LevelBase
     get { return _mapZ; }
   }
 
+  protected SerializedLevel _loadedLevel;
+  public SerializedLevel LoadedLevel
+  {
+    get { return _loadedLevel; }
+  }
+
   protected string _levelName = string.Empty;
   public string LevelName
   {

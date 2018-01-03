@@ -33,6 +33,7 @@ public class GameEditor : MonoBehaviour
   public InputField MapNameInput;
   public InputField MapAuthorInput;
   public InputField MapCommentsInput;
+  public Toggle DirectionalLightEnabled;
 
   public InputField NewMapSizeX;
   public InputField NewMapSizeY;
@@ -921,6 +922,7 @@ public class GameEditor : MonoBehaviour
     _levelToSave.MapPropertiesObject.MapName = MapNameInput.text;
     _levelToSave.MapPropertiesObject.MapAuthor = MapAuthorInput.text;
     _levelToSave.MapPropertiesObject.MapComments = MapCommentsInput.text;
+    _levelToSave.MapPropertiesObject.DirectionalLightEnabled = DirectionalLightEnabled.isOn;
   }
 
   void UpdateMapProperties()
@@ -928,6 +930,7 @@ public class GameEditor : MonoBehaviour
     MapNameInput.text = _levelToSave.MapPropertiesObject.MapName;
     MapAuthorInput.text = _levelToSave.MapPropertiesObject.MapAuthor;
     MapCommentsInput.text = _levelToSave.MapPropertiesObject.MapComments;
+    DirectionalLightEnabled.isOn = _levelToSave.MapPropertiesObject.DirectionalLightEnabled;
   }
 
   public void NewMapHandler()

@@ -50,7 +50,10 @@ public class LevelLoader : MonoSingleton<LevelLoader>
   }
 
   public void InstantiateLevel()
-  {
+  { 
+    var sun = GameObject.Find("Sun");
+    sun.SetActive(_levelMap.LoadedLevel.MapPropertiesObject.DirectionalLightEnabled);
+
     GameObject holder = new GameObject("MapHolder");
     _levelMap.InstantiateLevel(holder.transform);
     var hero = GameObject.Find("hero").GetComponentInChildren<HeroController3D>();
@@ -91,6 +94,8 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
     var res = SceneManager.LoadSceneAsync("main");
 
+    SceneManager.sceneLoaded += LevelLoader.Instance.SceneLoadedHandler;
+
     res.allowSceneActivation = false;
 
     while (!res.isDone)
@@ -107,7 +112,7 @@ public class LevelLoader : MonoSingleton<LevelLoader>
     }
 
     LoadingScreen.Instance.HideScreen();
-    InstantiateLevel();
+    //InstantiateLevel();
 
     _isNewLevelBeingLoaded = false;
 
