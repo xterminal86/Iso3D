@@ -1002,6 +1002,9 @@ public class GameEditor : MonoBehaviour
     SelectedObjectCursor.SetActive(false);
 
     CurrentLevelName.text = path;
+
+    // Calling just UpdateMapProperties() instead leads to exception (most likely non critical, but still)
+    MapPropertiesWindowOpen();
   }
 
   void PrintLevelInfo(string path)
@@ -1069,6 +1072,8 @@ public class GameEditor : MonoBehaviour
     // If we save a level, then after loading the _levelToSave.FloorTiles and _levelToSave.Objects lists will be populated.
     // If we don't clear them after loading, there will be duplicate objects during save, because we will traverse
     // the scene transform and put the same object again in the list.
+
+    SetMapProperties();
 
     _levelToSave.Init(_map.MapX, _map.MapY, _map.MapZ);
 

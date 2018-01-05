@@ -23,6 +23,11 @@ public class SerializedLevel
     LevelSize = Int3.Zero;
     FloorTiles.Clear();
     Objects.Clear();
+
+    MapPropertiesObject.MapName = string.Empty;
+    MapPropertiesObject.MapAuthor = string.Empty;
+    MapPropertiesObject.MapComments = string.Empty;
+    MapPropertiesObject.DirectionalLightEnabled = true;
   }
 }
 
