@@ -20,7 +20,7 @@ public static class Util
     // Also stairs belong to special layer because they are handled specially.
 
     string layerName = LayerMask.LayerToName(go.layer);
-    if (layerName == "Default" || layerName == "Ramp" || layerName == "ExitZone" || layerName == "IgnoreRaycast")
+    if (layerName == "Default" || layerName == "Ramp" || layerName == "ExitZone" || layerName == "IgnorePlayer")
     {
       go.layer = layer;
     }
