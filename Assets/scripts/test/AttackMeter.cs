@@ -6,49 +6,71 @@ using UnityEngine.UI;
 public class AttackMeter : MonoBehaviour 
 {
   public Image AttackMeterImage;
+  public Text TimerText;
+  public Text SpeedText;
 
   float _meterMaxWidth = 980.0f;
 
   public int Speed = 100;
 
-  float _speedMeter = 0.0f;
-  float _speedToReach = 0.0f;
-  float _meterFillFraction = 0.0f;
+  double _timeToReach = 0.0;
+  double _meterFillFraction = 0.0;
+  double _normalizedTime = 0.0f;
   void Start()
-  {
-    // Assuming Speed = 100 -> 5 seconds
-    _meterFillFraction = (float)Speed / 100.0f;
-    _speedToReach = 5.0f / _meterFillFraction;
+  { 
+    SpeedText.text = string.Format("Speed: {0}", Speed);
 
-    InvokeRepeating("FillMeter", 0.0f, _meterFillFraction); 
+    _timeToReach = GlobalConstants.InGameTick / ((Speed * GlobalConstants.InGameTick) / (double)GlobalConstants.CharacterMaxSpeed);  
+
+    Debug.Log("Time to reach with speed " + Speed + " = " + _timeToReach + " seconds");
   }
 
-  void FillMeter()
+  void TimerEvent()
   {
-    if (_speedMeter >= _speedToReach)
-    {
-      Debug.Log("reached");
-      return;
-    }
-
-    _speedMeter += _meterFillFraction;
-
-    Debug.Log(_speedMeter);
+    Debug.Log("reached");
   }
 
+  double _tickTimer = 0;
+  double _deltaTimer = 0.0;
   bool _isPaused = false;
+  bool _isReached = false;
+  Vector2 _meterSize = Vector2.one;
   void Update()
   {
+    if (!_isPaused && !_isReached)
+    {
+      _deltaTimer += Time.deltaTime;
+
+      if (_deltaTimer > GlobalConstants.InGameTick)
+      {
+        _tickTimer += GlobalConstants.InGameTick;
+        _deltaTimer = 0.0;
+      }
+
+      if (_tickTimer > _timeToReach)
+      {
+        _tickTimer = _timeToReach;
+
+        _isReached = true;
+        TimerEvent();
+      }
+
+      _normalizedTime = _tickTimer / _timeToReach;
+      _meterFillFraction = _normalizedTime * _meterMaxWidth;
+
+      _meterSize.Set((float)_meterFillFraction, 80.0f);
+      AttackMeterImage.rectTransform.sizeDelta = _meterSize;
+    }
+        
     if (!_isPaused && Input.GetMouseButtonDown(0))
     {
-      Debug.Log("paused");
       _isPaused = true;
-      CancelInvoke();
     }
     else if (_isPaused && Input.GetMouseButtonDown(1))      
     {
       _isPaused = false;
-      InvokeRepeating("FillMeter", 0.0f, _meterFillFraction); 
     }
+
+    TimerText.text = string.Format("{0:F3}", _tickTimer);
   }
 }

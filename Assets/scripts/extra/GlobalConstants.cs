@@ -13,6 +13,10 @@ public class MyUnityEvent : UnityEvent<HighlightableControl>
 
 public static class GlobalConstants 
 { 
+  public const int CharacterMaxSpeed = 300;
+
+  public const double InGameTick = 0.01;
+
   public const float ScaleFactor = 2.0f;
   public const float HeroMoveSpeed = 2.0f;
   public const float HeroRunSpeed = 6.0f;
