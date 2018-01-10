@@ -8,6 +8,7 @@ public class AttackMeter : MonoBehaviour
   public Image AttackMeterImage;
   public Text TimerText;
   public Text SpeedText;
+  public List<Image> PhaseMarkers;
 
   float _meterMaxWidth = 980.0f;
 
@@ -16,18 +17,21 @@ public class AttackMeter : MonoBehaviour
   double _timeToReach = 0.0;
   double _meterFillFraction = 0.0;
   double _normalizedTime = 0.0f;
+  double _meterPhase = 0.0;
+  List<double> _phases = new List<double>();
   void Start()
   { 
     SpeedText.text = string.Format("Speed: {0}", Speed);
 
     _timeToReach = GlobalConstants.InGameTick / ((Speed * GlobalConstants.InGameTick) / (double)GlobalConstants.CharacterMaxSpeed);  
 
-    Debug.Log("Time to reach with speed " + Speed + " = " + _timeToReach + " seconds");
-  }
+    _meterPhase = _timeToReach / 3.0;
 
-  void TimerEvent()
-  {
-    Debug.Log("reached");
+    _phases.Add(_meterPhase);
+    _phases.Add(_meterPhase * 2.0);
+    _phases.Add(_timeToReach);
+
+    Debug.Log("Time to reach with speed " + Speed + " = " + _timeToReach + " seconds");
   }
 
   double _tickTimer = 0;
@@ -35,6 +39,7 @@ public class AttackMeter : MonoBehaviour
   bool _isPaused = false;
   bool _isReached = false;
   Vector2 _meterSize = Vector2.one;
+  int _phaseToCheck = 0;
   void Update()
   {
     if (!_isPaused && !_isReached)
@@ -46,15 +51,23 @@ public class AttackMeter : MonoBehaviour
         _tickTimer += GlobalConstants.InGameTick;
         _deltaTimer = 0.0;
       }
-
-      if (_tickTimer > _timeToReach)
+          
+      if (_tickTimer > _phases[_phaseToCheck])
       {
-        _tickTimer = _timeToReach;
+        Debug.Log(string.Format("Phase {0} reached", _phases[_phaseToCheck]));
 
-        _isReached = true;
-        TimerEvent();
+        PhaseMarkers[_phaseToCheck].color = Color.yellow;
+
+        _phaseToCheck++;
+
+        if (_phaseToCheck == _phases.Count)
+        {
+          _tickTimer = _timeToReach;
+
+          _isReached = true;
+        }
       }
-
+        
       _normalizedTime = _tickTimer / _timeToReach;
       _meterFillFraction = _normalizedTime * _meterMaxWidth;
 

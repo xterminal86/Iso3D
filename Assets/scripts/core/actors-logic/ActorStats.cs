@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class ActorStats 
 {
-  // Each stat holds current and maximum value
+  // Each stat holds current and unmodified value
 
   public Int2 StrengthStat = new Int2();
   public Int2 DefenceStat = new Int2();

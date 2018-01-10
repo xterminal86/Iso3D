@@ -6,11 +6,12 @@ public class MusicLoopTest : MonoBehaviour
 {
   public AudioSource MusicTrack;
 
-  // battle1: loopstart = 326663
-  // tavern1: loopStart = 18847
-  // tavern2: loopStart = 96369
+  // battle1:       loopstart = 326663
+  // tavern1:       loopStart = 18847
+  // tavern2:       loopStart = 96369
+  // battle-test:   loopStart = 129778
 
-  int _loopStartSamples = 96369; // 18847; 
+  int _loopStartSamples = 129778;
 
 	void Start() 
   {
