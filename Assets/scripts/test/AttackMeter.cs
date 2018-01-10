@@ -23,7 +23,7 @@ public class AttackMeter : MonoBehaviour
   { 
     SpeedText.text = string.Format("Speed: {0}", Speed);
 
-    _timeToReach = GlobalConstants.InGameTick / ((Speed * GlobalConstants.InGameTick) / (double)GlobalConstants.CharacterMaxSpeed);  
+    _timeToReach = (double)GlobalConstants.CharacterMaxSpeed / (double)Speed;  
 
     _meterPhase = _timeToReach / 3.0;
 
@@ -35,7 +35,6 @@ public class AttackMeter : MonoBehaviour
   }
 
   double _tickTimer = 0;
-  double _deltaTimer = 0.0;
   bool _isPaused = false;
   bool _isReached = false;
   Vector2 _meterSize = Vector2.one;
@@ -44,13 +43,7 @@ public class AttackMeter : MonoBehaviour
   {
     if (!_isPaused && !_isReached)
     {
-      _deltaTimer += Time.deltaTime;
-
-      if (_deltaTimer > GlobalConstants.InGameTick)
-      {
-        _tickTimer += GlobalConstants.InGameTick;
-        _deltaTimer = 0.0;
-      }
+      _tickTimer += Time.deltaTime;
           
       if (_tickTimer > _phases[_phaseToCheck])
       {

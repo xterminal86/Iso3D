@@ -28,7 +28,7 @@ public class ActorLogicBase : MonoBehaviour
     _battleControllerTickTimer = 0.0;
     _attackPhase = 0;
 
-    _timeToReach = GlobalConstants.InGameTick / ((ActorStatsObject.SpeedStat.Y * GlobalConstants.InGameTick) / (double)GlobalConstants.CharacterMaxSpeed);
+    _timeToReach = (double)GlobalConstants.CharacterMaxSpeed / (double)ActorStatsObject.SpeedStat.Y;
 
     double firstPhaseTime = _timeToReach / 3.0;
 
