@@ -11,7 +11,7 @@ public class CustomControlGroup : MonoBehaviour
     if (Controls.Count != 0)
     {
       ResetControls();
-      Controls[0].Select();
+      //Controls[0].Select();
     }
   }
 

@@ -90,8 +90,6 @@ public class ActorLogicBase : MonoBehaviour
 
   public void OnCharacterSelect()
   {
-    Debug.Log(_attackPhase);
-
     if (_attackPhase > 0)
     {
       BattleController.Instance.PauseBattle(this);

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class HighlightableButton : HighlightableControl 
 {
   public GameObject NormalSprite;
   public GameObject HighlightedSprite;
+  public GameObject SelectedSprite;
 
-  public void OnMouseEnter()
+  public override void OnMouseEnter(BaseEventData data)
   {
     if (Selected)
     {
@@ -17,13 +19,16 @@ public class HighlightableButton : HighlightableControl
 
     Highlighted = true;
 
-    HighlightSound.Play();
+    if (HighlightSound != null)
+    {
+      HighlightSound.Play();
+    }
 
-    NormalSprite.gameObject.SetActive(false);
-    HighlightedSprite.gameObject.SetActive(true);
+    NormalSprite.SetActive(false);
+    HighlightedSprite.SetActive(true);
   }
 
-  public void OnMouseExit()
+  public override void OnMouseExit(BaseEventData data)
   {
     if (Selected)
     {
@@ -32,19 +37,22 @@ public class HighlightableButton : HighlightableControl
 
     Highlighted = false;
 
-    HighlightedSprite.gameObject.SetActive(false);
-    NormalSprite.gameObject.SetActive(true);
+    HighlightedSprite.SetActive(false);
+    NormalSprite.SetActive(true);
   }
 
-  public void OnMouseDown()
+  public override void OnMouseDown(BaseEventData data)
   {
     if (!Enabled || !Highlighted)
     {
       return;
     }
 
-    int index = Random.Range(0, ClickSounds.Count);
-    ClickSounds[index].Play();
+    if (ClickSounds.Count > 0)
+    {
+      int index = Random.Range(0, ClickSounds.Count);
+      ClickSounds[index].Play();
+    }
 
     if (Selected)
     {      
@@ -73,16 +81,18 @@ public class HighlightableButton : HighlightableControl
   {
     base.ResetStatus();
 
-    NormalSprite.gameObject.SetActive(true);
-    HighlightedSprite.gameObject.SetActive(false);
+    NormalSprite.SetActive(true);
+    HighlightedSprite.SetActive(false);
+    SelectedSprite.SetActive(false);
   }
 
   public override void Select()
   {
     Selected = true;
 
-    NormalSprite.gameObject.SetActive(false);
-    HighlightedSprite.gameObject.SetActive(true);
+    NormalSprite.SetActive(false);
+    HighlightedSprite.SetActive(false);
+    SelectedSprite.SetActive(true);
 
     if (MethodToCall != null)
     {

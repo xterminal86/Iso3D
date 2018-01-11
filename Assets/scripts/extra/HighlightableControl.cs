@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(EventTrigger))]
 public class HighlightableControl : MonoBehaviour 
 {
   public CustomControlGroup ControlGroupRef;
@@ -31,4 +33,7 @@ public class HighlightableControl : MonoBehaviour
 
   public virtual void Select() { }
   public virtual void SetStatus(bool isEnabled) { }
+  public virtual void OnMouseDown(BaseEventData data) { }
+  public virtual void OnMouseEnter(BaseEventData data) { }
+  public virtual void OnMouseExit(BaseEventData data) { }
 }

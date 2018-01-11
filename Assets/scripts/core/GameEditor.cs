@@ -93,7 +93,7 @@ public class GameEditor : MonoBehaviour
     CreateFloorGrid();
     CreateObjectsGrid();
 
-    UpdatePage(_floorTextureNames);
+    UpdatePage(null);
   }
 
   void CreateMapGrid()
@@ -993,7 +993,7 @@ public class GameEditor : MonoBehaviour
     _levelToSave = (SerializedLevel)formatter.Deserialize(stream);  
     stream.Close();
 
-    //PrintLevelInfo(path);
+    PrintLevelInfo(path);
 
     CreateNewLevel(_levelToSave.LevelSize.X, _levelToSave.LevelSize.Y, _levelToSave.LevelSize.Z);
     InstantiateLoadedLevel();
@@ -1013,7 +1013,8 @@ public class GameEditor : MonoBehaviour
 
     output += string.Format("Floor tiles {0}\n", _levelToSave.FloorTiles.Count);
     output += string.Format("Objects {0}\n", _levelToSave.Objects.Count);
-
+    output += string.Format("Map Info:\nAuthor: {0}\nComments: {1}\nSun: {2}\n", _levelToSave.MapPropertiesObject.MapAuthor, _levelToSave.MapPropertiesObject.MapComments, _levelToSave.MapPropertiesObject.DirectionalLightEnabled);
+ 
     int number = 0;
     foreach (var item in _levelToSave.Objects)
     {
@@ -1073,9 +1074,9 @@ public class GameEditor : MonoBehaviour
     // If we don't clear them after loading, there will be duplicate objects during save, because we will traverse
     // the scene transform and put the same object again in the list.
 
-    SetMapProperties();
-
     _levelToSave.Init(_map.MapX, _map.MapY, _map.MapZ);
+
+    SetMapProperties();
 
     foreach (Transform t in InstantiatedFloorHolder)
     {

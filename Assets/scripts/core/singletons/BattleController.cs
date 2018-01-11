@@ -10,8 +10,6 @@ public class BattleController : MonoSingleton<BattleController>
   [HideInInspector]
   public List<ActorLogicBase> EnemiesParticipating = new List<ActorLogicBase>();
 
-  double _deltaTimer = 0.0;
-
   bool _isPaused = false;
   public bool IsPaused
   {
@@ -33,8 +31,6 @@ public class BattleController : MonoSingleton<BattleController>
 
     PlayersParticipating = players;
     EnemiesParticipating = enemies;
-
-    _deltaTimer = 0.0;
 
     PrepareActors();
 
@@ -58,8 +54,6 @@ public class BattleController : MonoSingleton<BattleController>
 
     if (!_isPaused && _isInBattle)
     {
-      _deltaTimer += Time.deltaTime;
-
       UpdateActors(Time.deltaTime);
     }
   }
