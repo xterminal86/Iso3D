@@ -8,6 +8,7 @@ using UnityEditor;
 [CustomEditor(typeof(HighlightableControl), true)]
 public class HighlightableControlInspector : Editor 
 {
+  /*
   void Awake()
   {
     HighlightableControl hc = target as HighlightableControl;
@@ -37,5 +38,20 @@ public class HighlightableControlInspector : Editor
       entry.callback.AddListener(call);
       et.triggers.Add(entry);
     }
+  }
+  */
+
+  public override void OnInspectorGUI()
+  {
+    HighlightableControl hc = target as HighlightableControl;
+
+    if (hc == null) return;
+
+    if (GUILayout.Button("Assign"))
+    {
+      hc.AssignEventMethods();
+    }
+
+    DrawDefaultInspector();
   }
 }

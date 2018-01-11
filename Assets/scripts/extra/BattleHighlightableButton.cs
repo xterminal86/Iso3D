@@ -18,8 +18,6 @@ public class BattleHighlightableButton : HighlightableButton
       ClickSounds[index].Play();
     }
 
-    ControlGroupRef.ResetControls();
-
     HighlightedSprite.SetActive(false);
     SelectedSprite.SetActive(true);
 

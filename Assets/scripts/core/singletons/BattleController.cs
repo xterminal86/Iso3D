@@ -85,13 +85,14 @@ public class BattleController : MonoSingleton<BattleController>
   ActorLogicBase _selectedActor;
   public void PauseBattle(ActorLogicBase causer)
   {
+    Debug.Log(causer + " paused");
     _selectedActor = causer;
     _isPaused = true;
   }
 
   public void ResumeBattle()
   {
-    _selectedActor.PortraitButton.ControlGroupRef.ResetControls();
+    PlayersParticipating[0].PortraitButton.ControlGroupRef.ResetControls();;
     _isPaused = false;
   }
 }

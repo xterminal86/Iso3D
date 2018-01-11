@@ -8,7 +8,6 @@ public class ActorLogicBase : MonoBehaviour
   public Animation PortraitAnimationComponent;
   public Image AttackMeterImage;
   public List<GameObject> AttackPhaseMarkers;
-  public HighlightableControl PortraitButton;
 
   [HideInInspector]
   public ActorStats ActorStatsObject = new ActorStats();
@@ -20,8 +19,19 @@ public class ActorLogicBase : MonoBehaviour
 
   protected List<double> _attackPhasesTimes = new List<double>();
 
-  public void PrepareForBattle()
+  BattleHighlightableButton _portraitButton;
+  public BattleHighlightableButton PortraitButton
   {
+    get { return _portraitButton; }
+  }
+
+  void Awake()
+  {
+    _portraitButton = GetComponent<BattleHighlightableButton>();
+  }
+
+  public void PrepareForBattle()
+  {    
     _attackPhasesTimes.Clear();
 
     _maxAttackPhaseReached = false;
@@ -90,9 +100,18 @@ public class ActorLogicBase : MonoBehaviour
 
   public void OnCharacterSelect()
   {
-    if (_attackPhase > 0)
+    if (_attackPhase > 0 && !BattleController.Instance.IsPaused)
     {
+      _portraitButton.OnMouseDown(null);
       BattleController.Instance.PauseBattle(this);
+    }
+  }
+
+  public void OnCharacterHighlight()
+  {
+    if (_attackPhase > 0 && !BattleController.Instance.IsPaused)
+    {
+      _portraitButton.OnMouseEnter(null);
     }
   }
 
