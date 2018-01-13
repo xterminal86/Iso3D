@@ -20,15 +20,4 @@ public class ActorStats
   public ActorStats()
   {    
   }
-
-  public void Init(string name, int str, int def, int spd, int sen, int hp)
-  {
-    CharName = name;
-
-    StrengthStat.Set(str, str);
-    DefenceStat.Set(def, def);
-    SpeedStat.Set(spd, spd);
-    UnityPoints.Set(sen, sen);
-    Hitpoints.Set(hp, hp);
-  }
 }

@@ -1,15 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ActorLogicBase : MonoBehaviour 
-{
-  public Animation PortraitAnimationComponent;
-  public Image AttackMeterImage;
-  public List<GameObject> AttackPhaseMarkers;
-
-  [HideInInspector]
+public class ActorLogicBase
+{  
   public ActorStats ActorStatsObject = new ActorStats();
 
   protected double _battleControllerTickTimer = 0.0;
@@ -19,15 +13,14 @@ public class ActorLogicBase : MonoBehaviour
 
   protected List<double> _attackPhasesTimes = new List<double>();
 
-  BattleHighlightableButton _portraitButton;
-  public BattleHighlightableButton PortraitButton
-  {
-    get { return _portraitButton; }
-  }
-
-  void Awake()
-  {
-    _portraitButton = GetComponent<BattleHighlightableButton>();
+  public void InitStats(string charName, Int2 str, Int2 def, Int2 speed, Int2 hp, Int2 up)
+  {    
+    ActorStatsObject.CharName = charName;
+    ActorStatsObject.StrengthStat.Set(str.X, str.Y);
+    ActorStatsObject.DefenceStat.Set(def.X, def.Y);
+    ActorStatsObject.SpeedStat.Set(speed.X, speed.Y);
+    ActorStatsObject.Hitpoints.Set(hp.X, hp.Y);
+    ActorStatsObject.UnityPoints.Set(up.X, up.Y);
   }
 
   public void PrepareForBattle()
@@ -48,26 +41,13 @@ public class ActorLogicBase : MonoBehaviour
   }
 
   public void StandDown()
-  {
-    foreach (var marker in AttackPhaseMarkers)
-    {
-      marker.SetActive(false);
-    }
-
+  {    
     _attackPhasesTimes.Clear();
 
     _maxAttackPhaseReached = false;
     _battleControllerTickTimer = 0.0;
     _attackPhase = 0;
-
-    _meterSize.Set(0.0f, _meterDefaultHeight);
-    AttackMeterImage.rectTransform.sizeDelta = _meterSize;
   }
-
-  const float _meterMaxWidth = 93.0f;
-  const float _meterDefaultHeight = 4.0f;
-
-  Vector2 _meterSize = Vector2.zero;
 
   public void BattleUpdate(double dt)
   {
@@ -80,8 +60,6 @@ public class ActorLogicBase : MonoBehaviour
 
     if (_battleControllerTickTimer > _attackPhasesTimes[_attackPhase])
     {
-      AttackPhaseMarkers[_attackPhase].SetActive(true);
-
       _attackPhase++;
 
       if (_attackPhase == _attackPhasesTimes.Count)
@@ -90,19 +68,12 @@ public class ActorLogicBase : MonoBehaviour
         _maxAttackPhaseReached = true;
       }
     }
-
-    double _normalizedTime = _battleControllerTickTimer / _timeToReach;
-    double _meterFillFraction = _normalizedTime * _meterMaxWidth;
-
-    _meterSize.Set((float)_meterFillFraction, _meterDefaultHeight);
-    AttackMeterImage.rectTransform.sizeDelta = _meterSize;
   }
 
   public void OnCharacterSelect()
   {
     if (_attackPhase > 0 && !BattleController.Instance.IsPaused)
     {
-      _portraitButton.OnMouseDown(null);
       BattleController.Instance.PauseBattle(this);
     }
   }
@@ -111,7 +82,6 @@ public class ActorLogicBase : MonoBehaviour
   {
     if (_attackPhase > 0 && !BattleController.Instance.IsPaused)
     {
-      _portraitButton.OnMouseEnter(null);
     }
   }
 

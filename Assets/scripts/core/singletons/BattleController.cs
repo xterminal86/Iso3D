@@ -92,7 +92,6 @@ public class BattleController : MonoSingleton<BattleController>
 
   public void ResumeBattle()
   {
-    PlayersParticipating[0].PortraitButton.ControlGroupRef.ResetControls();;
     _isPaused = false;
   }
 }

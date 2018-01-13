@@ -4,7 +4,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BattleHighlightableButton : HighlightableButton 
-{
+{  
+  public override void OnMouseEnter(BaseEventData data)
+  {
+    
+  }
+
+  public override void OnMouseExit(BaseEventData data)
+  {    
+  }
+
   public override void OnMouseDown(BaseEventData data)
   {
     if (!Enabled || !Highlighted || BattleController.Instance.IsPaused || Selected)
@@ -31,6 +40,14 @@ public class BattleHighlightableButton : HighlightableButton
     {
       Selected = true;
       MethodToCall0.Invoke();
+    }
+  }
+
+  void Update()
+  {
+    if (Highlighted)
+    {
+      OnMouseEnter(null);
     }
   }
 }

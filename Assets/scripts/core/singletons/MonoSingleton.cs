@@ -78,8 +78,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
   }
 
   /// <summary>
-  /// When user types MySingleton.Instance.Initialize() the Instance property
-  /// will be called, which does the actual initialization.
+  /// Because of lazy instantiation you should call this method on all singletons at some sort of entry point.
   /// </summary>
   public virtual void Initialize()
   {
