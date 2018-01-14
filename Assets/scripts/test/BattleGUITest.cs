@@ -7,11 +7,15 @@ public class BattleGUITest : MonoBehaviour
 {
   public Text InfoText;
 
-  public List<ActorLogicBase> Players;
-
   void Start()
   {
     InfoText.text = "Press 'Space' to begin battle, 'Enter' to end it";
+
+    PartyController.Instance.Initialize();
+
+    PartyController.Instance.AddToParty("Delia");
+    PartyController.Instance.AddToParty("Ibernia");
+    PartyController.Instance.AddToParty("Shijima");
 
     BattleController.Instance.Initialize();
   }
@@ -21,7 +25,7 @@ public class BattleGUITest : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Space))
     {
       InfoText.text = "Battle started!";
-      BattleController.Instance.BeginBattle(Players, null);
+      BattleController.Instance.BeginBattle();
     }
     else if (Input.GetKeyDown(KeyCode.Return))
     {

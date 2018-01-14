@@ -2,50 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActorLogicBase
+public class ActorLogicBase : MonoBehaviour
 {  
-  public ActorStats ActorStatsObject = new ActorStats();
+  public ActorStats ActorStatsObject;
 
-  protected double _battleControllerTickTimer = 0.0;
-  protected double _timeToReach = 0.0;
-  protected int _attackPhase = 0;
-  protected bool _maxAttackPhaseReached = false;
-
-  protected List<double> _attackPhasesTimes = new List<double>();
-
-  public void InitStats(string charName, Int2 str, Int2 def, Int2 speed, Int2 hp, Int2 up)
-  {    
-    ActorStatsObject.CharName = charName;
-    ActorStatsObject.StrengthStat.Set(str.X, str.Y);
-    ActorStatsObject.DefenceStat.Set(def.X, def.Y);
-    ActorStatsObject.SpeedStat.Set(speed.X, speed.Y);
-    ActorStatsObject.Hitpoints.Set(hp.X, hp.Y);
-    ActorStatsObject.UnityPoints.Set(up.X, up.Y);
+  protected double _battleTimer = 0.0;
+  public double BattleTimer
+  {
+    get { return _battleTimer; }
   }
 
-  public void PrepareForBattle()
-  {    
-    _attackPhasesTimes.Clear();
+  protected double _attackTimeToReach = 0.0;
+  public double AttackTimeToReach
+  {
+    get { return _attackTimeToReach; }
+  }
 
+  protected double _attackTimeNormalized = 0.0;
+  public double AttackTimeNormalized
+  {
+    get { return _attackTimeNormalized; }
+  }
+
+  protected int _attackPhase = 0;
+  public int AttackPhase
+  {
+    get { return _attackPhase; }
+  }
+
+  List<double> _attackPhasesTimes = new List<double>();
+  public List<double> AttackPhasesTimes
+  {
+    get { return _attackPhasesTimes; }
+  }
+
+  protected bool _maxAttackPhaseReached = false;
+
+  public bool IsInParty = false;
+
+  public void PrepareForBattle()
+  {        
     _maxAttackPhaseReached = false;
-    _battleControllerTickTimer = 0.0;
+    _battleTimer = 0.0;
     _attackPhase = 0;
 
-    _timeToReach = (double)GlobalConstants.CharacterMaxSpeed / (double)ActorStatsObject.SpeedStat.Y;
+    _attackPhasesTimes.Clear();
 
-    double firstPhaseTime = _timeToReach / 3.0;
+    _attackTimeToReach = (double)GlobalConstants.CharacterMaxSpeed / (double)ActorStatsObject.Speed.Y;
+
+    double firstPhaseTime = _attackTimeToReach / 3.0;
 
     _attackPhasesTimes.Add(firstPhaseTime);
     _attackPhasesTimes.Add(firstPhaseTime * 2.0);
-    _attackPhasesTimes.Add(_timeToReach);
+    _attackPhasesTimes.Add(_attackTimeToReach);
   }
 
   public void StandDown()
   {    
-    _attackPhasesTimes.Clear();
-
     _maxAttackPhaseReached = false;
-    _battleControllerTickTimer = 0.0;
+    _battleTimer = 0.0;
     _attackPhase = 0;
   }
 
@@ -56,33 +71,25 @@ public class ActorLogicBase
       return;
     }
 
-    _battleControllerTickTimer += dt;
+    _battleTimer += dt;
 
-    if (_battleControllerTickTimer > _attackPhasesTimes[_attackPhase])
+    if (_battleTimer > _attackPhasesTimes[_attackPhase])
     {
       _attackPhase++;
 
       if (_attackPhase == _attackPhasesTimes.Count)
       {        
-        _battleControllerTickTimer = _timeToReach;
+        _battleTimer = _attackTimeToReach;
         _maxAttackPhaseReached = true;
       }
     }
+
+    _attackTimeNormalized = _battleTimer / _attackTimeToReach;
   }
 
-  public void OnCharacterSelect()
+  public void PrintStats()
   {
-    if (_attackPhase > 0 && !BattleController.Instance.IsPaused)
-    {
-      BattleController.Instance.PauseBattle(this);
-    }
-  }
-
-  public void OnCharacterHighlight()
-  {
-    if (_attackPhase > 0 && !BattleController.Instance.IsPaused)
-    {
-    }
+    Debug.Log(ActorStatsObject.ToString());
   }
 
   public virtual void UseSkill(int skillIndex)

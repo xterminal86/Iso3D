@@ -47,7 +47,7 @@ public class AttackMeter : MonoBehaviour
           
       if (_tickTimer > _phases[_phaseToCheck])
       {
-        Debug.Log(string.Format("Phase {0} reached", _phases[_phaseToCheck]));
+        Debug.Log(string.Format("Phase time {0} reached", _phases[_phaseToCheck]));
 
         PhaseMarkers[_phaseToCheck].color = Color.yellow;
 

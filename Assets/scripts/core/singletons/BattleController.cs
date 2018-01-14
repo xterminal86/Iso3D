@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class BattleController : MonoSingleton<BattleController> 
 {
-  [HideInInspector]
-  public List<ActorLogicBase> PlayersParticipating = new List<ActorLogicBase>();
+  public List<BattleHighlightableButton> PortraitButtons = new List<BattleHighlightableButton>();
 
   [HideInInspector]
   public List<ActorLogicBase> EnemiesParticipating = new List<ActorLogicBase>();
@@ -22,15 +21,12 @@ public class BattleController : MonoSingleton<BattleController>
     get { return _isInBattle; }
   }
 
-  public void BeginBattle(List<ActorLogicBase> players, List<ActorLogicBase> enemies)
+  public void BeginBattle()
   {    
     if (_isInBattle)
     {
       return;
     }
-
-    PlayersParticipating = players;
-    EnemiesParticipating = enemies;
 
     PrepareActors();
 
@@ -60,38 +56,43 @@ public class BattleController : MonoSingleton<BattleController>
 
   void UnprepareActors()
   {
-    foreach (var actor in PlayersParticipating)
+    foreach (var item in PartyController.Instance.GetActiveParty)
     {
-      actor.StandDown();
+      item.gameObject.SetActive(false);
     }
   }
 
   void PrepareActors()
   {
-    foreach (var actor in PlayersParticipating)
+    int index = 0;
+    foreach (var item in PartyController.Instance.GetActiveParty)
     {
-      actor.PrepareForBattle();
+      item.PrepareForBattle();
+      PortraitButtons[index].Prepare(item);
+      PortraitButtons[index].gameObject.SetActive(true);
+      index++;
     }
   }
 
   void UpdateActors(double dt)
   {
-    foreach (var actor in PlayersParticipating)
+    foreach (var item in PartyController.Instance.GetActiveParty)
     {
-      actor.BattleUpdate(dt);
+      item.BattleUpdate(dt);
     }
   }
 
-  ActorLogicBase _selectedActor;
-  public void PauseBattle(ActorLogicBase causer)
+  BattleHighlightableButton _selectedPortrait;
+  public void PauseBattle(BattleHighlightableButton selectedPortrait)
   {
-    Debug.Log(causer + " paused");
-    _selectedActor = causer;
+    Debug.Log(selectedPortrait.CurrentActor + " paused");
+    _selectedPortrait = selectedPortrait;
     _isPaused = true;
   }
 
   public void ResumeBattle()
   {
+    _selectedPortrait.Deselect();
     _isPaused = false;
   }
 }

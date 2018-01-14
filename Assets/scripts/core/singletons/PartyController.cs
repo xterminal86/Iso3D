@@ -6,19 +6,64 @@ public class PartyController : MonoSingleton<PartyController>
 {
   public List<ActorLogicBase> AllPlayers = new List<ActorLogicBase>();
 
+  Dictionary<string, ActorLogicBase> _actorLogicByName = new Dictionary<string, ActorLogicBase>();
   public override void Initialize()
-  {    
-    DeliaLogic l = new DeliaLogic();
-    l.InitStats("Delia", new Int2(20, 20), new Int2(5, 5), new Int2(50, 50), new Int2(30, 30), new Int2(5, 5));
-
-    AllPlayers.Add(l);
+  {
+    foreach (var item in AllPlayers)
+    {
+      _actorLogicByName.Add(item.ActorStatsObject.CharName, item);
+    }
   }
 
   List<ActorLogicBase> _activeParty = new List<ActorLogicBase>();
-  public List<ActorLogicBase> GetActiveParty()
+  public List<ActorLogicBase> GetActiveParty
   {
-    _activeParty.Clear();
+    get { return _activeParty; }
+  }
 
-    return _activeParty;
+  public void AddToParty(string characterName)
+  {
+    if (_activeParty.Count == 3)
+    {
+      Debug.LogWarning("Party is full!");
+      return;
+    }
+
+    foreach (var item in _actorLogicByName)
+    {
+      if (item.Key == characterName)
+      {
+        if (item.Value.IsInParty)
+        {
+          Debug.LogWarning("Character " + characterName + " is already in party!");
+          return;
+        }
+
+        item.Value.IsInParty = true;
+        _activeParty.Add(item.Value);
+        return;
+      }
+    }
+
+    Debug.LogWarning("No character named " + characterName + " exists!");
+  }
+
+  public void RemoveFromParty(string characterName)
+  {
+    if (_activeParty.Count == 0)
+    {
+      Debug.LogWarning("Party is empty!");
+      return;
+    }
+
+    for (int i = 0; i < _activeParty.Count; i++)
+    {
+      if (_activeParty[i].ActorStatsObject.CharName == characterName)
+      {
+        _activeParty[i].IsInParty = false;
+        _activeParty.RemoveAt(i);
+        return;
+      }
+    }
   }
 }
