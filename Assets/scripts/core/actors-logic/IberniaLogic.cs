@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeliaLogic : ActorLogicBase 
-{  
+public class IberniaLogic : ActorLogicBase 
+{
   public override void Init()
   {
     string[] skillNames = new string[9] 
     { 
-      "1. Sword", "2. Riposte", "3. Observe", 
-      "4. SwordHit", "5. Shatter", "6. Tackle", 
-      "7. SwordStrike", "8. BattleCry", "9. Assault" 
+      "1. Sword", "2. BloodSword", "3. Transfusion", 
+      "4. SwordHit", "5. DarkSword", "6. CurseStrike", 
+      "7. SwordStrike", "8. Regenerate", "9. RadiantDawn" 
     };
 
     for (int i = 0; i < 9; i++)

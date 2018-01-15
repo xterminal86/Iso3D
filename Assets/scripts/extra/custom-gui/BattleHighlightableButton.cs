@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class BattleHighlightableButton : HighlightableButton 
 {  
+  public Image Portrait;
   public Text HitpointsText;
   public Image AttackMeter;
 

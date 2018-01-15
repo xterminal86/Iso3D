@@ -6,6 +6,8 @@ public class ActorLogicBase : MonoBehaviour
 {  
   public ActorStats ActorStatsObject;
 
+  public Dictionary<int, ActorSkill> ActorSkills = new Dictionary<int, ActorSkill>();
+
   protected double _battleTimer = 0.0;
   public double BattleTimer
   {
@@ -94,5 +96,23 @@ public class ActorLogicBase : MonoBehaviour
 
   public virtual void UseSkill(int skillIndex)
   {
+  }
+
+  public virtual void Init()
+  {    
+  }
+}
+
+public class ActorSkill
+{
+  public string SkillName = string.Empty;
+  public int SkillDamage = 0;
+  public bool AffectsAll = false;
+
+  public ActorSkill(string skillName, int skillDamage, bool affectsAll)
+  {   
+    SkillName = skillName;
+    SkillDamage = skillDamage;
+    AffectsAll = affectsAll;
   }
 }

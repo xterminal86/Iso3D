@@ -93,6 +93,13 @@ public class HighlightableText : HighlightableControl
     }
   }
 
+  public void SetText(string text)
+  {
+    NormalText.text = text;
+    HighlightedText.text = text;
+    DisabledText.text = text;
+  }
+
   public override void ResetStatus()
   {
     base.ResetStatus();

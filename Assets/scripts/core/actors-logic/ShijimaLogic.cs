@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeliaLogic : ActorLogicBase 
-{  
+public class ShijimaLogic : ActorLogicBase 
+{
   public override void Init()
   {
     string[] skillNames = new string[9] 
     { 
-      "1. Sword", "2. Riposte", "3. Observe", 
-      "4. SwordHit", "5. Shatter", "6. Tackle", 
-      "7. SwordStrike", "8. BattleCry", "9. Assault" 
+      "1. Slash", "2. ArcSlash", "3. Cleanse", 
+      "4. DoubleSlash", "5. Flicker", "6. Prayer", 
+      "7. TripleSlash", "8. Protect", "9. Thunderstorm" 
     };
 
     for (int i = 0; i < 9; i++)

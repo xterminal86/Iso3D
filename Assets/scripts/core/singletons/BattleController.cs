@@ -6,6 +6,9 @@ public class BattleController : MonoSingleton<BattleController>
 {
   public List<BattleHighlightableButton> PortraitButtons = new List<BattleHighlightableButton>();
 
+  public GameObject SkillsPanel;
+  public List<HighlightableText> SkillEntries = new List<HighlightableText>();
+
   [HideInInspector]
   public List<ActorLogicBase> EnemiesParticipating = new List<ActorLogicBase>();
 
@@ -101,14 +104,27 @@ public class BattleController : MonoSingleton<BattleController>
   BattleHighlightableButton _selectedPortrait;
   public void PauseBattle(BattleHighlightableButton selectedPortrait)
   {
-    Debug.Log(selectedPortrait.CurrentActor + " paused");
+    UpdateSkillEntries(selectedPortrait.CurrentActor);
+
+    SkillsPanel.SetActive(true);
+
     _selectedPortrait = selectedPortrait;
     _isPaused = true;
   }
 
   public void ResumeBattle()
   {
+    SkillsPanel.SetActive(false);
+
     _selectedPortrait.Deselect();
     _isPaused = false;
+  }
+
+  void UpdateSkillEntries(ActorLogicBase actor)
+  {
+    for (int i = 0; i < 9; i++)
+    {
+      SkillEntries[i].SetText(actor.ActorSkills[i].SkillName);
+    }
   }
 }

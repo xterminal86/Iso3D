@@ -11,6 +11,7 @@ public class PartyController : MonoSingleton<PartyController>
   {
     foreach (var item in AllPlayers)
     {
+      item.Init();
       _actorLogicByName.Add(item.ActorStatsObject.CharName, item);
     }
   }
