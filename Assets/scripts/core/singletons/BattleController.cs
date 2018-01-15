@@ -35,10 +35,16 @@ public class BattleController : MonoSingleton<BattleController>
   }
 
   public void EndBattle()
-  {    
-    _isInBattle = false;
+  { 
+    if (!_isInBattle)
+    {
+      return;
+    }
 
     UnprepareActors();
+
+    _isInBattle = false;
+    _isPaused = false;
   }
 
   void Update()
@@ -56,9 +62,19 @@ public class BattleController : MonoSingleton<BattleController>
 
   void UnprepareActors()
   {
+    int index = 0;
     foreach (var item in PartyController.Instance.GetActiveParty)
     {
-      item.gameObject.SetActive(false);
+      item.StandDown();
+
+      foreach (var marker in PortraitButtons[index].AttackPhaseMarkers)
+      {
+        marker.SetActive(false);  
+      }
+
+      PortraitButtons[index].gameObject.SetActive(false);
+      PortraitButtons[index].Deselect();
+      index++;
     }
   }
 
