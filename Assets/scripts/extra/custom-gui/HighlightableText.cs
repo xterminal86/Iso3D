@@ -10,22 +10,6 @@ public class HighlightableText : HighlightableControl
   public Text HighlightedText;
   public Text DisabledText;
 
-  void Start()
-  {
-    if (!Enabled)
-    {
-      NormalText.gameObject.SetActive(false);
-      HighlightedText.gameObject.SetActive(false);
-      DisabledText.gameObject.SetActive(true);
-    }
-    else
-    {
-      NormalText.gameObject.SetActive(true);
-      HighlightedText.gameObject.SetActive(false);
-      DisabledText.gameObject.SetActive(false);
-    }
-  }
-
   public void OnMouseEnter()
   { 
     if (Selected || !Enabled)

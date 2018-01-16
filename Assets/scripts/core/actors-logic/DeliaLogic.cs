@@ -13,10 +13,20 @@ public class DeliaLogic : ActorLogicBase
       "7. SwordStrike", "8. BattleCry", "9. Assault" 
     };
 
-    for (int i = 0; i < 9; i++)
+    int index = 0;
+    for (int attackPhase = 0; attackPhase < 3; attackPhase++)
     {
-      ActorSkill s = new ActorSkill(skillNames[i], 0, false);
-      ActorSkills.Add(i, s);
+      for (int i = 0; i < 3; i++)
+      {
+        ActorSkill s = new ActorSkill(skillNames[index], 0, false, attackPhase + 1);
+        ActorSkills.Add(index, s);
+        index++;
+      }
     }
+
+    ActorSkills[0].Available = true;
+    ActorSkills[1].Available = true;
+    ActorSkills[3].Available = true;
+    ActorSkills[6].Available = true;
   }
 }

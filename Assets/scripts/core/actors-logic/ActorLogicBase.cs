@@ -107,12 +107,15 @@ public class ActorSkill
 {
   public string SkillName = string.Empty;
   public int SkillDamage = 0;
+  public int AttackPhaseRequired = 0;
   public bool AffectsAll = false;
+  public bool Available = false;
 
-  public ActorSkill(string skillName, int skillDamage, bool affectsAll)
+  public ActorSkill(string skillName, int skillDamage, bool affectsAll, int attackPhaseRequired)
   {   
     SkillName = skillName;
     SkillDamage = skillDamage;
     AffectsAll = affectsAll;
+    AttackPhaseRequired = attackPhaseRequired;
   }
 }

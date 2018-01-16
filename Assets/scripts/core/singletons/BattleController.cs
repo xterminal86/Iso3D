@@ -114,6 +114,8 @@ public class BattleController : MonoSingleton<BattleController>
 
   public void ResumeBattle()
   {
+    SkillEntries[0].ControlGroupRef.ResetControls();
+
     SkillsPanel.SetActive(false);
 
     _selectedPortrait.Deselect();
@@ -124,7 +126,13 @@ public class BattleController : MonoSingleton<BattleController>
   {
     for (int i = 0; i < 9; i++)
     {
+      bool skillAvailable = actor.ActorSkills[i].Available;
+      SkillEntries[i].gameObject.SetActive(skillAvailable);
+
       SkillEntries[i].SetText(actor.ActorSkills[i].SkillName);
+
+      bool skillEnabled = (actor.AttackPhase >= actor.ActorSkills[i].AttackPhaseRequired);
+      SkillEntries[i].SetStatus(skillEnabled);
     }
   }
 }
