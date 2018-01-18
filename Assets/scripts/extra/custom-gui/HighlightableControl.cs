@@ -31,28 +31,6 @@ public class HighlightableControl : MonoBehaviour
     Highlighted = false;
   }
 
-  Dictionary<EventTriggerType, UnityAction<BaseEventData>> _methods = new Dictionary<EventTriggerType, UnityAction<BaseEventData>>();
-  public void AssignEventMethods()
-  {
-    var et = GetComponent<EventTrigger>();
-
-    et.triggers.Clear();
-    _methods.Clear();
-
-    _methods.Add(EventTriggerType.PointerEnter, new UnityAction<BaseEventData>(OnMouseEnter));
-    _methods.Add(EventTriggerType.PointerExit, new UnityAction<BaseEventData>(OnMouseExit));
-    _methods.Add(EventTriggerType.PointerDown, new UnityAction<BaseEventData>(OnMouseDown));
-
-    foreach (var item in _methods)
-    {
-      EventTrigger.Entry e = new EventTrigger.Entry();
-      e.eventID = item.Key;
-      e.callback = new EventTrigger.TriggerEvent();
-      e.callback.AddListener(item.Value);
-      et.triggers.Add(e);
-    }
-  }
-
   public virtual void Select() { }
   public virtual void SetStatus(bool isEnabled) { }
   public virtual void OnMouseDown(BaseEventData data) { }

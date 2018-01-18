@@ -4,52 +4,38 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEditor;
+using UnityEditor.Events;
 
 [CustomEditor(typeof(HighlightableControl), true)]
 public class HighlightableControlInspector : Editor 
-{
-  /*
-  void Awake()
-  {
-    HighlightableControl hc = target as HighlightableControl;
-
-    var et = hc.GetComponent<EventTrigger>();
-
-    if (et.triggers.Count == 0)
-    {      
-      EventTrigger.Entry entry = new EventTrigger.Entry();
-      entry.eventID = EventTriggerType.PointerDown;
-      entry.callback = new EventTrigger.TriggerEvent();
-      UnityAction<BaseEventData> call = new UnityAction<BaseEventData>(hc.OnMouseDown);
-      entry.callback.AddListener(call);
-      et.triggers.Add(entry);
-
-      entry = new EventTrigger.Entry();
-      entry.eventID = EventTriggerType.PointerEnter;
-      entry.callback = new EventTrigger.TriggerEvent();
-      call = new UnityAction<BaseEventData>(hc.OnMouseEnter);
-      entry.callback.AddListener(call);
-      et.triggers.Add(entry);
-
-      entry = new EventTrigger.Entry();
-      entry.eventID = EventTriggerType.PointerExit;
-      entry.callback = new EventTrigger.TriggerEvent();
-      call = new UnityAction<BaseEventData>(hc.OnMouseExit);
-      entry.callback.AddListener(call);
-      et.triggers.Add(entry);
-    }
-  }
-  */
-
+{  
+  Dictionary<EventTriggerType, UnityAction<BaseEventData>> _methods = new Dictionary<EventTriggerType, UnityAction<BaseEventData>>();    
   public override void OnInspectorGUI()
   {
     HighlightableControl hc = target as HighlightableControl;
 
     if (hc == null) return;
 
+    var et = hc.GetComponent<EventTrigger>();
+
     if (GUILayout.Button("Assign"))
-    {
-      hc.AssignEventMethods();
+    {      
+      _methods.Clear();
+      et.triggers.Clear();
+
+      _methods.Add(EventTriggerType.PointerEnter, new UnityAction<BaseEventData>(hc.OnMouseEnter));
+      _methods.Add(EventTriggerType.PointerExit, new UnityAction<BaseEventData>(hc.OnMouseExit));
+      _methods.Add(EventTriggerType.PointerDown, new UnityAction<BaseEventData>(hc.OnMouseDown));
+
+      foreach (var item in _methods)
+      {
+        EventTrigger.Entry e = new EventTrigger.Entry();
+        e.eventID = item.Key;
+        e.callback = new EventTrigger.TriggerEvent();
+        et.triggers.Add(e);
+
+        UnityEventTools.AddPersistentListener(et.triggers[et.triggers.Count - 1].callback, item.Value);
+      }
     }
 
     DrawDefaultInspector();

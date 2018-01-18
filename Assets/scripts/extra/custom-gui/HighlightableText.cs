@@ -10,6 +10,11 @@ public class HighlightableText : HighlightableControl
   public Text HighlightedText;
   public Text DisabledText;
 
+  void Awake()
+  {
+    SetStatus(Enabled);
+  }
+
   public void OnMouseEnter()
   { 
     if (Selected || !Enabled)
