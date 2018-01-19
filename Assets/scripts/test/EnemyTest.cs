@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class EnemyTest : MonoBehaviour 
 {
+  public PowerRingMaker PowerRingMakerScript;
+
   public Text InfoText;
 
   public Rigidbody RigidbodyComponent;
@@ -20,7 +22,7 @@ public class EnemyTest : MonoBehaviour
   {
     InfoText.text = "Preparing...";
 
-    AnimationComponent["axe-run"].speed = 2.0f;
+    AnimationComponent["axe-run"].speed = 3.0f;
     AnimationComponent["axe-attack"].speed = 2.0f;
     AnimationComponent["axe-idle"].speed = 1.0f;
 
@@ -29,7 +31,7 @@ public class EnemyTest : MonoBehaviour
     StartCoroutine(PrepareRoutine());
   }
 
-  float _rotationSpeed = 300.0f;
+  float _rotationSpeed = 400.0f;
   IEnumerator PrepareRoutine()
   {
     AnimationComponent.CrossFade("axe-idle");
@@ -90,6 +92,7 @@ public class EnemyTest : MonoBehaviour
 
   IEnumerator AttackRoutine()
   {
+    yield return StartCoroutine(SpawnRingsRoutine());
     yield return StartCoroutine(ApproachTargetRoutine());
     yield return StartCoroutine(AttackTargetRoutine());
     yield return StartCoroutine(TurnAroundRoutine());
@@ -97,6 +100,27 @@ public class EnemyTest : MonoBehaviour
     yield return StartCoroutine(PrepareRoutine());
 
     _isProcessing = false;
+
+    yield return null;
+  }
+
+  IEnumerator SpawnRingsRoutine()
+  {
+    Color ringsColor;
+
+    bool res = ColorUtility.TryParseHtmlString("#6AD65F", out ringsColor);
+
+    PowerRingMakerScript.Spawn(RigidbodyComponent.position, ringsColor);
+
+    float cond = PowerRingMakerScript.RingsNumber * PowerRingMakerScript.SpawnInterval + 0.5f;
+
+    float timer = 0.0f;
+    while (timer < cond)
+    {
+      timer += Time.smoothDeltaTime;
+
+      yield return null;
+    }
 
     yield return null;
   }
@@ -113,7 +137,7 @@ public class EnemyTest : MonoBehaviour
 
     AnimationComponent.CrossFade("axe-run");
 
-    while (d > 2.0f)
+    while (d > 1.0f)
     {      
       _rbDir = dir;
 
