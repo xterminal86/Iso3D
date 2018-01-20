@@ -13,6 +13,7 @@ public class PowerRingMaker : MonoBehaviour
   public void Spawn(Vector3 pos, Color c)
   {
     _ringsColor = c;
+    _ringsColor.a = 0.0f;
 
     StartCoroutine(SpawnRingsRoutine(pos));
   }
@@ -32,7 +33,7 @@ public class PowerRingMaker : MonoBehaviour
       }
 
       var ring = Instantiate(PowerRing, pos, Quaternion.identity);
-      ring.GetComponentInChildren<Renderer>().material.SetColor("_TintColor", _ringsColor);
+      ring.GetComponent<PowerRing>().Init(_ringsColor);
 
       timer = 0.0f;
     }

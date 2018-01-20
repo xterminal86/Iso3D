@@ -12,7 +12,11 @@ public class HighlightableText : HighlightableControl
 
   void Awake()
   {
-    SetStatus(Enabled);
+    // FIXME: by commenting out the line below, we no longer can make control "enabled"/"disabled" in inspector
+    // but without it we cannot do autoselect maximum base skill when user clicks the portrait,
+    // it happens only on second select - first one is intercepted by Awake call.
+
+    //SetStatus(Enabled);
   }
 
   public void OnMouseEnter()
@@ -98,7 +102,7 @@ public class HighlightableText : HighlightableControl
   }
 
   public override void Select()
-  {
+  {    
     Selected = true;
 
     NormalText.gameObject.SetActive(false);
@@ -117,7 +121,7 @@ public class HighlightableText : HighlightableControl
   }
 
   public override void SetStatus(bool isEnabled)
-  {
+  {    
     Enabled = isEnabled;
 
     if (!Enabled)

@@ -106,6 +106,7 @@ public class ActorLogicBase : MonoBehaviour
 public class ActorSkill
 {
   public string SkillName = string.Empty;
+  public string SkillDescription = string.Empty;
   public int SkillDamage = 0;
   public int AttackPhaseRequired = 0;
   public bool AffectsAll = false;

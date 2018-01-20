@@ -6,6 +6,7 @@ public class CustomControlGroup : MonoBehaviour
 {
   public List<HighlightableControl> Controls;
 
+  /*
   void Start()
   {
     if (Controls.Count != 0)
@@ -14,6 +15,7 @@ public class CustomControlGroup : MonoBehaviour
       //Controls[0].Select();
     }
   }
+  */
 
   public void ResetControls()
   {

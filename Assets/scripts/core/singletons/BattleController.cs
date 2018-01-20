@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleController : MonoSingleton<BattleController> 
 {
@@ -8,6 +9,8 @@ public class BattleController : MonoSingleton<BattleController>
 
   public GameObject SkillsPanel;
   public List<HighlightableText> SkillEntries = new List<HighlightableText>();
+
+  public Text SkillDescriptionText;
 
   [HideInInspector]
   public List<ActorLogicBase> EnemiesParticipating = new List<ActorLogicBase>();
@@ -122,6 +125,23 @@ public class BattleController : MonoSingleton<BattleController>
     _isPaused = false;
   }
 
+  public void DisplaySkillInfo(int skillIndex)
+  {
+    SkillDescriptionText.text = _selectedPortrait.CurrentActor.ActorSkills[skillIndex].SkillDescription;
+  }
+
+  public void ClearSkillDescription()
+  {
+    SkillDescriptionText.text = "";
+  }
+
+  Dictionary<int, int> _baseSkillsindexByPhase = new Dictionary<int, int>()
+  {
+    { 1, 0 },
+    { 2, 3 },
+    { 3, 6 }
+  };
+
   void UpdateSkillEntries(ActorLogicBase actor)
   {
     for (int i = 0; i < 9; i++)
@@ -134,5 +154,8 @@ public class BattleController : MonoSingleton<BattleController>
       bool skillEnabled = (actor.AttackPhase >= actor.ActorSkills[i].AttackPhaseRequired);
       SkillEntries[i].SetStatus(skillEnabled);
     }
+
+    int baseSkillIndex = _baseSkillsindexByPhase[actor.AttackPhase];
+    SkillEntries[baseSkillIndex].Select();
   }
 }

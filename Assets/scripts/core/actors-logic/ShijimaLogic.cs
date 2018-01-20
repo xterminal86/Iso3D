@@ -25,7 +25,23 @@ public class ShijimaLogic : ActorLogicBase
     }
 
     ActorSkills[0].Available = true;
+    ActorSkills[1].Available = true;
+    //ActorSkills[2].Available = true;
     ActorSkills[3].Available = true;
+    //ActorSkills[4].Available = true;
+    //ActorSkills[5].Available = true;
     ActorSkills[6].Available = true;
+    //ActorSkills[7].Available = true;
+    //ActorSkills[8].Available = true;
+
+    ActorSkills[0].SkillDescription = "Light sword attack";
+    ActorSkills[1].SkillDescription = "Hit all targets in a line";
+    ActorSkills[2].SkillDescription = "Remove negative status from a target";
+    ActorSkills[3].SkillDescription = "Medium sword attack";
+    ActorSkills[4].SkillDescription = "Rush and hit all targets";
+    ActorSkills[5].SkillDescription = "Ask Heavens for protection";
+    ActorSkills[6].SkillDescription = "Strong sword attack";
+    ActorSkills[7].SkillDescription = "Place defensive barrier on a target";
+    ActorSkills[8].SkillDescription = "Lightning strike that hits all targets";
   }
 }
