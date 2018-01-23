@@ -1,0 +1,266 @@
+fileFormatVersion: 2
+guid: e716ec2f203bd294e9a1ac5d769de25d
+timeCreated: 1516735496
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Altar
+    100002: Bowl
+    100004: CandleLeft
+    100006: CandleRight
+    100008: Icon
+    100010: IconFrame
+    100012: Orb
+    100014: //RootNode
+    100016: Armature
+    100018: Bone
+    100020: Cylinder_000
+    100022: Cylinder_002
+    100024: Sphere
+    100026: Sphere_001
+    400000: Altar
+    400002: Bowl
+    400004: CandleLeft
+    400006: CandleRight
+    400008: Icon
+    400010: IconFrame
+    400012: Orb
+    400014: //RootNode
+    400016: Armature
+    400018: Bone
+    400020: Cylinder_000
+    400022: Cylinder_002
+    400024: Sphere
+    400026: Sphere_001
+    2100000: None__candle-normal_jpg
+    2100002: None__icon-st-george_jpg
+    2100004: unnamed
+    2100006: None__terrain-pistonback-darkdent_png
+    2100008: None__planks_big_oak_png
+    2300000: Altar
+    2300002: Bowl
+    2300004: CandleLeft
+    2300006: CandleRight
+    2300008: Icon
+    2300010: IconFrame
+    2300012: Orb
+    2300014: Cylinder_000
+    2300016: Cylinder_002
+    2300018: Sphere_001
+    3300000: Altar
+    3300002: Bowl
+    3300004: CandleLeft
+    3300006: CandleRight
+    3300008: Icon
+    3300010: IconFrame
+    3300012: Orb
+    3300014: Cylinder_000
+    3300016: Cylinder_002
+    3300018: Sphere_001
+    4300000: CandleLeft
+    4300002: CandleRight
+    4300004: Icon
+    4300006: Bowl
+    4300008: Orb
+    4300010: Altar
+    4300012: IconFrame
+    4300014: Cylinder_000
+    4300016: Cylinder_002
+    4300018: Sphere
+    4300020: Sphere_001
+    7400000: Default Take
+    7400002: Float
+    7400004: Rest
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Sphere
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__candle-normal_jpg
+    second: {fileID: 2100000, guid: e8e3cef0f9fdd184a80a46a9d13eee93, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__icon-st-george_jpg
+    second: {fileID: 2100000, guid: 34d9e638aee98c84cbe1d90806ace41a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__planks_big_oak_png
+    second: {fileID: 2100000, guid: 8870f3de677593d408ae4decd35ad6d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__terrain-pistonback-darkdent_png
+    second: {fileID: 2100000, guid: 7832d0056e4c2b245ac0b894591468c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: unnamed
+    second: {fileID: 2100000, guid: 53a23b71739a78347858b7fefb694510, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: 0
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Float
+      takeName: Float
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Rest
+      takeName: Rest
+      firstFrame: 1
+      lastFrame: 39
+      wrapMode: 8
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
