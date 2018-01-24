@@ -1,24 +1,24 @@
 fileFormatVersion: 2
-guid: 9f2609d40cd90b1458f84952ba5f5668
-timeCreated: 1516811454
+guid: 2cf024f17aa5374469d1084bee4331b5
+timeCreated: 1516827044
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: tree-simple
+    100000: tree-birch
     100002: //RootNode
-    400000: tree-simple
+    400000: tree-birch
     400002: //RootNode
-    2100000: tree-simpleMat
-    2300000: tree-simple
-    3300000: tree-simple
-    4300000: tree-simple
+    2100000: tree-birchMat
+    2300000: tree-birch
+    3300000: tree-birch
+    4300000: tree-birch
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: tree-simpleMat
-    second: {fileID: 2100000, guid: 3a421a6476ed10749be5649337a7ce1a, type: 2}
+      name: tree-birchMat
+    second: {fileID: 2100000, guid: 2940cff1bbe7baa4fa48049c242e1e5d, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -48,7 +48,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.25
+    globalScale: 0.05
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
