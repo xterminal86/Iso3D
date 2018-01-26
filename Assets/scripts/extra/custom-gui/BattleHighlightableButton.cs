@@ -20,7 +20,7 @@ public class BattleHighlightableButton : HighlightableButton
     get { return _currentActor; }
   }
 
-  public void Prepare(ActorLogicBase actorToDisplay)
+  public void PassActorLogic(ActorLogicBase actorToDisplay)
   {
     _currentActor = actorToDisplay;
 

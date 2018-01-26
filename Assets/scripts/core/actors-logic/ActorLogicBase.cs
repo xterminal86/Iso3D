@@ -42,6 +42,10 @@ public class ActorLogicBase : MonoBehaviour
 
   public bool IsInParty = false;
 
+  void Start()
+  {
+  }
+
   public void PrepareForBattle()
   {        
     _maxAttackPhaseReached = false;

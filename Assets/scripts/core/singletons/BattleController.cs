@@ -90,7 +90,7 @@ public class BattleController : MonoSingleton<BattleController>
     foreach (var item in PartyController.Instance.GetActiveParty)
     {
       item.PrepareForBattle();
-      PortraitButtons[index].Prepare(item);
+      PortraitButtons[index].PassActorLogic(item);
       PortraitButtons[index].gameObject.SetActive(true);
       index++;
     }

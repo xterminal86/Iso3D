@@ -11,11 +11,13 @@ public class BattleGUITest : MonoBehaviour
   {
     InfoText.text = "Press 'Space' to begin battle, 'Enter' to end it";
 
+    LevelLoader.Instance.Initialize();
+    CameraController.Instance.Initialize();
     PartyController.Instance.Initialize();
 
     PartyController.Instance.AddToParty("Delia");
-    PartyController.Instance.AddToParty("Ibernia");
-    PartyController.Instance.AddToParty("Shijima");
+    //PartyController.Instance.AddToParty("Ibernia");
+    //PartyController.Instance.AddToParty("Shijima");
 
     BattleController.Instance.Initialize();
   }
