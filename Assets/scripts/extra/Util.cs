@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 public static class Util
 {
+  public static int BlockDistance(Int2 point1, Int2 point2)
+  {
+    int cost = ( Mathf.Abs(point1.Y - point2.Y) + Mathf.Abs(point1.X - point2.X) );
+
+    //Debug.Log(string.Format("Manhattan distance remaining from {0} to {1}: {2}", point.ToString(), end.ToString(), cost));
+
+    return cost;
+  }
+
   public static Vector3 MapToWorldCoordinates(Vector3 mapCoords)
   {
     return new Vector3(mapCoords.x * GlobalConstants.ScaleFactor, 
@@ -67,7 +76,13 @@ public class Int2
     _x = (int)v2.x;
     _y = (int)v2.y;
   }
-  
+
+  public Int2(Int2 v2)
+  {
+    _x = v2.X;
+    _y = v2.Y;
+  }
+
   public int X
   {
     set { _x = value; }
