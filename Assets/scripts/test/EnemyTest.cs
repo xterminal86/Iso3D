@@ -41,30 +41,22 @@ public class EnemyTest : MonoBehaviour
     Vector3 dir = target - RigidbodyComponent.position;
     dir.Normalize();
 
-    Vector3 v1 = Direction.position - RigidbodyComponent.position;
-    float angle = Vector3.Angle(v1, dir);
-    float angle360 = Mathf.Sign(Vector3.Cross(v1, dir).y) < 0 ? (360 - angle) % 360 : angle;
+    float t = 0.0f;
+    float rotationTime = 0.5f;
+    float dt = t / rotationTime;
 
-    float initialAngle = RigidbodyComponent.rotation.eulerAngles.y;
+    Quaternion fromR = RigidbodyComponent.rotation;
+    Quaternion to = Quaternion.LookRotation(dir, Vector3.up);
 
-    float counter = initialAngle;
-    float cond = (initialAngle + angle360) % 360.0f;
+    while ((int)dt != 1)
+    {
+      t += Time.smoothDeltaTime;
+      dt = t / rotationTime;
+      dt = Mathf.Clamp(dt, 0.0f, 1.0f);
 
-    float sign = (counter < cond) ? 1.0f : -1.0f;
+      Quaternion q = Quaternion.Lerp(fromR, to, dt);
 
-    bool condition = (sign > 0.0f) ? (counter < cond) : (counter > cond);
-
-    Vector3 ea = RigidbodyComponent.rotation.eulerAngles;
-
-    while ((sign > 0.0f) ? (ea.y < cond) : (ea.y > cond))    
-    {      
-      counter = sign * (Time.smoothDeltaTime * _rotationSpeed);
-
-      ea = RigidbodyComponent.rotation.eulerAngles;
-      ea.y += counter;
-      ea.y = Mathf.Clamp(ea.y, (sign > 0.0f) ? initialAngle : cond, (sign == 1) ? cond : initialAngle);
-
-      RigidbodyComponent.rotation = Quaternion.Euler(ea);
+      RigidbodyComponent.rotation = q;
 
       yield return null;
     }
@@ -125,28 +117,32 @@ public class EnemyTest : MonoBehaviour
     yield return null;
   }
 
+  float _movingTime = 1.0f;
+
   Vector3 _initialPosition = Vector3.zero;
   IEnumerator ApproachTargetRoutine()
   {
     float d = Vector3.Distance(RigidbodyComponent.position, Target.position);
-
-    Vector3 target = new Vector3(Target.position.x, 0.0f, Target.position.z);
-
-    Vector3 dir = target - RigidbodyComponent.position;
-    dir.Normalize();
+    Vector3 from = new Vector3(RigidbodyComponent.position.x, RigidbodyComponent.position.y, RigidbodyComponent.position.z);
 
     AnimationComponent.CrossFade("axe-run");
 
-    while (d > 1.0f)
-    {      
-      _rbDir = dir;
+    float t2 = 0.0f;
+    float dt = t2 / _movingTime;
 
+    while (d > 1.0f)
+    {
       d = Vector3.Distance(RigidbodyComponent.position, Target.position);
+
+      t2 += Time.smoothDeltaTime;
+      dt = t2 / _movingTime;
+      dt = Mathf.Clamp(dt, 0.0f, 1.0f);
+
+      Vector3 pos = Vector3.Lerp(from, Target.position, dt);
+      RigidbodyComponent.position = pos;
 
       yield return null;
     }
-
-    _rbDir = Vector3.zero;
 
     yield return null;
   }
@@ -156,7 +152,7 @@ public class EnemyTest : MonoBehaviour
     AnimationComponent.Play("axe-attack");
    
     while (AnimationComponent["axe-attack"].time < AnimationComponent["axe-attack"].length)
-    {      
+    { 
       yield return null;
     }
 
@@ -167,20 +163,24 @@ public class EnemyTest : MonoBehaviour
   {    
     AnimationComponent.CrossFade("axe-idle");
 
-    float currentAngle = RigidbodyComponent.rotation.eulerAngles.y;
-    float cond = currentAngle + 180.0f;
+    float t = 0.0f;
+    float rotationTime = 0.5f;
+    float dt = t / rotationTime;
 
-    float origAngle = currentAngle;
+    Vector3 r = RigidbodyComponent.rotation.eulerAngles;
 
-    while (currentAngle < cond)    
+    Quaternion fromR = Quaternion.Euler(r.x, r.y, r.z);
+    Quaternion to = Quaternion.Euler(r.x, r.y + 180.0f, r.z);
+
+    while ((int)dt != 1)
     {
-      currentAngle += Time.smoothDeltaTime * _rotationSpeed;
+      t += Time.smoothDeltaTime;
+      dt = t / rotationTime;
+      dt = Mathf.Clamp(dt, 0.0f, 1.0f);
 
-      currentAngle = Mathf.Clamp(currentAngle, origAngle, cond);
+      Quaternion q = Quaternion.Lerp(fromR, to, dt);
 
-      Vector3 ea = RigidbodyComponent.rotation.eulerAngles;
-      ea.y = currentAngle;
-      RigidbodyComponent.rotation = Quaternion.Euler(ea);
+      RigidbodyComponent.rotation = q;
 
       yield return null;
     }
@@ -190,31 +190,26 @@ public class EnemyTest : MonoBehaviour
 
   IEnumerator GoBackRoutine()
   {
-    float d = Vector3.Distance(transform.position, _initialPosition);
+    Vector3 fromPosition = new Vector3(RigidbodyComponent.position.x, RigidbodyComponent.position.y, RigidbodyComponent.position.z);
     Vector3 target = new Vector3(_initialPosition.x, 0.0f, _initialPosition.z);
-
-    Vector3 dir = target - transform.position;
-    dir.Normalize();
 
     AnimationComponent.CrossFade("axe-run");
 
-    while (d > 0.1f)
-    {
-      _rbDir = dir;
+    float t = 0.0f;
+    float dt = t / _movingTime;
 
-      d = Vector3.Distance(RigidbodyComponent.position, _initialPosition);
+    while ((int)dt != 1)
+    {
+      t += Time.smoothDeltaTime;
+      dt = t / _movingTime;
+      dt = Mathf.Clamp(dt, 0.0f, 1.0f);
+
+      Vector3 pos = Vector3.Lerp(fromPosition, target, dt);
+      RigidbodyComponent.position = pos;
 
       yield return null;
     }
 
-    _rbDir = Vector3.zero;
-
     yield return null;
-  }
-
-  Vector3 _rbDir = Vector3.zero;
-  void FixedUpdate()
-  {
-    RigidbodyComponent.MovePosition(RigidbodyComponent.position + _rbDir * (Time.fixedDeltaTime * 6.0f));
   }
 }
