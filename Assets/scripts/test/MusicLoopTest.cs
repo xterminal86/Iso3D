@@ -10,8 +10,9 @@ public class MusicLoopTest : MonoBehaviour
   // tavern1:       loopStart = 18847
   // tavern2:       loopStart = 96369
   // battle-test:   loopStart = 129778
+  // desolation:    loopStart = 204227
 
-  int _loopStartSamples = 129778;
+  int _loopStartSamples = 204227;
 
 	void Start() 
   {
