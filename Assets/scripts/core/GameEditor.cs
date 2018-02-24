@@ -342,6 +342,15 @@ public class GameEditor : MonoBehaviour
       _previewObject.transform.localEulerAngles = new Vector3(0.0f, _previewObjectAngle, 0.0f);
     }
 
+    if (_currentlySelectedObject != null && Input.GetKeyDown(KeyCode.Delete))
+    {
+      _currentlySelectedObject.Deselect();
+      SelectedObjectPropertiesWindow.DeselectObject();
+      SelectedObjectCursor.SetActive(false);
+
+      Destroy(_currentlySelectedObject.gameObject);
+    }
+
     ProcessElevation();
 
     // "Paint" mode works only for floors and paths (_editorMode 0 and 4)
