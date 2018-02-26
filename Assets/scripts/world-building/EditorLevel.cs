@@ -61,6 +61,10 @@ public class EditorLevel : LevelBase
     int x = 0;
     int y = 0;
     int z = 0;
+
+    GameObject floorCombinedMeshHolder = new GameObject("FloorMesh");
+    GameObject staticObjectsCombinedMeshHolder = new GameObject("StaticObjects");
+
     foreach (var item in _loadedLevel.FloorTiles)
     {
       x = (int)item.WorldPosition.X;
@@ -72,7 +76,9 @@ public class EditorLevel : LevelBase
       go = PrefabsManager.Instance.InstantiatePrefab(GlobalConstants.FloorTemplatePrefabName, _level[x, y, z].WorldCoordinates, Quaternion.identity);
       if (go != null)
       {
-        go.transform.parent = objectsHolder;
+        //go.transform.parent = objectsHolder;
+        go.transform.parent = floorCombinedMeshHolder.transform;
+
         FloorBehaviour fb = go.GetComponent<FloorBehaviour>();
         fb.Init(_level[x, y, z]);
       }
@@ -93,7 +99,9 @@ public class EditorLevel : LevelBase
       go = PrefabsManager.Instance.InstantiatePrefab(item.PrefabName, _level[x, y, z].WorldCoordinates, Quaternion.Euler(0.0f, item.RotationAngle, 0.0f));
       if (go != null)
       {
-        go.transform.parent = objectsHolder;
+        //go.transform.parent = objectsHolder;
+        go.transform.parent = staticObjectsCombinedMeshHolder.transform;
+
         WorldObjectBase wob = go.GetComponent<WorldObjectBase>();
         wob.RotationAngle = item.RotationAngle;
 
@@ -101,5 +109,10 @@ public class EditorLevel : LevelBase
         wob.PostProcess();
       }
     }
+
+    floorCombinedMeshHolder.CombineMeshes();
+
+    // FIXME: produces error
+    //staticObjectsCombinedMeshHolder.CombineMeshes();
   }
 }

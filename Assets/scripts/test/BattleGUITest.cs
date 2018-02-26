@@ -15,6 +15,8 @@ public class BattleGUITest : MonoBehaviour
     CameraController.Instance.Initialize();
     PartyController.Instance.Initialize();
 
+    PartyController.Instance.SetPlayerPosition(new Int3(0, 0, 0), 0.0f);
+
     PartyController.Instance.AddToParty("Delia");
     //PartyController.Instance.AddToParty("Ibernia");
     //PartyController.Instance.AddToParty("Shijima");

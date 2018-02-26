@@ -14,9 +14,12 @@ public class PartyController : MonoSingleton<PartyController>
       item.Init();
       _actorLogicByName.Add(item.ActorStatsObject.CharName, item);
     }
+  }
 
+  public void SetPlayerPosition(Int3 pos, float angle)
+  {
     var hero = AllPlayers[0].GetComponent<HeroController3D>();
-    hero.InitPlayerPosition(new Int3(0, 0, 0), 0.0f);
+    hero.InitPlayerPosition(pos, angle);
     CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);
   }
 

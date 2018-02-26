@@ -15,6 +15,8 @@ public class HeroController3D : MonoBehaviour
   public Rigidbody RigidbodyComponent;
   public Animation AnimationComponent;
 
+  public Camera CharPortraitCamera;
+
   Vector3 _direction = Vector3.zero;
 
   public Vector3 SwordHandPosition = new Vector3(-0.4f, 0.0f, -1.0f);
@@ -92,6 +94,11 @@ public class HeroController3D : MonoBehaviour
     else
     {
       TestAnimations();
+    }
+
+    if (Input.GetKeyDown(KeyCode.T))
+    {      
+      FormTalk.Instance.TestSpeech(CharPortraitCamera, "This is a test");
     }
 
     RaycastHit res;
