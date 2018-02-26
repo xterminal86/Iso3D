@@ -12,10 +12,12 @@ public class SceneLoader : MonoBehaviour
   void Start() 
 	{ 
     DebugForm.Instance.Initialize();
+    FormTalk.Instance.Initialize();
     PrefabsManager.Instance.Initialize();
     CameraController.Instance.Initialize();
     LoadingScreen.Instance.Initialize();
     LevelLoader.Instance.Initialize();
+    PartyController.Instance.Initialize();
 
     LevelLoader.Instance.LoadLevel(LevelToLoad);
 

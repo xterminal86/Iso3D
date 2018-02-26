@@ -19,8 +19,9 @@ public class PartyController : MonoSingleton<PartyController>
   public void SetPlayerPosition(Int3 pos, float angle)
   {
     var hero = AllPlayers[0].GetComponent<HeroController3D>();
+    hero.CloakClothComponent.enabled = false;
     hero.InitPlayerPosition(pos, angle);
-    CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);
+    CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position, hero);
   }
 
   List<ActorLogicBase> _activeParty = new List<ActorLogicBase>();

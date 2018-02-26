@@ -98,7 +98,7 @@ public class HeroController3D : MonoBehaviour
 
     if (Input.GetKeyDown(KeyCode.T))
     {      
-      FormTalk.Instance.TestSpeech(CharPortraitCamera, "This is a test");
+      FormTalk.Instance.TestSpeech(this, "Delia: \"This is an example of direct speech.\"");
     }
 
     RaycastHit res;
@@ -121,8 +121,6 @@ public class HeroController3D : MonoBehaviour
     _debugText += string.Format("Direction: {0}\n", _direction);
 
     DebugForm.Instance.DebugText.text = _debugText;
-
-    CameraController.Instance.UpdateCameraPosition(RigidbodyComponent.position);
   }
 
   void TestAnimations()

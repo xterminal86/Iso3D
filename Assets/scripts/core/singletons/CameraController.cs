@@ -23,11 +23,14 @@ public class CameraController : MonoSingleton<CameraController>
 
   Vector3 _mouseMapPosition = Vector3.zero;
   GameObject _mouseMap;
-  public void SetupCamera(Vector3 playerPos)
+  HeroController3D _heroControllerRef;
+  public void SetupCamera(Vector3 playerPos, HeroController3D heroControllerRef)
   {
+    _heroControllerRef = heroControllerRef;
+
     _mouseMap = Instantiate(MouseMap);
 
-    UpdateCameraPosition(playerPos);
+    //UpdateCameraPosition(playerPos);
   }
 
   public void UpdateCameraPosition(Vector3 newPosition)
@@ -58,5 +61,10 @@ public class CameraController : MonoSingleton<CameraController>
     angles.y = _cameraRotationY;
 
     CameraHolder.eulerAngles = angles;
+
+    if (_heroControllerRef != null)
+    {
+      UpdateCameraPosition(_heroControllerRef.RigidbodyComponent.position);
+    }
   }
 }

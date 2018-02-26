@@ -57,9 +57,8 @@ public class LevelLoader : MonoSingleton<LevelLoader>
 
     GameObject holder = new GameObject("MapHolder");
     _levelMap.InstantiateLevel(holder.transform);
-    var hero = GameObject.Find("hero").GetComponentInChildren<HeroController3D>();
-    hero.InitPlayerPosition(_levelMap.PlayerPos, _levelMap.PlayerRotation);
-    CameraController.Instance.SetupCamera(hero.RigidbodyComponent.position);
+
+    PartyController.Instance.SetPlayerPosition(_levelMap.PlayerPos, _levelMap.PlayerRotation);
   }
 
   bool _isNewLevelBeingLoaded = false;
