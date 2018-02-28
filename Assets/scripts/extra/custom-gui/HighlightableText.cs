@@ -13,7 +13,7 @@ public class HighlightableText : HighlightableControl
   void Awake()
   {
     // FIXME: by commenting out the line below, we no longer can make control "enabled"/"disabled" in inspector
-    // but without it we cannot do autoselect maximum base skill when user clicks the portrait,
+    // but without it we cannot do autoselect maximum base skill when user clicks the portrait in battle,
     // it happens only on second select - first one is intercepted by Awake call.
 
     //SetStatus(Enabled);
