@@ -18,5 +18,21 @@ public class LuaTest : MonoBehaviour
 
     result = luaScript.Call(luaScript.Globals["hello"]);
     Debug.Log(result);
+
+    result = luaScript.Call(luaScript.Globals["get_list"]);
+    Debug.Log(result);
+
+    result = luaScript.Call(luaScript.Globals["get_dic"]);
+
+    foreach (var key in result.Table.Keys)
+    {
+      Debug.Log(key);
+      Debug.Log(result.Table.Get(key));
+    }
+
+    Dictionary<string, string> test = new Dictionary<string, string>() { { "foo", "42" } };
+
+    result = luaScript.Call(luaScript.Globals["test_dic"], test);
+    Debug.Log(result);
   }
 }

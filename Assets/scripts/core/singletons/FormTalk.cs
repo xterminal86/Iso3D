@@ -8,8 +8,8 @@ public class FormTalk : MonoSingleton<FormTalk>
   public RawImage PortraitRenderTexture;
   public Text TextComponent;
 
-  public GameObject PortraitForm;
-  public GameObject TextArea;
+  public GameObject TalkHolder;
+  public GameObject SelectorHolder;
 
   HeroController3D _heroController;
   public void TestSpeech(HeroController3D heroController, string textToSpeak)
@@ -23,9 +23,8 @@ public class FormTalk : MonoSingleton<FormTalk>
   }
 
   IEnumerator PrintTextRoutine(string textToPrint)
-  {
-    PortraitForm.SetActive(true);
-    TextArea.SetActive(true);
+  {    
+    TalkHolder.SetActive(true);
 
     for (int i = 0; i < textToPrint.Length; i++)
     {
@@ -36,8 +35,7 @@ public class FormTalk : MonoSingleton<FormTalk>
 
     yield return new WaitForSeconds(1.0f);
 
-    PortraitForm.SetActive(false);
-    TextArea.SetActive(false);
+    TalkHolder.SetActive(false);
 
     _heroController.CharPortraitCamera.gameObject.SetActive(false);
 

@@ -1,4 +1,6 @@
 HelloString = "Hello from Lua!";
+TestList = { 1, 2, 3 };
+TestDic = { ["Key1"] = "Value1", ["Key2"] = "Value2" };
 
 function fact(n)
   if n == 0 then
@@ -10,4 +12,16 @@ end
 
 function hello()
   return HelloString
+end
+
+function get_list()
+  return TestList
+end
+  
+function get_dic()
+  return TestDic
+end
+
+function test_dic(d)
+  return d.foo
 end
