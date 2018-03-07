@@ -1,3 +1,5 @@
+"Names" marked with "*" are used.
+
 Rymeaurgh 
 Wina
 Koera
@@ -7,7 +9,7 @@ Taugaki *
 Hovand
 Dohau *
 Rume
-Wibourgh
+Wibourgh *
 Galio
 Hura
 Haina
@@ -15,8 +17,16 @@ Rowe
 Regau *
 Taumea *
 Laudiya
-Fealash
+Fealash *
 Luga
-Suryia
+Suryia *
 Roavia *
 Roimund *
+Lyonore
+Jyba
+Toguya
+Medeya
+Durameu
+Mebesheim
+Gaepya
+Dewent
