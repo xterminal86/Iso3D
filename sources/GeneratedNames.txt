@@ -2,17 +2,17 @@
 
 Rymeaurgh 
 Wina
-Koera
+Koera *
 Rynu
 Kugyi *
 Taugaki *
 Hovand
 Dohau *
-Rume
+Rume *
 Wibourgh *
 Galio
 Hura
-Haina
+Haina *
 Rowe
 Regau *
 Taumea *
@@ -22,11 +22,11 @@ Luga
 Suryia *
 Roavia *
 Roimund *
-Lyonore
-Jyba
-Toguya
+Lyonore *
+Jyba *
+Toguya *
 Medeya
 Durameu
 Mebesheim
-Gaepya
+Gaepya *
 Dewent
