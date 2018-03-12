@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoonSharp.Interpreter;
 
 public class WorldObjectBase : MonoBehaviour 
 {
@@ -18,6 +19,8 @@ public class WorldObjectBase : MonoBehaviour
 
   [HideInInspector]
   public SerializedWorldObject SerializedObject = new SerializedWorldObject();
+
+  public string LuaScriptName = string.Empty;
 
   /// <summary>
   /// Cleanup after deselecting object in game editor
@@ -38,5 +41,13 @@ public class WorldObjectBase : MonoBehaviour
   /// </summary>
   public virtual void PostProcess()
   {
+    if (!string.IsNullOrEmpty(LuaScriptName))
+    {
+      TextAsset ta = Resources.Load("lua/" + LuaScriptName) as TextAsset;
+
+      Script luaScript = new Script();
+
+      DynValue res = luaScript.DoString(ta.text);
+    }
   }
 }

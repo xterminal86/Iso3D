@@ -71,18 +71,27 @@ public class HighlightableText : HighlightableControl
     if (ControlGroupRef != null)
     {
       ControlGroupRef.ResetControls();
+      Selected = true;
+      InvokeMethod();
+    }
+    else
+    {
+      ResetStatus();
+      InvokeMethod();
+    }
+  }
 
-      if (MethodToCall != null)
-      {
-        Selected = true;
-        MethodToCall.Invoke(this);
-      }
 
-      if (MethodToCall0 != null)
-      {
-        Selected = true;
-        MethodToCall0.Invoke();
-      }
+  void InvokeMethod()
+  {
+    if (MethodToCallInEditor != null)
+    {
+      MethodToCallInEditor.Invoke(this);
+    }
+
+    if (MethodToCall0 != null)
+    {
+      MethodToCall0.Invoke();
     }
   }
 
@@ -109,9 +118,9 @@ public class HighlightableText : HighlightableControl
     HighlightedText.gameObject.SetActive(true);
     DisabledText.gameObject.SetActive(false);
 
-    if (MethodToCall != null)
+    if (MethodToCallInEditor != null)
     {
-      MethodToCall.Invoke(this);
+      MethodToCallInEditor.Invoke(this);
     }
 
     if (MethodToCall0 != null)

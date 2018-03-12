@@ -26,6 +26,7 @@ public class HighlightableControlInspector : Editor
       _methods.Add(EventTriggerType.PointerEnter, new UnityAction<BaseEventData>(hc.OnMouseEnter));
       _methods.Add(EventTriggerType.PointerExit, new UnityAction<BaseEventData>(hc.OnMouseExit));
       _methods.Add(EventTriggerType.PointerDown, new UnityAction<BaseEventData>(hc.OnMouseDown));
+      _methods.Add(EventTriggerType.PointerUp, new UnityAction<BaseEventData>(hc.OnMouseUp));
 
       foreach (var item in _methods)
       {

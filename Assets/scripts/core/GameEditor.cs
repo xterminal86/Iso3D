@@ -153,7 +153,7 @@ public class GameEditor : MonoBehaviour
       rt.anchoredPosition = new Vector2(5.0f, -5.0f - 20.0f * i);
       ListOfItems.Controls.Add(ht);
       ht.ControlGroupRef = ListOfItems;
-      ht.MethodToCall.AddListener(HandleTextItem);
+      ht.MethodToCallInEditor.AddListener(HandleTextItem);
     }
   }
 

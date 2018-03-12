@@ -11,6 +11,9 @@ public class FormTalk : MonoSingleton<FormTalk>
   public GameObject TalkHolder;
   public GameObject SelectorHolder;
 
+  [HideInInspector]
+  public bool LockMovement = false;
+
   HeroController3D _heroController;
   public void TestSpeech(HeroController3D heroController, string textToSpeak)
   {
@@ -40,5 +43,20 @@ public class FormTalk : MonoSingleton<FormTalk>
     _heroController.CharPortraitCamera.gameObject.SetActive(false);
 
     yield return null;
+  }
+
+  public void Inspect()
+  {
+    LockMovement = true;
+
+    SelectorHolder.SetActive(true);
+  }
+
+  public void CloseForm()
+  {
+    TalkHolder.SetActive(false);
+    SelectorHolder.SetActive(false);
+
+    LockMovement = false;
   }
 }

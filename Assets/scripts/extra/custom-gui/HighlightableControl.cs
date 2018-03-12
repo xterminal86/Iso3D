@@ -13,7 +13,11 @@ public class HighlightableControl : MonoBehaviour
 
   public List<AudioSource> ClickSounds;
 
-  public MyUnityEvent MethodToCall = new MyUnityEvent();
+  // This one is used in in-game editor to handle events when user clicks on text entry of objects in a list, for example.
+  // Is set in GameEditor.cs, not visible in inspector.
+  public MyUnityEvent MethodToCallInEditor = new MyUnityEvent();
+
+  // Use this to set reference to a method via inspector (Unity-style)
   public UnityEvent MethodToCall0;
 
   [HideInInspector]
@@ -34,6 +38,7 @@ public class HighlightableControl : MonoBehaviour
   public virtual void Select() { }
   public virtual void SetStatus(bool isEnabled) { }
   public virtual void OnMouseDown(BaseEventData data) { }
+  public virtual void OnMouseUp(BaseEventData data) { }
   public virtual void OnMouseEnter(BaseEventData data) { }
   public virtual void OnMouseExit(BaseEventData data) { }
 }

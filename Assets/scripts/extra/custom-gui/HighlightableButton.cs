@@ -43,6 +43,16 @@ public class HighlightableButton : HighlightableControl
 
   public override void OnMouseDown(BaseEventData data)
   {
+    ProcessEvent();
+  }
+
+  public override void OnMouseUp(BaseEventData data)
+  {
+    ProcessEvent();
+  }
+
+  void ProcessEvent()
+  {
     if (!Enabled || !Highlighted)
     {
       return;
@@ -62,18 +72,26 @@ public class HighlightableButton : HighlightableControl
     if (ControlGroupRef != null)
     {
       ControlGroupRef.ResetControls();
+      Selected = true;
+      InvokeMethod();
+    }
+    else
+    {
+      ResetStatus();
+      InvokeMethod();
+    }
+  }
 
-      if (MethodToCall != null)
-      {
-        Selected = true;
-        MethodToCall.Invoke(this);
-      }
+  void InvokeMethod()
+  {    
+    if (MethodToCallInEditor != null)
+    {
+      MethodToCallInEditor.Invoke(this);
+    }
 
-      if (MethodToCall0 != null)
-      {
-        Selected = true;
-        MethodToCall0.Invoke();
-      }
+    if (MethodToCall0 != null)
+    {
+      MethodToCall0.Invoke();
     }
   }
 
@@ -83,7 +101,11 @@ public class HighlightableButton : HighlightableControl
 
     NormalSprite.SetActive(true);
     HighlightedSprite.SetActive(false);
-    SelectedSprite.SetActive(false);
+
+    if (SelectedSprite != null)
+    {
+      SelectedSprite.SetActive(false);
+    }
   }
 
   public override void Select()
@@ -92,11 +114,15 @@ public class HighlightableButton : HighlightableControl
 
     NormalSprite.SetActive(false);
     HighlightedSprite.SetActive(false);
-    SelectedSprite.SetActive(true);
 
-    if (MethodToCall != null)
+    if (SelectedSprite != null)
     {
-      MethodToCall.Invoke(this);
+      SelectedSprite.SetActive(true);
+    }
+
+    if (MethodToCallInEditor != null)
+    {
+      MethodToCallInEditor.Invoke(this);
     }
 
     if (MethodToCall0 != null)

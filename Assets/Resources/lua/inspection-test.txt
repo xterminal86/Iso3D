@@ -1,0 +1,10 @@
+DeliaSpeech1 = { "Delia: This is some cube." };
+DeliaSpeech2 = { "Delia: \"Roses are red, violets are blue.\"|Delia: \"Omae wa mou shindeiru!\"" };
+
+function InspectObject(speechIndex)
+  if speechIndex == 0
+    return DeliaSpeech1
+  else
+    return DeliaSpeech2
+  end
+end
