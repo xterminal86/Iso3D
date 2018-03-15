@@ -25,7 +25,7 @@ public class InteractionTest : MonoBehaviour
     if (Physics.Raycast(r.origin, r.direction, out _hitInfo, Mathf.Infinity))
     {
       var wob = _hitInfo.collider.GetComponent<WorldObjectBase>();
-      if (wob != null && !string.IsNullOrEmpty(wob.LuaScriptName))
+      if (wob != null && wob.InteractableObjectType != GlobalConstants.InteractableObjects.NONE)
       {
         UnityEngine.Cursor.SetCursor(LookCursor, Vector2.zero, CursorMode.Auto);
 

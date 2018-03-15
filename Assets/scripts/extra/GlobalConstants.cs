@@ -199,6 +199,12 @@ public static class GlobalConstants
     C_ALL,
     ALL
   }
+
+  public enum InteractableObjects
+  {
+    NONE = 0,
+    DUMMY
+  }
 }
 
 

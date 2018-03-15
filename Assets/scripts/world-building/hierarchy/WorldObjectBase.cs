@@ -20,7 +20,7 @@ public class WorldObjectBase : MonoBehaviour
   [HideInInspector]
   public SerializedWorldObject SerializedObject = new SerializedWorldObject();
 
-  public string LuaScriptName = string.Empty;
+  public GlobalConstants.InteractableObjects InteractableObjectType = GlobalConstants.InteractableObjects.NONE;
 
   /// <summary>
   /// Cleanup after deselecting object in game editor
@@ -37,17 +37,9 @@ public class WorldObjectBase : MonoBehaviour
   }
 
   /// <summary>
-  /// Do something else after all initialization has completed
+  /// Do something else after all initialization has completed (see InvisibleObstacle.cs)
   /// </summary>
   public virtual void PostProcess()
-  {
-    if (!string.IsNullOrEmpty(LuaScriptName))
-    {
-      TextAsset ta = Resources.Load("lua/" + LuaScriptName) as TextAsset;
-
-      Script luaScript = new Script();
-
-      DynValue res = luaScript.DoString(ta.text);
-    }
+  {    
   }
 }
