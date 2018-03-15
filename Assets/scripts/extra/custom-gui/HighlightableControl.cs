@@ -35,6 +35,56 @@ public class HighlightableControl : MonoBehaviour
     Highlighted = false;
   }
 
+  protected void ProcessEvent()
+  {
+    if (!Enabled || !Highlighted)
+    {
+      return;
+    }
+
+    if (ClickSounds.Count > 0)
+    {
+      int index = Random.Range(0, ClickSounds.Count);
+      ClickSounds[index].Play();
+    }
+
+    if (Selected)
+    {      
+      return;
+    }
+
+    if (ControlGroupRef != null)
+    {
+      ControlGroupRef.ResetControls();
+      Selected = true;
+      InvokeMethod();
+    }
+    else
+    {
+      //ResetStatus();
+      InvokeMethod();
+    }
+  }
+
+  protected void InvokeMethod()
+  {
+    if (MethodToCallInEditor != null)
+    {      
+      MethodToCallInEditor.Invoke(this);
+    }
+
+    if (MethodToCall0 != null)
+    {
+      MethodToCall0.Invoke();
+    }
+  }
+
+  // To reset gui control state to default after form on which it is used closed
+  void OnDisable()
+  {
+    ResetStatus();
+  }
+
   public virtual void Select() { }
   public virtual void SetStatus(bool isEnabled) { }
   public virtual void OnMouseDown(BaseEventData data) { }

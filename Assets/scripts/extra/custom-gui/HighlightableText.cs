@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class HighlightableText : HighlightableControl 
 {  
@@ -12,14 +13,14 @@ public class HighlightableText : HighlightableControl
 
   void Awake()
   {
-    // FIXME: by commenting out the line below, we no longer can make control "enabled"/"disabled" in inspector
-    // but without it we cannot do autoselect maximum base skill when user clicks the portrait in battle,
+    // FIXME: by commenting out the line below, we no longer can make control "enabled"/"disabled" at start in inspector,
+    // but if we don't comment it out, we cannot do autoselect maximum base skill when user clicks the portrait in battle,
     // it happens only on second select - first one is intercepted by Awake call.
 
     //SetStatus(Enabled);
   }
 
-  public void OnMouseEnter()
+  public override void OnMouseEnter(BaseEventData data)
   { 
     if (Selected || !Enabled)
     {
@@ -36,7 +37,7 @@ public class HighlightableText : HighlightableControl
     HighlightedText.gameObject.SetActive(true);
   }
 
-  public void OnMouseExit()
+  public override void OnMouseExit(BaseEventData data)
   {    
     if (Selected || !Enabled)
     {
@@ -51,47 +52,19 @@ public class HighlightableText : HighlightableControl
     NormalText.gameObject.SetActive(true);
   }
 
-  public void OnMouseDown()
-  {    
-    if (!Enabled || !Highlighted)
+  public override void OnMouseDown(BaseEventData data)
+  {
+    if (Input.GetMouseButtonDown(0))
     {
-      return;
-    }
-
-    //Debug.Log("Mouse Down");
-
-    int index = Random.Range(0, ClickSounds.Count);
-    ClickSounds[index].Play();
-
-    if (Selected)
-    {
-      return;
-    }
-
-    if (ControlGroupRef != null)
-    {
-      ControlGroupRef.ResetControls();
-      Selected = true;
-      InvokeMethod();
-    }
-    else
-    {
-      ResetStatus();
-      InvokeMethod();
+      ProcessEvent();
     }
   }
 
-
-  void InvokeMethod()
+  public override void OnMouseUp(BaseEventData data)
   {
-    if (MethodToCallInEditor != null)
+    if (Input.GetMouseButtonUp(0))
     {
-      MethodToCallInEditor.Invoke(this);
-    }
-
-    if (MethodToCall0 != null)
-    {
-      MethodToCall0.Invoke();
+      ProcessEvent();
     }
   }
 

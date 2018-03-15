@@ -43,55 +43,17 @@ public class HighlightableButton : HighlightableControl
 
   public override void OnMouseDown(BaseEventData data)
   {
-    ProcessEvent();
+    if (Input.GetMouseButtonDown(0))
+    {
+      ProcessEvent();
+    }
   }
 
   public override void OnMouseUp(BaseEventData data)
   {
-    ProcessEvent();
-  }
-
-  void ProcessEvent()
-  {
-    if (!Enabled || !Highlighted)
+    if (Input.GetMouseButtonUp(0))
     {
-      return;
-    }
-
-    if (ClickSounds.Count > 0)
-    {
-      int index = Random.Range(0, ClickSounds.Count);
-      ClickSounds[index].Play();
-    }
-
-    if (Selected)
-    {      
-      return;
-    }
-
-    if (ControlGroupRef != null)
-    {
-      ControlGroupRef.ResetControls();
-      Selected = true;
-      InvokeMethod();
-    }
-    else
-    {
-      ResetStatus();
-      InvokeMethod();
-    }
-  }
-
-  void InvokeMethod()
-  {    
-    if (MethodToCallInEditor != null)
-    {
-      MethodToCallInEditor.Invoke(this);
-    }
-
-    if (MethodToCall0 != null)
-    {
-      MethodToCall0.Invoke();
+      ProcessEvent();
     }
   }
 
