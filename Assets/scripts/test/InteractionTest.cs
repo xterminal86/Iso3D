@@ -6,6 +6,7 @@ using UnityEngine;
 public class InteractionTest : MonoBehaviour 
 {
   public Texture2D LookCursor;
+  public Texture2D InteractCursor;
 
   void Start()
   {
@@ -34,6 +35,10 @@ public class InteractionTest : MonoBehaviour
         {          
           FormTalk.Instance.Inspect();
         }
+      }
+      else if (wob != null && wob is LeverWorldObject)
+      {
+        UnityEngine.Cursor.SetCursor(InteractCursor, Vector2.zero, CursorMode.Auto);
       }
       else
       {
