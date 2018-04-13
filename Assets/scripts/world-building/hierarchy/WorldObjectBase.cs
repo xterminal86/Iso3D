@@ -60,20 +60,20 @@ public class WorldObjectBase : MonoBehaviour
   {
   }
 
+  // Controller can control multiple objects (e.g. one lever opens more than one door)
+  public List<Callback> Interactions = new List<Callback>();
+
   /// <summary>
   /// Interact with object using hand (e.g. pull lever)
   /// </summary>
   public virtual void Interact()
   {
-    foreach (var item in _interactions)
+    foreach (var item in Interactions)
     {
       if (item != null)
         item();
     }
   }
-
-  // Controller can control multiple objects (e.g. one lever opens more than one door)
-  List<Callback> _interactions = new List<Callback>();
 
   /// <summary>
   /// _interactions are subscribed on this method

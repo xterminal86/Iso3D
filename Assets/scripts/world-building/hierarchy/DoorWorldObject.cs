@@ -19,8 +19,15 @@ public class DoorWorldObject : WorldObjectBase
     AnimationComponent["OpenInwards"].speed = AnimationSpeed;
     AnimationComponent["OpenOutwards"].speed = AnimationSpeed;
 
-    DoorOpenZone.MethodToCallOnEnter += OnDoorOpen;
-    DoorCloseZone.MethodToCallOnExit += OnDoorClose;
+    if (DoorOpenZone != null)
+    {
+      DoorOpenZone.MethodToCallOnEnter += OnDoorOpen;
+    }
+
+    if (DoorCloseZone != null)
+    {
+      DoorCloseZone.MethodToCallOnExit += OnDoorClose;
+    }
   }
 
   string _animationOpenName = string.Empty;
@@ -63,5 +70,23 @@ public class DoorWorldObject : WorldObjectBase
 
     AnimationComponent.Play(_animationOpenName);
     _isOpen = false;
+  }
+
+  public override void InteractHandler()
+  { 
+    if (_isOpen)
+    {
+      AnimationComponent["OpenOutwards"].time = AnimationComponent["OpenOutwards"].length;
+      AnimationComponent["OpenOutwards"].speed = -AnimationSpeed;
+    }
+    else
+    {
+      AnimationComponent["OpenOutwards"].time = 0;
+      AnimationComponent["OpenOutwards"].speed = AnimationSpeed;
+    }
+
+    AnimationComponent.Play("OpenOutwards");
+
+    _isOpen = !_isOpen;
   }
 }

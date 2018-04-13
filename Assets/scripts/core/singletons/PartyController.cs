@@ -6,6 +6,13 @@ public class PartyController : MonoSingleton<PartyController>
 {
   public List<ActorLogicBase> AllPlayers = new List<ActorLogicBase>();
 
+  [HideInInspector]
+  public bool LockMovement = false;
+
+  public Texture2D LookCursor;
+  public Texture2D InteractCursor;
+  public Texture2D WaitCursor;
+
   Dictionary<string, ActorLogicBase> _actorLogicByName = new Dictionary<string, ActorLogicBase>();
   public override void Initialize()
   {

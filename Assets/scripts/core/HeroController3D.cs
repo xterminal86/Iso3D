@@ -182,7 +182,7 @@ public class HeroController3D : MonoBehaviour
   Quaternion _toRotation = Quaternion.identity;
   void ProcessWalk()
   {
-    if (!FormTalk.Instance.LockMovement && Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+    if (!PartyController.Instance.LockMovement && Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
     {
       _initializeIdleAnimationsOnce = true;
 
