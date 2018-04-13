@@ -11,6 +11,9 @@ public class LevelupTest : MonoBehaviour
   public TMP_Text IncrementsText;
   public Button LevelUpButton;
 
+  public AudioSource ExpGainSound;
+  public AudioSource ExpGainSoundLoop;
+
   string _text = string.Empty;
   void Start()
   {
@@ -19,7 +22,7 @@ public class LevelupTest : MonoBehaviour
 
   void UpdateText()
   {
-    _text = string.Format("{0}\n\nSTR: {1}\nDEF: {2}\nSPD: {3}\nAFY: {4}\n\n", ActorStatsRef.CharName, ActorStatsRef.Strength.X, ActorStatsRef.Defence.X, ActorStatsRef.Speed.X, ActorStatsRef.Affinity.X);
+    _text = string.Format("{0}\n\nHP:  {5}\nSTR: {1}\nDEF: {2}\nSPD: {3}\nAFY: {4}\n\n", ActorStatsRef.CharName, ActorStatsRef.Strength.X, ActorStatsRef.Defence.X, ActorStatsRef.Speed.X, ActorStatsRef.Affinity.X, ActorStatsRef.Hitpoints.X);
     _text += string.Format("EXP: {0}\nLVL: {1}", ActorStatsRef.Experience, ActorStatsRef.Level);
     TextComponent.text = _text;
   }
@@ -35,7 +38,10 @@ public class LevelupTest : MonoBehaviour
   }
 
   IEnumerator GainExpRoutine()
-  {
+  { 
+    ExpGainSoundLoop.loop = true;      
+    ExpGainSoundLoop.Play();
+
     int exp = 0;
     while (exp < 100)
     {
@@ -46,6 +52,9 @@ public class LevelupTest : MonoBehaviour
 
       yield return null;
     }
+
+    ExpGainSound.Play();
+    ExpGainSoundLoop.loop = false;      
 
     _working = false;
 

@@ -18,6 +18,7 @@ public class ActorStats : ScriptableObject
   public int DefenceGrowth = 0;
   public int SpeedGrowth = 0;
   public int AffinityGrowth = 0;
+  public int HitpointsGrowth = 0;
 
   [Header("")]    
   public int Experience = 0;
@@ -48,16 +49,19 @@ public class ActorStats : ScriptableObject
   {
     _growResults.Clear();
 
+    int hp = RollStat(HitpointsGrowth);
     int str = RollStat(StrengthGrowth);
     int def = RollStat(DefenceGrowth);
     int spd = RollStat(SpeedGrowth);
     int afy = RollStat(AffinityGrowth);
 
+    _growResults.Add(hp);
     _growResults.Add(str);
     _growResults.Add(def);
     _growResults.Add(spd);
     _growResults.Add(afy);
 
+    Hitpoints.X += hp;
     Strength.X += str;
     Defence.X += def;
     Speed.X += spd;
@@ -73,10 +77,26 @@ public class ActorStats : ScriptableObject
   {
     int increment = 0;
 
-    int roll = UnityEngine.Random.Range(0, 101);
-    if (roll <= growthRate)
+    int roll = 0;
+
+    if (growthRate > 100)
     {
-      increment = 1;
+      int div = growthRate / 100;
+      increment += div;
+      int remainder = growthRate % 100;
+      roll = UnityEngine.Random.Range(0, 100);
+      if (roll < remainder)
+      {
+        increment++;
+      }
+    }
+    else
+    {
+      roll = UnityEngine.Random.Range(0, 100);
+      if (roll < growthRate)
+      {
+        increment = 1;
+      }
     }
 
     return increment;
