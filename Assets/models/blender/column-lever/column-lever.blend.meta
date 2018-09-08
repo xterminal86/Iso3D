@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: c39ec44c27495e04a8e556ec69501c56
-timeCreated: 1523291897
-licenseType: Free
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
     100002: Cube
@@ -32,6 +30,7 @@ ModelImporter:
     9500000: //RootNode
     11100000: //RootNode
     13700000: Cube_001
+    2186277476908879412: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -47,7 +46,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: None__stone_png
-    second: {fileID: 2100000, guid: e8d9da267ce23634cb35454db04aa821, type: 2}
+    second: {fileID: 2100000, guid: 907a2e8968cecd043b7d6fc44ea99de7, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -66,6 +65,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -181,6 +181,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
